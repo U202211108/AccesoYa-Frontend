@@ -1,0 +1,698 @@
+<div class="accessibility-page">
+
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="page-header">
+
+        <button type="button" class="back-button" (click)="goBack()">
+
+            <span class="material-symbols-outlined">
+                arrow_back
+            </span>
+
+            Mis establecimientos
+
+        </button>
+
+
+        <span class="page-label">
+            GESTIÓN DEL ESTABLECIMIENTO
+        </span>
+
+
+        <h1>
+            Accesibilidad
+        </h1>
+
+
+        <p>
+            Define las características de accesibilidad
+            disponibles en tu establecimiento.
+        </p>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- ERROR -->
+    <!-- ===================================================== -->
+
+    @if (errorMessage) {
+
+    <div class="message error-message">
+
+        <span class="material-symbols-outlined">
+            error
+        </span>
+
+        <span>
+            {{ errorMessage }}
+        </span>
+
+    </div>
+
+    }
+
+
+    <!-- ===================================================== -->
+    <!-- LOADING -->
+    <!-- ===================================================== -->
+
+    @if (loading) {
+
+    <div class="loading-state">
+
+        <span class="material-symbols-outlined">
+            progress_activity
+        </span>
+
+        <h2>
+            Cargando información
+        </h2>
+
+        <p>
+            Obteniendo los datos de accesibilidad...
+        </p>
+
+    </div>
+
+    }
+
+
+    <!-- ===================================================== -->
+    <!-- CONTENIDO -->
+    <!-- ===================================================== -->
+
+    @if (!loading) {
+
+    <!-- ================================================= -->
+    <!-- RESUMEN -->
+    <!-- ================================================= -->
+
+    <div class="summary-card">
+
+        <div class="summary-content">
+
+            <div class="summary-icon">
+
+                <span class="material-symbols-outlined">
+                    accessible
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <span class="summary-label">
+                    NIVEL DE ACCESIBILIDAD
+                </span>
+
+                <h2>
+                    {{ getAccessibilityPercentage() }}%
+                </h2>
+
+                <p>
+                    {{ getAccessibleCount() }}
+                    de 8 características con accesibilidad completa.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-wrapper">
+
+            <div class="progress-info">
+
+                <span>
+                    Nivel general
+                </span>
+
+                <strong>
+                    {{ getAccessibilityPercentage() }}%
+                </strong>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div class="progress-value" [style.width.%]="getAccessibilityPercentage()">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- ÉXITO -->
+    <!-- ================================================= -->
+
+    @if (saved) {
+
+    <div class="message success-message">
+
+        <span class="material-symbols-outlined">
+            check_circle
+        </span>
+
+        <div>
+
+            <strong>
+                Información guardada
+            </strong>
+
+            <span>
+                Los cambios fueron guardados correctamente.
+            </span>
+
+        </div>
+
+    </div>
+
+    }
+
+
+    <!-- ================================================= -->
+    <!-- CARD -->
+    <!-- ================================================= -->
+
+    <div class="accessibility-card">
+
+
+        <!-- ============================================= -->
+        <!-- MOVILIDAD -->
+        <!-- ============================================= -->
+
+        <section class="accessibility-section">
+
+            <div class="section-heading">
+
+                <span class="material-symbols-outlined">
+                    accessible
+                </span>
+
+                <div>
+
+                    <h2>
+                        Accesibilidad para movilidad
+                    </h2>
+
+                    <p>
+                        Indica el nivel de accesibilidad disponible
+                        para personas con movilidad reducida.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ENTRADA -->
+
+            <div class="accessibility-item">
+
+                <div class="item-info">
+
+                    <strong>
+                        Entrada accesible
+                    </strong>
+
+                    <span>
+                        Entrada adaptada para personas
+                        con movilidad reducida.
+                    </span>
+
+                </div>
+
+
+                <div class="level-selector">
+
+                    @for (
+                    level of levels;
+                    track level
+                    ) {
+
+                    <button type="button" class="level-button" [class.active]="accessibility.entrance === level"
+                        [class]="
+                                    accessibility.entrance === level
+                                        ? 'level-button ' + getLevelClass(level)
+                                        : 'level-button'
+                                " (click)="setLevel('entrance', level)">
+
+                        <span class="material-symbols-outlined">
+                            {{ getLevelIcon(level) }}
+                        </span>
+
+                        {{ getLevelLabel(level) }}
+
+                    </button>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- RAMPAS -->
+
+            <div class="accessibility-item">
+
+                <div class="item-info">
+
+                    <strong>
+                        Rampas
+                    </strong>
+
+                    <span>
+                        Rampas adecuadas para facilitar
+                        el desplazamiento.
+                    </span>
+
+                </div>
+
+
+                <div class="level-selector">
+
+                    @for (
+                    level of levels;
+                    track level
+                    ) {
+
+                    <button type="button" class="level-button" [class.active]="accessibility.ramps === level" [class]="
+                                    accessibility.ramps === level
+                                        ? 'level-button ' + getLevelClass(level)
+                                        : 'level-button'
+                                " (click)="setLevel('ramps', level)">
+
+                        <span class="material-symbols-outlined">
+                            {{ getLevelIcon(level) }}
+                        </span>
+
+                        {{ getLevelLabel(level) }}
+
+                    </button>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ASCENSOR -->
+
+            <div class="accessibility-item">
+
+                <div class="item-info">
+
+                    <strong>
+                        Ascensor accesible
+                    </strong>
+
+                    <span>
+                        Ascensor adaptado para personas
+                        con movilidad reducida.
+                    </span>
+
+                </div>
+
+
+                <div class="level-selector">
+
+                    @for (
+                    level of levels;
+                    track level
+                    ) {
+
+                    <button type="button" class="level-button" [class.active]="accessibility.elevator === level"
+                        [class]="
+                                    accessibility.elevator === level
+                                        ? 'level-button ' + getLevelClass(level)
+                                        : 'level-button'
+                                " (click)="setLevel('elevator', level)">
+
+                        <span class="material-symbols-outlined">
+                            {{ getLevelIcon(level) }}
+                        </span>
+
+                        {{ getLevelLabel(level) }}
+
+                    </button>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- BAÑO -->
+
+            <div class="accessibility-item">
+
+                <div class="item-info">
+
+                    <strong>
+                        Baño accesible
+                    </strong>
+
+                    <span>
+                        Servicios higiénicos adaptados.
+                    </span>
+
+                </div>
+
+
+                <div class="level-selector">
+
+                    @for (
+                    level of levels;
+                    track level
+                    ) {
+
+                    <button type="button" class="level-button"
+                        [class.active]="accessibility.accessibleRestroom === level" [class]="
+                                    accessibility.accessibleRestroom === level
+                                        ? 'level-button ' + getLevelClass(level)
+                                        : 'level-button'
+                                " (click)="setLevel('accessibleRestroom', level)">
+
+                        <span class="material-symbols-outlined">
+                            {{ getLevelIcon(level) }}
+                        </span>
+
+                        {{ getLevelLabel(level) }}
+
+                    </button>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ESTACIONAMIENTO -->
+
+            <div class="accessibility-item">
+
+                <div class="item-info">
+
+                    <strong>
+                        Estacionamiento accesible
+                    </strong>
+
+                    <span>
+                        Espacios reservados para personas
+                        con discapacidad.
+                    </span>
+
+                </div>
+
+
+                <div class="level-selector">
+
+                    @for (
+                    level of levels;
+                    track level
+                    ) {
+
+                    <button type="button" class="level-button"
+                        [class.active]="accessibility.accessibleParking === level" [class]="
+                                    accessibility.accessibleParking === level
+                                        ? 'level-button ' + getLevelClass(level)
+                                        : 'level-button'
+                                " (click)="setLevel('accessibleParking', level)">
+
+                        <span class="material-symbols-outlined">
+                            {{ getLevelIcon(level) }}
+                        </span>
+
+                        {{ getLevelLabel(level) }}
+
+                    </button>
+
+                    }
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================================= -->
+        <!-- DISCAPACIDAD VISUAL -->
+        <!-- ============================================= -->
+
+        <section class="accessibility-section">
+
+            <div class="section-heading">
+
+                <span class="material-symbols-outlined">
+                    visibility
+                </span>
+
+                <div>
+
+                    <h2>
+                        Discapacidad visual
+                    </h2>
+
+                    <p>
+                        Recursos disponibles para personas
+                        con discapacidad visual.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEÑALIZACIÓN -->
+
+            <div class="accessibility-item">
+
+                <div class="item-info">
+
+                    <strong>
+                        Señalización accesible
+                    </strong>
+
+                    <span>
+                        Señalización clara y accesible
+                        dentro del establecimiento.
+                    </span>
+
+                </div>
+
+
+                <div class="level-selector">
+
+                    @for (
+                    level of levels;
+                    track level
+                    ) {
+
+                    <button type="button" class="level-button" [class.active]="accessibility.signage === level" [class]="
+                                    accessibility.signage === level
+                                        ? 'level-button ' + getLevelClass(level)
+                                        : 'level-button'
+                                " (click)="setLevel('signage', level)">
+
+                        <span class="material-symbols-outlined">
+                            {{ getLevelIcon(level) }}
+                        </span>
+
+                        {{ getLevelLabel(level) }}
+
+                    </button>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- BRAILLE -->
+
+            <div class="accessibility-item">
+
+                <div class="item-info">
+
+                    <strong>
+                        Información en Braille
+                    </strong>
+
+                    <span>
+                        Señalización o información
+                        disponible en Braille.
+                    </span>
+
+                </div>
+
+
+                <div class="level-selector">
+
+                    @for (
+                    level of levels;
+                    track level
+                    ) {
+
+                    <button type="button" class="level-button" [class.active]="accessibility.braille === level" [class]="
+                                    accessibility.braille === level
+                                        ? 'level-button ' + getLevelClass(level)
+                                        : 'level-button'
+                                " (click)="setLevel('braille', level)">
+
+                        <span class="material-symbols-outlined">
+                            {{ getLevelIcon(level) }}
+                        </span>
+
+                        {{ getLevelLabel(level) }}
+
+                    </button>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- PISO PODOTÁCTIL -->
+
+            <div class="accessibility-item">
+
+                <div class="item-info">
+
+                    <strong>
+                        Piso podotáctil
+                    </strong>
+
+                    <span>
+                        Rutas o señalización táctil
+                        para orientación.
+                    </span>
+
+                </div>
+
+
+                <div class="level-selector">
+
+                    @for (
+                    level of levels;
+                    track level
+                    ) {
+
+                    <button type="button" class="level-button" [class.active]="accessibility.tactilePath === level"
+                        [class]="
+                                    accessibility.tactilePath === level
+                                        ? 'level-button ' + getLevelClass(level)
+                                        : 'level-button'
+                                " (click)="setLevel('tactilePath', level)">
+
+                        <span class="material-symbols-outlined">
+                            {{ getLevelIcon(level) }}
+                        </span>
+
+                        {{ getLevelLabel(level) }}
+
+                    </button>
+
+                    }
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================================= -->
+        <!-- INFORMACIÓN ADICIONAL -->
+        <!-- ============================================= -->
+
+        <section class="accessibility-section">
+
+            <div class="section-heading">
+
+                <span class="material-symbols-outlined">
+                    description
+                </span>
+
+                <div>
+
+                    <h2>
+                        Información adicional
+                    </h2>
+
+                    <p>
+                        Agrega información adicional sobre
+                        la accesibilidad del establecimiento.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <textarea [(ngModel)]="accessibility.observations" rows="5"
+                placeholder="Describe otras características de accesibilidad disponibles...">
+                </textarea>
+
+        </section>
+
+
+        <!-- ============================================= -->
+        <!-- ACCIONES -->
+        <!-- ============================================= -->
+
+        <div class="form-actions">
+
+            <button type="button" class="secondary-button" [disabled]="saving" (click)="goBack()">
+
+                Cancelar
+
+            </button>
+
+
+            <button type="button" class="primary-button" [disabled]="saving" (click)="saveAccessibility()">
+
+                @if (saving) {
+
+                <span class="material-symbols-outlined spinning">
+                    progress_activity
+                </span>
+
+                Guardando...
+
+                } @else {
+
+                <span class="material-symbols-outlined">
+                    save
+                </span>
+
+                Guardar información
+
+                }
+
+            </button>
+
+        </div>
+
+    </div>
+
+    }
+
+</div>

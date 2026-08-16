@@ -1,0 +1,2943 @@
+// =====================================================
+// MAP PAGE
+// =====================================================
+
+.map-page {
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 2rem;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(135deg,
+            #f7fafc 0%,
+            #eef6f8 50%,
+            #f8fafb 100%);
+}
+
+
+// =====================================================
+// HEADER
+// =====================================================
+
+.map-header {
+    max-width: 1280px;
+
+    margin: 0 auto 1.5rem;
+
+    animation:
+        headerEntrance 0.7s ease both;
+}
+
+.eyebrow {
+    display: inline-block;
+
+    margin-bottom: 0.45rem;
+
+    font-size: 0.75rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+
+    color: #176b87;
+}
+
+.map-header h1 {
+    margin: 0;
+
+    font-family:
+        Georgia,
+        'Times New Roman',
+        serif;
+
+    font-size:
+        clamp(2rem,
+            4vw,
+            3rem);
+
+    line-height: 1.1;
+
+    color: #17212b;
+}
+
+.map-header p {
+    margin: 0.7rem 0 0;
+
+    max-width: 600px;
+
+    font-size: 0.98rem;
+
+    line-height: 1.6;
+
+    color: #667781;
+}
+
+
+// =====================================================
+// MAP WRAPPER
+// =====================================================
+
+.map-wrapper {
+    position: relative;
+
+    width: 100%;
+
+    max-width: 1280px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.8);
+
+    box-shadow:
+        0 25px 60px rgba(20, 50, 70, 0.12),
+
+        0 5px 18px rgba(20, 50, 70, 0.07);
+
+    animation:
+        mapEntrance 0.8s cubic-bezier(0.16,
+            1,
+            0.3,
+            1) both;
+}
+
+
+// =====================================================
+// MAP
+// =====================================================
+
+.accessoya-map {
+    width: 100%;
+
+    height:
+        min(72vh,
+            760px);
+
+    min-height: 520px;
+
+    background: #dceef3;
+}
+
+
+// =====================================================
+// MARKERS
+// =====================================================
+
+:host ::ng-deep .accessoya-marker-wrapper {
+
+    background: transparent !important;
+
+    background-image: none !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    width: 34px !important;
+
+    height: 34px !important;
+}
+
+:host ::ng-deep .place-marker {
+
+    width: 34px !important;
+
+    height: 34px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+
+    background: rgba(255, 255, 255, 0.95) !important;
+
+    border: 2px solid rgba(255, 255, 255, 0.95) !important;
+
+    box-shadow:
+        0 3px 10px rgba(15, 23, 42, 0.20) !important;
+
+    box-sizing: border-box !important;
+}
+
+:host ::ng-deep .place-marker:hover {
+    transform:
+        scale(1.25);
+
+    box-shadow:
+        0 7px 20px rgba(15, 23, 42, 0.28);
+}
+
+:host ::ng-deep .place-marker-inner {
+
+    width: 17px !important;
+
+    height: 17px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+
+    background: var(--marker-color) !important;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.75) !important;
+
+    box-sizing: border-box !important;
+}
+
+:host ::ng-deep .place-marker-inner span {
+    width: 5px;
+
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: white;
+}
+
+
+// =====================================================
+// CLUSTERS
+// =====================================================
+
+:host ::ng-deep .accessoya-cluster-wrapper {
+    background: transparent !important;
+
+    border: none !important;
+
+    width: auto !important;
+
+    height: auto !important;
+}
+
+:host ::ng-deep .accessoya-cluster {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-weight: 800;
+
+    border:
+        4px solid rgba(255, 255, 255, 0.95);
+
+    box-shadow:
+        0 6px 18px rgba(15, 23, 42, 0.28);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+:host ::ng-deep .accessoya-cluster:hover {
+    transform:
+        scale(1.12);
+
+    box-shadow:
+        0 10px 25px rgba(15, 23, 42, 0.35);
+}
+
+:host ::ng-deep .accessoya-cluster-inner {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    height: 100%;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+}
+
+
+// =====================================================
+// POPUP
+// =====================================================
+
+:host ::ng-deep .accessoya-popup {
+    z-index: 2000 !important;
+}
+
+:host ::ng-deep .accessoya-popup .leaflet-popup-content-wrapper {
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    width: auto !important;
+
+    min-width: 260px !important;
+
+    max-width: 360px !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 18px !important;
+
+    background: #ffffff !important;
+
+    box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.22),
+        0 5px 18px rgba(15, 23, 42, 0.12);
+}
+
+:host ::ng-deep .accessoya-popup .leaflet-popup-content {
+    width: auto !important;
+
+    min-width: 0 !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    overflow: visible !important;
+}
+
+:host ::ng-deep .accessoya-popup .leaflet-popup-tip {
+    width: 14px !important;
+
+    height: 14px !important;
+
+    background: #ffffff !important;
+
+    box-shadow: none !important;
+}
+
+:host ::ng-deep .accessoya-popup .leaflet-popup-close-button {
+    top: 12px !important;
+
+    right: 12px !important;
+
+    z-index: 20 !important;
+
+    width: 28px !important;
+
+    height: 28px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+
+    color: #82909a !important;
+
+    background: rgba(255, 255, 255, 0.9) !important;
+
+    font-size: 20px !important;
+
+    font-weight: 400 !important;
+
+    line-height: 28px !important;
+
+    text-decoration: none !important;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+:host ::ng-deep .accessoya-popup .leaflet-popup-close-button:hover {
+    color: #176b87 !important;
+
+    background: #eef6f8 !important;
+
+    transform: scale(1.05);
+}
+
+
+// =====================================================
+// CONTENIDO
+// =====================================================
+
+.place-popup-content {
+    display: block !important;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 1.15rem 1.2rem 1.05rem;
+
+    border-top:
+        4px solid var(--place-color);
+
+    background: #ffffff;
+
+    color: #17212b;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+}
+
+
+// =====================================================
+// HEADER
+// =====================================================
+
+.popup-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 0.8rem;
+
+    margin-bottom: 0.65rem;
+
+    padding-right: 2rem;
+
+    min-width: 0;
+}
+
+.popup-type {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.45rem;
+
+    min-width: 0;
+
+    font-size: 0.7rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    color: var(--place-color);
+}
+
+.popup-type-dot {
+    width: 7px;
+
+    height: 7px;
+
+    flex: 0 0 auto;
+
+    border-radius: 50%;
+
+    background:
+        var(--place-color);
+}
+
+.popup-source {
+    flex: 0 0 auto;
+
+    max-width: 100px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 0.62rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.06em;
+
+    color: #9aa8af;
+}
+
+
+// =====================================================
+// NOMBRE
+// =====================================================
+
+.place-popup-content h3 {
+    display: block !important;
+
+    margin: 0;
+
+    padding: 0;
+
+    max-width: 100%;
+
+    font-size: 1.05rem;
+
+    line-height: 1.35;
+
+    font-weight: 800;
+
+    color: #17212b;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    overflow-wrap: anywhere;
+}
+
+
+// =====================================================
+// TIPO DE ESTABLECIMIENTO
+// =====================================================
+
+.popup-establishment {
+    display: block !important;
+
+    margin-top: 0.35rem;
+
+    font-size: 0.7rem;
+
+    line-height: 1.45;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    color: #84939b;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+}
+
+
+// =====================================================
+// DESCRIPCIÓN
+// =====================================================
+
+.popup-description {
+    display: block !important;
+
+    margin-top: 0.65rem;
+
+    font-size: 0.78rem;
+
+    line-height: 1.5;
+
+    color: #52636d;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    overflow-wrap: anywhere;
+}
+
+
+// =====================================================
+// DIVISOR
+// =====================================================
+
+.popup-divider {
+    width: 100%;
+
+    height: 1px;
+
+    margin:
+        0.85rem 0;
+
+    background: #e8eef1;
+}
+
+
+// =====================================================
+// DETALLES
+// =====================================================
+
+.popup-details {
+    display: flex !important;
+
+    flex-direction: column;
+
+    gap: 0.7rem;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+}
+
+.popup-detail {
+    display: flex !important;
+
+    align-items: flex-start;
+
+    gap: 0.6rem;
+
+    min-width: 0;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+}
+
+.popup-detail-icon {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 28px;
+
+    height: 28px;
+
+    flex: 0 0 auto;
+
+    border-radius: 8px;
+
+    color: var(--place-color);
+
+    background:
+        color-mix(in srgb,
+            var(--place-color) 10%,
+            white);
+}
+
+.popup-detail-icon svg {
+    width: 15px;
+
+    height: 15px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+.popup-detail-content {
+    display: flex !important;
+
+    flex-direction: column;
+
+    gap: 0.1rem;
+
+    min-width: 0;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+}
+
+.popup-detail-label {
+    display: block !important;
+
+    font-size: 0.62rem;
+
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+
+    color: #9aa8af;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+}
+
+.popup-detail-value {
+    display: block !important;
+
+    max-width: 100%;
+
+    font-size: 0.75rem;
+
+    line-height: 1.4;
+
+    color: #35464f;
+
+    overflow-wrap: anywhere;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+}
+
+
+// =====================================================
+// FOOTER
+// =====================================================
+
+.popup-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 0.75rem;
+
+    margin-top: 1rem;
+
+    padding-top: 0.8rem;
+
+    border-top:
+        1px solid #edf1f3;
+}
+
+.popup-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 0.4rem;
+
+    padding:
+        0.35rem 0.65rem;
+
+    border-radius: 999px;
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+}
+
+.popup-status.active {
+    color: #166534;
+
+    background: #ecfdf3;
+
+    border:
+        1px solid #bbf7d0;
+}
+
+.popup-status.inactive {
+    color: #991b1b;
+
+    background: #fef2f2;
+
+    border:
+        1px solid #fecaca;
+}
+
+.status-indicator {
+    width: 6px;
+
+    height: 6px;
+
+    flex: 0 0 auto;
+
+    border-radius: 50%;
+
+    background: currentColor;
+}
+
+.popup-category-code {
+    max-width: 120px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 0.62rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.06em;
+
+    color: #9aa8af;
+}
+
+// =====================================================
+// BOTÓN FILTROS MÓVIL
+// =====================================================
+
+.mobile-filter-button {
+
+    display: none;
+
+    position: absolute;
+
+    right: 0.75rem;
+
+    bottom: 0.75rem;
+
+    z-index: 600;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 0.45rem;
+
+    min-height: 42px;
+
+    padding:
+        0.55rem 0.9rem;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.85);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,
+            255,
+            255,
+            0.94);
+
+    backdrop-filter:
+        blur(14px);
+
+    -webkit-backdrop-filter:
+        blur(14px);
+
+    box-shadow:
+        0 8px 22px rgba(15, 23, 42, 0.18);
+
+    color:
+        #176b87;
+
+    font-family: inherit;
+
+    font-size:
+        0.72rem;
+
+    font-weight:
+        800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.mobile-filter-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 11px 28px rgba(15, 23, 42, 0.22);
+}
+
+.mobile-filter-button.active {
+
+    color:
+        #ffffff;
+
+    background:
+        #176b87;
+
+    border-color:
+        #176b87;
+}
+
+.filter-button-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 17px;
+
+    height: 17px;
+}
+
+.filter-button-icon svg {
+
+    width: 17px;
+
+    height: 17px;
+
+    fill: none;
+
+    stroke:
+        currentColor;
+
+    stroke-width: 2;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+.filter-count {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 18px;
+
+    height: 18px;
+
+    padding:
+        0 0.3rem;
+
+    border-radius:
+        999px;
+
+    background:
+        #ffffff;
+
+    color:
+        #176b87;
+
+    font-size:
+        0.58rem;
+
+    font-weight:
+        900;
+}
+
+
+// =====================================================
+// LEYENDA
+// =====================================================
+
+.map-legend {
+    position: absolute;
+
+    right: 1.25rem;
+
+    bottom: 1.25rem;
+
+    z-index: 500;
+
+    width: 330px;
+
+    max-height: 430px;
+
+    padding: 1.1rem;
+
+    box-sizing: border-box;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.85);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.92);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.16),
+
+        0 5px 15px rgba(15, 23, 42, 0.08);
+
+    animation:
+        legendEntrance 0.8s 0.4s ease both;
+}
+
+
+// =====================================================
+// HEADER LEYENDA
+// =====================================================
+
+.legend-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    margin-bottom: 1rem;
+
+    padding-bottom: 0.85rem;
+
+    border-bottom:
+        1px solid rgba(148, 163, 184, 0.18);
+}
+
+.legend-eyebrow {
+    display: block;
+
+    margin-bottom: 0.25rem;
+
+    font-size: 0.62rem;
+
+    font-weight: 900;
+
+    letter-spacing: 0.14em;
+
+    color: #176b87;
+}
+
+.legend-title {
+    margin: 0;
+
+    font-size: 0.92rem;
+
+    font-weight: 850;
+
+    letter-spacing: 0.01em;
+
+    color: #17212b;
+}
+
+
+// =====================================================
+// BOTÓN TODAS
+// =====================================================
+
+.clear-filters {
+    flex-shrink: 0;
+
+    padding:
+        0.42rem 0.75rem;
+
+    border:
+        1px solid #d8e4e9;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.8);
+
+    color: #64748b;
+
+    font-size: 0.68rem;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        0.2s ease;
+}
+
+.clear-filters:hover {
+    border-color:
+        #176b87;
+
+    color:
+        #176b87;
+
+    background:
+        #f0f8fa;
+}
+
+.clear-filters.active {
+    border-color:
+        #176b87;
+
+    color:
+        #ffffff;
+
+    background:
+        #176b87;
+
+    box-shadow:
+        0 4px 12px rgba(23, 107, 135, 0.22);
+}
+
+
+// =====================================================
+// GRID LEYENDA
+// =====================================================
+
+.legend-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,
+            minmax(0, 1fr));
+
+    gap:
+        0.45rem;
+
+    max-height: 330px;
+
+    overflow-y: auto;
+
+    padding-right: 0.15rem;
+}
+
+
+// =====================================================
+// ITEM LEYENDA
+// =====================================================
+
+.legend-item {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.55rem;
+
+    min-width: 0;
+
+    padding:
+        0.55rem 0.6rem;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 11px;
+
+    background:
+        transparent;
+
+    color: #52636d;
+
+    font-family: inherit;
+
+    font-size: 0.72rem;
+
+    font-weight: 650;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.legend-item:hover {
+    transform:
+        translateY(-1px);
+
+    background:
+        rgba(241, 247, 249, 0.9);
+
+    border-color:
+        rgba(23, 107, 135, 0.12);
+}
+
+.legend-item.selected {
+    background:
+        rgba(23, 107, 135, 0.07);
+
+    border-color:
+        rgba(23, 107, 135, 0.18);
+
+    color:
+        #17212b;
+
+    box-shadow:
+        0 3px 10px rgba(15, 23, 42, 0.04);
+}
+
+.legend-label {
+    flex: 1;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+// =====================================================
+// CHECK
+// =====================================================
+
+.legend-check {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 17px;
+
+    height: 17px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        #176b87;
+
+    color:
+        white;
+
+    font-size: 0.62rem;
+
+    font-weight: 900;
+
+    animation:
+        checkPop 0.2s ease both;
+}
+
+
+// =====================================================
+// PUNTOS DE LEYENDA
+// =====================================================
+
+.legend-dot {
+    width: 9px;
+
+    height: 9px;
+
+    flex:
+        0 0 auto;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.9);
+
+    transition:
+        transform 0.2s ease;
+}
+
+.legend-item:hover .legend-dot {
+    transform:
+        scale(1.25);
+}
+
+
+// =====================================================
+// COLORES
+// =====================================================
+
+.legend-dot.healthcare {
+    background: #2563eb;
+}
+
+.legend-dot.pharmacy {
+    background: #16a34a;
+}
+
+.legend-dot.restaurant {
+    background: #ea580c;
+}
+
+.legend-dot.bank {
+    background: #0891b2;
+}
+
+.legend-dot.education {
+    background: #4f46e5;
+}
+
+.legend-dot.hotel {
+    background: #db2777;
+}
+
+.legend-dot.supermarket {
+    background: #ca8a04;
+}
+
+.legend-dot.shopping {
+    background: #92400e;
+}
+
+.legend-dot.sports {
+    background: #dc2626;
+}
+
+.legend-dot.religious {
+    background: #c2410c;
+}
+
+.legend-dot.cultural {
+    background: #7c3aed;
+}
+
+.legend-dot.transportation {
+    background: #059669;
+}
+
+.legend-dot.public-service {
+    background: #475569;
+}
+
+
+// =====================================================
+// SCROLL LEYENDA
+// =====================================================
+
+.legend-grid::-webkit-scrollbar {
+    width: 5px;
+}
+
+.legend-grid::-webkit-scrollbar-track {
+    background:
+        transparent;
+}
+
+.legend-grid::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+
+    background:
+        #cbd5e1;
+}
+
+
+// =====================================================
+// LEAFLET
+// =====================================================
+
+:host ::ng-deep .leaflet-control-zoom {
+    margin:
+        1rem 0 0 1rem !important;
+
+    border: none !important;
+
+    box-shadow:
+        0 8px 20px rgba(15, 23, 42, 0.15);
+}
+
+:host ::ng-deep .leaflet-control-zoom a {
+    width: 36px !important;
+
+    height: 36px !important;
+
+    line-height: 36px !important;
+
+    color:
+        #17212b !important;
+
+    background:
+        white !important;
+
+    border: none !important;
+
+    transition:
+        background 0.2s ease;
+}
+
+:host ::ng-deep .leaflet-control-zoom a:hover {
+
+    background:
+        #f0f7f9 !important;
+
+    color:
+        #176b87 !important;
+}
+
+
+// =====================================================
+// ANIMACIONES
+// =====================================================
+
+@keyframes headerEntrance {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-14px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes mapEntrance {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(20px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0) scale(1);
+    }
+}
+
+@keyframes legendEntrance {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes checkPop {
+
+    from {
+        opacity: 0;
+
+        transform:
+            scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            scale(1);
+    }
+}
+
+
+// =====================================================
+// RESPONSIVE / MÓVIL
+// =====================================================
+
+@media (max-width: 700px) {
+
+    .map-page {
+
+        padding: 1rem;
+    }
+
+
+    .accessoya-map {
+
+        height: 70vh;
+
+        min-height: 450px;
+    }
+
+
+    // =================================================
+    // BOTÓN FILTROS MÓVIL
+    // =================================================
+
+    .mobile-filter-button {
+
+        display: flex;
+
+        position: absolute;
+
+        right: 0.75rem;
+
+        bottom: 0.75rem;
+
+        z-index: 600;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 0.45rem;
+
+        min-height: 42px;
+
+        padding:
+            0.55rem 0.9rem;
+
+        border:
+            1px solid rgba(255, 255, 255, 0.85);
+
+        border-radius:
+            999px;
+
+        background:
+            rgba(255,
+                255,
+                255,
+                0.94);
+
+        backdrop-filter:
+            blur(14px);
+
+        -webkit-backdrop-filter:
+            blur(14px);
+
+        box-shadow:
+            0 8px 22px rgba(15, 23, 42, 0.18);
+
+        color:
+            #176b87;
+
+        font-family:
+            inherit;
+
+        font-size:
+            0.72rem;
+
+        font-weight:
+            800;
+
+        cursor:
+            pointer;
+
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .mobile-filter-button:hover {
+
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 11px 28px rgba(15, 23, 42, 0.22);
+    }
+
+
+    .mobile-filter-button.active {
+
+        color:
+            #ffffff;
+
+        background:
+            #176b87;
+
+        border-color:
+            #176b87;
+    }
+
+
+    // =================================================
+    // ICONO DEL BOTÓN
+    // =================================================
+
+    .filter-button-icon {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 17px;
+
+        height: 17px;
+    }
+
+
+    .filter-button-icon svg {
+
+        width: 17px;
+
+        height: 17px;
+
+        fill: none;
+
+        stroke:
+            currentColor;
+
+        stroke-width: 2;
+
+        stroke-linecap: round;
+
+        stroke-linejoin: round;
+    }
+
+
+    .filter-count {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-width: 18px;
+
+        height: 18px;
+
+        padding:
+            0 0.3rem;
+
+        border-radius:
+            999px;
+
+        background:
+            #ffffff;
+
+        color:
+            #176b87;
+
+        font-size:
+            0.58rem;
+
+        font-weight:
+            900;
+    }
+
+
+    // =================================================
+    // PANEL DE CATEGORÍAS
+    // =================================================
+
+    .map-legend {
+
+        position: absolute;
+
+        left: 0.65rem;
+
+        right: 0.65rem;
+
+        bottom: 0.65rem;
+
+        z-index: 590;
+
+        width: auto;
+
+        max-width: none;
+
+        max-height: 0;
+
+        padding: 0;
+
+        opacity: 0;
+
+        visibility: hidden;
+
+        overflow: hidden;
+
+        transform:
+            translateY(12px) scale(0.98);
+
+        border-radius:
+            17px;
+
+        background:
+            rgba(255,
+                255,
+                255,
+                0.96);
+
+        backdrop-filter:
+            blur(18px);
+
+        -webkit-backdrop-filter:
+            blur(18px);
+
+        box-shadow:
+            0 18px 45px rgba(15, 23, 42, 0.20);
+
+        pointer-events:
+            none;
+
+        animation:
+            none;
+
+        transition:
+            opacity 0.25s ease,
+            transform 0.25s ease,
+            max-height 0.3s ease,
+            padding 0.25s ease,
+            visibility 0.25s ease;
+    }
+
+
+    // =================================================
+    // PANEL ABIERTO
+    // =================================================
+
+    .map-legend.mobile-open {
+
+        max-height:
+            280px;
+
+        padding:
+            0.8rem;
+
+        opacity:
+            1;
+
+        visibility:
+            visible;
+
+        transform:
+            translateY(0) scale(1);
+
+        pointer-events:
+            auto;
+    }
+
+
+    // =================================================
+    // HEADER DE CATEGORÍAS
+    // =================================================
+
+    .map-legend .legend-header {
+
+        margin-bottom:
+            0.55rem;
+
+        padding-bottom:
+            0.55rem;
+    }
+
+
+    .map-legend .legend-eyebrow {
+
+        font-size:
+            0.52rem;
+    }
+
+
+    .map-legend .legend-title {
+
+        font-size:
+            0.78rem;
+    }
+
+
+    // =================================================
+    // GRID DE CATEGORÍAS
+    // =================================================
+
+    .map-legend .legend-grid {
+
+        grid-template-columns:
+            repeat(2,
+                minmax(0, 1fr));
+
+        gap:
+            0.15rem 0.35rem;
+
+        max-height:
+            190px;
+
+        overflow-y:
+            auto;
+    }
+
+
+    // =================================================
+    // ITEMS
+    // =================================================
+
+    .map-legend .legend-item {
+
+        min-height:
+            30px;
+
+        padding:
+            0.3rem 0.35rem;
+
+        gap:
+            0.35rem;
+
+        border-radius:
+            8px;
+
+        font-size:
+            0.62rem;
+    }
+
+
+    // =================================================
+    // PUNTOS DE CATEGORÍA
+    // =================================================
+
+    .map-legend .legend-dot {
+
+        width:
+            7px;
+
+        height:
+            7px;
+    }
+
+
+    // =================================================
+    // CHECK
+    // =================================================
+
+    .map-legend .legend-check {
+
+        width:
+            13px;
+
+        height:
+            13px;
+
+        font-size:
+            0.48rem;
+    }
+
+
+    // =================================================
+    // BOTÓN TODAS
+    // =================================================
+
+    .map-legend .clear-filters {
+
+        padding:
+            0.32rem 0.6rem;
+
+        font-size:
+            0.6rem;
+    }
+
+    :host ::ng-deep .accessoya-popup {
+
+        .leaflet-popup-content {
+
+            width: min(300px,
+                    calc(100vw - 44px)) !important;
+
+            max-width:
+                calc(100vw - 44px);
+        }
+
+        .leaflet-popup-content-wrapper {
+
+            border-radius: 15px;
+        }
+
+        .leaflet-popup-close-button {
+
+            width: 28px !important;
+
+            height: 28px !important;
+
+            line-height: 28px !important;
+        }
+    }
+
+
+    .place-popup-content {
+
+        padding: 1rem;
+    }
+
+
+    .popup-source {
+
+        font-size: 0.55rem;
+    }
+
+
+    .place-popup-content h3 {
+
+        font-size: 0.98rem;
+    }
+
+
+    .popup-detail-value {
+
+        font-size: 0.74rem;
+    }
+}
+
+// =====================================================
+// PROTECCIÓN DEL CONTENIDO DEL POPUP
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .place-popup-content {
+    position: relative !important;
+
+    display: block !important;
+
+    width: 100% !important;
+
+    min-height: 0 !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+
+    background: #ffffff !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+}
+
+
+// Evitar pseudo-elementos heredados
+:host ::ng-deep .accessoya-popup .place-popup-content::before,
+:host ::ng-deep .accessoya-popup .place-popup-content::after {
+    content: none !important;
+
+    display: none !important;
+}
+
+
+// Evitar que elementos gráficos externos
+// aparezcan dentro del contenido
+:host ::ng-deep .accessoya-popup .place-popup-content>img,
+:host ::ng-deep .accessoya-popup .place-popup-content>picture,
+:host ::ng-deep .accessoya-popup .place-popup-content>object {
+    display: none !important;
+}
+
+
+// El contenido directo del popup
+:host ::ng-deep .accessoya-popup .leaflet-popup-content {
+    position: relative !important;
+
+    overflow: hidden !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+}
+
+:host ::ng-deep .accessoya-map .accessoya-custom-marker {
+    background-image: none !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+:host ::ng-deep .accessoya-map .accessoya-custom-marker img {
+    display: none !important;
+}
+
+// =====================================================
+// MARCADOR PERSONALIZADO - SIN ICONO LEAFLET
+// =====================================================
+
+:host ::ng-deep .accessoya-map .leaflet-marker-icon.accessoya-custom-marker {
+
+    background: transparent !important;
+
+    background-image: none !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+}
+
+:host ::ng-deep .accessoya-map .leaflet-marker-icon.accessoya-custom-marker img {
+
+    display: none !important;
+
+    visibility: hidden !important;
+}
+
+// =====================================================
+// POPUP LEAFLET - ESTILOS PARA HTML DINÁMICO
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .place-popup-content {
+
+    display: block !important;
+
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    padding: 1.15rem 1.2rem 1.05rem !important;
+
+    background: #ffffff !important;
+
+    color: #17212b !important;
+
+    overflow: hidden !important;
+}
+
+
+// =====================================================
+// HEADER
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .popup-header {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: space-between !important;
+
+    gap: 0.8rem !important;
+
+    margin-bottom: 0.65rem !important;
+
+    padding-right: 2rem !important;
+
+    min-width: 0 !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-type {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 0.45rem !important;
+
+    min-width: 0 !important;
+
+    font-size: 0.7rem !important;
+
+    font-weight: 800 !important;
+
+    letter-spacing: 0.08em !important;
+
+    text-transform: uppercase !important;
+
+    color: var(--place-color) !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-type-dot {
+
+    width: 7px !important;
+
+    height: 7px !important;
+
+    flex: 0 0 auto !important;
+
+    border-radius: 50% !important;
+
+    background: var(--place-color) !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-source {
+
+    flex: 0 0 auto !important;
+
+    max-width: 100px !important;
+
+    overflow: hidden !important;
+
+    text-overflow: ellipsis !important;
+
+    white-space: nowrap !important;
+
+    font-size: 0.62rem !important;
+
+    font-weight: 800 !important;
+
+    letter-spacing: 0.06em !important;
+
+    color: #9aa8af !important;
+}
+
+
+// =====================================================
+// NOMBRE
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .place-popup-content h3 {
+
+    display: block !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    max-width: 100% !important;
+
+    font-size: 1.05rem !important;
+
+    line-height: 1.35 !important;
+
+    font-weight: 800 !important;
+
+    color: #17212b !important;
+
+    overflow-wrap: anywhere !important;
+}
+
+
+// =====================================================
+// TIPO DE ESTABLECIMIENTO
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .popup-establishment {
+
+    display: block !important;
+
+    margin-top: 0.35rem !important;
+
+    font-size: 0.7rem !important;
+
+    line-height: 1.45 !important;
+
+    font-weight: 600 !important;
+
+    text-transform: uppercase !important;
+
+    color: #84939b !important;
+}
+
+
+// =====================================================
+// DESCRIPCIÓN
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .popup-description {
+
+    display: block !important;
+
+    margin-top: 0.65rem !important;
+
+    font-size: 0.78rem !important;
+
+    line-height: 1.5 !important;
+
+    color: #52636d !important;
+
+    overflow-wrap: anywhere !important;
+}
+
+
+// =====================================================
+// DIVISOR
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .popup-divider {
+
+    width: 100% !important;
+
+    height: 1px !important;
+
+    margin: 0.85rem 0 !important;
+
+    background: #e8eef1 !important;
+}
+
+
+// =====================================================
+// DETALLES
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .popup-details {
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    gap: 0.7rem !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-detail {
+
+    display: flex !important;
+
+    align-items: flex-start !important;
+
+    gap: 0.6rem !important;
+
+    min-width: 0 !important;
+}
+
+
+// =====================================================
+// ICONO DEL DETALLE
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .popup-detail-icon {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    width: 28px !important;
+
+    height: 28px !important;
+
+    min-width: 28px !important;
+
+    max-width: 28px !important;
+
+    flex: 0 0 28px !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 8px !important;
+
+    color: var(--place-color) !important;
+
+    background: color-mix(in srgb,
+            var(--place-color) 10%,
+            white) !important;
+
+    overflow: hidden !important;
+}
+
+
+// =====================================================
+// SVG DEL ICONO
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .popup-detail-icon svg {
+
+    display: block !important;
+
+    width: 15px !important;
+
+    height: 15px !important;
+
+    min-width: 15px !important;
+
+    max-width: 15px !important;
+
+    min-height: 15px !important;
+
+    max-height: 15px !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    fill: none !important;
+
+    stroke: currentColor !important;
+
+    stroke-width: 1.8 !important;
+
+    stroke-linecap: round !important;
+
+    stroke-linejoin: round !important;
+
+    overflow: visible !important;
+}
+
+
+// =====================================================
+// CONTENIDO DEL DETALLE
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .popup-detail-content {
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    gap: 0.1rem !important;
+
+    min-width: 0 !important;
+
+    flex: 1 1 auto !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-detail-label {
+
+    display: block !important;
+
+    font-size: 0.62rem !important;
+
+    line-height: 1.2 !important;
+
+    font-weight: 800 !important;
+
+    letter-spacing: 0.06em !important;
+
+    text-transform: uppercase !important;
+
+    color: #9aa8af !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-detail-value {
+
+    display: block !important;
+
+    max-width: 100% !important;
+
+    font-size: 0.75rem !important;
+
+    line-height: 1.4 !important;
+
+    color: #35464f !important;
+
+    overflow-wrap: anywhere !important;
+}
+
+
+// =====================================================
+// FOOTER
+// =====================================================
+
+:host ::ng-deep .accessoya-popup .popup-footer {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: space-between !important;
+
+    gap: 0.75rem !important;
+
+    margin-top: 1rem !important;
+
+    padding-top: 0.8rem !important;
+
+    border-top: 1px solid #edf1f3 !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-status {
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+
+    gap: 0.4rem !important;
+
+    padding: 0.35rem 0.65rem !important;
+
+    border-radius: 999px !important;
+
+    font-size: 0.7rem !important;
+
+    font-weight: 700 !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-status.active {
+
+    color: #166534 !important;
+
+    background: #ecfdf3 !important;
+
+    border: 1px solid #bbf7d0 !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-status.inactive {
+
+    color: #991b1b !important;
+
+    background: #fef2f2 !important;
+
+    border: 1px solid #fecaca !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .status-indicator {
+
+    width: 6px !important;
+
+    height: 6px !important;
+
+    flex: 0 0 auto !important;
+
+    border-radius: 50% !important;
+
+    background: currentColor !important;
+}
+
+
+:host ::ng-deep .accessoya-popup .popup-category-code {
+
+    max-width: 120px !important;
+
+    overflow: hidden !important;
+
+    text-overflow: ellipsis !important;
+
+    white-space: nowrap !important;
+
+    font-size: 0.62rem !important;
+
+    font-weight: 800 !important;
+
+    letter-spacing: 0.06em !important;
+
+    color: #9aa8af !important;
+}
+
+:host ::ng-deep .accessoya-popup .popup-detail-button {
+    display: block;
+
+    width: 100%;
+    margin-top: 14px;
+    padding: 10px 16px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: var(--place-color, #0f766e);
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+:host ::ng-deep .accessoya-popup .popup-detail-button:hover {
+    background: #0b625b;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(15, 118, 110, 0.20);
+}
+
+:host ::ng-deep .accessoya-popup .popup-detail-button:active {
+    transform: translateY(0);
+
+    box-shadow: none;
+}
+
+:host ::ng-deep .accessoya-popup .popup-detail-button:focus {
+    outline: none;
+}
+
+:host ::ng-deep .accessoya-popup .popup-detail-button:focus-visible {
+    outline: 2px solid #0f766e;
+    outline-offset: 2px;
+}
+
+.popup-detail-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.popup-detail-button:active {
+    transform: translateY(0);
+}
+
+// =====================================================
+// BUSCADOR DEL MAPA
+// =====================================================
+
+.map-search {
+
+    position: absolute;
+
+    top: 16px;
+
+    left: 60px;
+
+    width: min(430px, calc(100% - 90px));
+
+    z-index: 1000;
+}
+
+.map-search-results {
+
+    position: relative;
+
+    z-index: 1001;
+}
+
+.map-search-no-results {
+
+    position: relative;
+
+    z-index: 1001;
+}
+
+
+// =====================================================
+// INPUT
+// =====================================================
+
+.map-search-input {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.65rem;
+
+    width: 100%;
+
+    min-height: 52px;
+
+    padding: 0 0.75rem 0 1rem;
+
+    box-sizing: border-box;
+
+    border:
+        1px solid rgba(255,
+            255,
+            255,
+            0.9);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,
+            255,
+            255,
+            0.96);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 12px 30px rgba(15,
+            23,
+            42,
+            0.16);
+
+    transition:
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.map-search-input:focus-within {
+
+    border-color:
+        rgba(23,
+            107,
+            135,
+            0.35);
+
+    box-shadow:
+        0 15px 35px rgba(15,
+            23,
+            42,
+            0.20);
+}
+
+
+.map-search-input .material-symbols-outlined {
+
+    flex-shrink: 0;
+
+    color:
+        #176b87;
+
+    font-size: 22px;
+}
+
+
+.map-search-input input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    height: 50px;
+
+    padding: 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color:
+        #17212b;
+
+    font-family: inherit;
+
+    font-size: 0.82rem;
+
+    font-weight: 600;
+}
+
+
+.map-search-input input::placeholder {
+
+    color:
+        #94a3b8;
+
+    font-weight: 500;
+}
+
+
+// =====================================================
+// LIMPIAR
+// =====================================================
+
+.map-search-clear {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 34px;
+
+    height: 34px;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        #f1f5f9;
+
+    color:
+        #64748b;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.map-search-clear:hover {
+
+    background:
+        #e2e8f0;
+
+    color:
+        #176b87;
+}
+
+
+.map-search-clear .material-symbols-outlined {
+
+    font-size: 18px;
+}
+
+
+// =====================================================
+// RESULTADOS
+// =====================================================
+
+.map-search-results {
+
+    margin-top: 0.5rem;
+
+    padding: 0.4rem;
+
+    border:
+        1px solid rgba(255,
+            255,
+            255,
+            0.9);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,
+            255,
+            255,
+            0.97);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 15px 35px rgba(15,
+            23,
+            42,
+            0.18);
+
+    overflow: hidden;
+}
+
+
+// =====================================================
+// RESULTADO INDIVIDUAL
+// =====================================================
+
+.map-search-result {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.7rem;
+
+    width: 100%;
+
+    padding: 0.7rem;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: transparent;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease;
+}
+
+
+.map-search-result:hover {
+
+    background:
+        #f0f8fa;
+}
+
+
+.search-result-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 38px;
+
+    height: 38px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        #eef6f8;
+
+    color:
+        #176b87;
+}
+
+
+.search-result-icon .material-symbols-outlined {
+
+    font-size: 20px;
+}
+
+
+.search-result-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+
+    flex: 1;
+
+    gap: 2px;
+}
+
+
+.search-result-content strong {
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color:
+        #17212b;
+
+    font-size: 0.78rem;
+
+    font-weight: 800;
+}
+
+
+.search-result-content span {
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color:
+        #176b87;
+
+    font-size: 0.62rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+
+.search-result-content small {
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color:
+        #64748b;
+
+    font-size: 0.65rem;
+}
+
+
+.search-result-arrow {
+
+    flex-shrink: 0;
+
+    color:
+        #94a3b8;
+
+    font-size: 18px;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.map-search-result:hover .search-result-arrow {
+
+    color:
+        #176b87;
+
+    transform:
+        translateX(3px);
+}
+
+
+// =====================================================
+// SIN RESULTADOS
+// =====================================================
+
+.map-search-no-results {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.6rem;
+
+    margin-top: 0.5rem;
+
+    padding: 0.85rem 1rem;
+
+    border-radius: 13px;
+
+    background:
+        rgba(255,
+            255,
+            255,
+            0.97);
+
+    box-shadow:
+        0 12px 30px rgba(15,
+            23,
+            42,
+            0.14);
+
+    color:
+        #64748b;
+
+    font-size: 0.72rem;
+
+    font-weight: 600;
+}
+
+
+.map-search-no-results .material-symbols-outlined {
+
+    color:
+        #94a3b8;
+
+    font-size: 19px;
+}
+
+
+// =====================================================
+// RESPONSIVE
+// =====================================================
+
+@media (max-width: 700px) {
+
+    .map-search {
+
+        top: 0.75rem;
+
+        left: 0.75rem;
+
+        width:
+            calc(100% - 1.5rem);
+    }
+
+
+    .map-search-input {
+
+        min-height: 48px;
+
+        border-radius: 13px;
+    }
+
+
+    .map-search-input input {
+
+        height: 46px;
+
+        font-size: 0.76rem;
+    }
+
+}

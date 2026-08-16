@@ -1,0 +1,142 @@
+<div class="profile-page">
+
+    <div class="page-header">
+
+        <span class="page-label">
+            MI CUENTA
+        </span>
+
+        <h1>
+            Mi perfil
+        </h1>
+
+        <p>
+            Consulta la información de tu cuenta
+            en AccesoYa.
+        </p>
+
+    </div>
+
+
+    <div class="profile-card">
+
+        <div class="profile-cover">
+
+            <div class="profile-avatar">
+
+                <span class="material-symbols-outlined">
+                    person
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile-body">
+
+            <div class="profile-name">
+
+                <h2>
+                    {{ firstName }} {{ lastName }}
+                </h2>
+
+                <span>
+                    {{ getRoleLabel() }}
+                </span>
+
+            </div>
+
+
+            <div class="profile-information">
+
+                <div class="information-item">
+
+                    <span class="material-symbols-outlined">
+                        person
+                    </span>
+
+                    <div>
+
+                        <label>
+                            Nombres
+                        </label>
+
+                        <strong>
+                            {{ firstName }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="information-item">
+
+                    <span class="material-symbols-outlined">
+                        badge
+                    </span>
+
+                    <div>
+
+                        <label>
+                            Apellidos
+                        </label>
+
+                        <strong>
+                            {{ lastName }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="information-item">
+
+                    <span class="material-symbols-outlined">
+                        email
+                    </span>
+
+                    <div>
+
+                        <label>
+                            Correo electrónico
+                        </label>
+
+                        <strong>
+                            {{ email }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="information-item">
+
+                    <span class="material-symbols-outlined">
+                        verified_user
+                    </span>
+
+                    <div>
+
+                        <label>
+                            Tipo de cuenta
+                        </label>
+
+                        <strong>
+                            {{ getRoleLabel() }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

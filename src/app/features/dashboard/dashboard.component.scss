@@ -1,0 +1,615 @@
+// =====================================================
+// VARIABLES
+// =====================================================
+
+$primary: #2563eb;
+$primary-dark: #1d4ed8;
+
+$text: #1e293b;
+$text-secondary: #64748b;
+
+$border: #e2e8f0;
+
+$background: #f8fafc;
+
+
+// =====================================================
+// DASHBOARD
+// =====================================================
+
+.dashboard {
+
+    width: 100%;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+}
+
+
+// =====================================================
+// BIENVENIDA
+// =====================================================
+
+.welcome-section {
+
+    margin-bottom: 26px;
+}
+
+
+.welcome-label {
+
+    display: inline-block;
+
+    margin-bottom: 7px;
+
+    color: $primary;
+
+    font-size: 11px;
+
+    font-weight: 750;
+
+    letter-spacing: 0.08em;
+}
+
+
+.welcome-section h1 {
+
+    margin: 0 0 8px;
+
+    color: $text;
+
+    font-size: 30px;
+
+    line-height: 1.2;
+
+    font-weight: 750;
+}
+
+
+.welcome-section p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+}
+
+
+// =====================================================
+// BUSCADOR
+// =====================================================
+
+.search-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 18px;
+
+    margin-bottom: 34px;
+
+    border: 1px solid #dbeafe;
+
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 5px 18px rgba(15, 23, 42, 0.05);
+}
+
+
+.search-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+    color: $primary;
+}
+
+
+.search-icon .material-symbols-outlined {
+
+    font-size: 24px;
+}
+
+
+.search-content {
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.search-content strong {
+
+    color: $text;
+
+    font-size: 15px;
+}
+
+
+.search-content span {
+
+    color: $text-secondary;
+
+    font-size: 13px;
+}
+
+
+.search-button {
+
+    min-width: 90px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    height: 42px;
+
+    padding: 0 18px;
+
+    border-radius: 9px;
+
+    background: $primary;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.search-button:hover {
+
+    background: $primary-dark;
+
+    transform: translateY(-1px);
+}
+
+
+// =====================================================
+// SECCIONES
+// =====================================================
+
+.dashboard-section {
+
+    margin-bottom: 34px;
+}
+
+
+.section-header {
+
+    margin-bottom: 16px;
+}
+
+
+.section-header h2 {
+
+    margin: 0 0 4px;
+
+    color: $text;
+
+    font-size: 19px;
+
+    font-weight: 700;
+}
+
+
+.section-header p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 13px;
+}
+
+
+// =====================================================
+// CATEGORÍAS
+// =====================================================
+
+.categories-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, 1fr);
+
+    gap: 12px;
+}
+
+
+.category-card {
+
+    min-height: 110px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 14px;
+
+    border: 1px solid $border;
+
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    color: $text;
+
+    text-decoration: none;
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.category-card:hover {
+
+    border-color: #bfdbfe;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(15, 23, 42, 0.07);
+}
+
+
+.category-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #eff6ff;
+
+    color: $primary;
+}
+
+
+.category-icon .material-symbols-outlined {
+
+    font-size: 22px;
+}
+
+
+.category-card>span {
+
+    color: $text;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+// =====================================================
+// ACCIONES RÁPIDAS
+// =====================================================
+
+.quick-actions {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 16px;
+}
+
+
+.quick-card {
+
+    min-height: 115px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    position: relative;
+
+    padding: 20px;
+
+    border: 1px solid $border;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    color: $text;
+
+    text-decoration: none;
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.quick-card:hover {
+
+    border-color: #bfdbfe;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(15, 23, 42, 0.07);
+}
+
+
+.quick-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+    color: $primary;
+}
+
+
+.quick-icon .material-symbols-outlined {
+
+    font-size: 24px;
+}
+
+
+.quick-card h3 {
+
+    margin: 0 0 5px;
+
+    color: $text;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+.quick-card p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+.arrow {
+
+    margin-left: auto;
+
+    color: #94a3b8;
+
+    font-size: 21px;
+}
+
+
+// =====================================================
+// INFORMACIÓN
+// =====================================================
+
+.information-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 20px;
+
+    margin-top: 6px;
+
+    border: 1px solid #dbeafe;
+
+    border-radius: 15px;
+
+    background: #eff6ff;
+}
+
+
+.information-icon {
+
+    width: 46px;
+
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: $primary;
+}
+
+
+.information-icon .material-symbols-outlined {
+
+    font-size: 23px;
+}
+
+
+.information-card h3 {
+
+    margin: 0 0 4px;
+
+    color: #1e40af;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+.information-card p {
+
+    margin: 0;
+
+    color: #475569;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+// =====================================================
+// TABLET
+// =====================================================
+
+@media (max-width: 1000px) {
+
+    .categories-grid {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+}
+
+
+// =====================================================
+// MÓVIL
+// =====================================================
+
+@media (max-width: 650px) {
+
+    .welcome-section h1 {
+
+        font-size: 25px;
+    }
+
+
+    .search-card {
+
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+
+    .search-content {
+
+        min-width: 0;
+    }
+
+
+    .search-button {
+
+        width: 100%;
+    }
+
+
+    .categories-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .quick-actions {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .information-card {
+
+        align-items: flex-start;
+    }
+}
+
+
+@media (max-width: 400px) {
+
+    .categories-grid {
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 8px;
+    }
+
+
+    .category-card {
+
+        min-height: 100px;
+    }
+}

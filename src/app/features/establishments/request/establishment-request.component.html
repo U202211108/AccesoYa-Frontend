@@ -1,0 +1,668 @@
+<div class="request-page">
+
+
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="page-header">
+
+        <div>
+
+            <span class="page-label">
+                ESTABLECIMIENTO
+            </span>
+
+            <h1>
+                Solicitar ser establecimiento
+            </h1>
+
+            <p>
+                Registra tu establecimiento en AccesoYa
+                para administrar su información de accesibilidad.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- COMPROBANDO SOLICITUD -->
+    <!-- ===================================================== -->
+
+    @if (checkingRequest) {
+
+    <div class="checking-card">
+
+        <div class="checking-icon">
+
+            <span class="material-symbols-outlined">
+                sync
+            </span>
+
+        </div>
+
+        <h2>
+            Comprobando tus solicitudes
+        </h2>
+
+        <p>
+            Estamos verificando si ya tienes una solicitud
+            en proceso.
+        </p>
+
+    </div>
+
+    }
+
+
+    <!-- ===================================================== -->
+    <!-- SOLICITUD PENDIENTE -->
+    <!-- ===================================================== -->
+
+    @if (!checkingRequest && hasPendingRequest && existingRequest) {
+
+    <div class="status-card pending-card">
+
+        <div class="status-icon pending-icon">
+
+            <span class="material-symbols-outlined">
+                schedule
+            </span>
+
+        </div>
+
+
+        <span class="status-label pending-label">
+            EN REVISIÓN
+        </span>
+
+
+        <h2>
+            Tu solicitud está siendo revisada
+        </h2>
+
+
+        <p class="status-description">
+
+            Ya tienes una solicitud de establecimiento
+            en proceso. Nuestro equipo la revisará y
+            te notificará cuando exista una decisión.
+
+        </p>
+
+
+        <div class="request-summary">
+
+            <div class="summary-row">
+
+                <span>
+                    Establecimiento
+                </span>
+
+                <strong>
+                    {{ existingRequest.businessName }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Dirección
+                </span>
+
+                <strong>
+                    {{ existingRequest.businessAddress }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Solicitud enviada
+                </span>
+
+                <strong>
+                    {{ existingRequest.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="status-info">
+
+            <span class="material-symbols-outlined">
+                info
+            </span>
+
+            <span>
+                No necesitas enviar otra solicitud.
+                Te notificaremos cuando el moderador
+                haya terminado la revisión.
+            </span>
+
+        </div>
+
+
+        <div class="status-actions">
+
+            <button type="button" class="primary-button" (click)="viewMyRequests()">
+
+                <span class="material-symbols-outlined">
+                    assignment
+                </span>
+
+                Ver mis solicitudes
+
+            </button>
+
+
+            <button type="button" class="secondary-button" (click)="goBack()">
+
+                Volver al inicio
+
+            </button>
+
+        </div>
+
+    </div>
+
+    }
+
+
+    <!-- ===================================================== -->
+    <!-- SOLICITUD APROBADA -->
+    <!-- ===================================================== -->
+
+    @if (!checkingRequest && hasApprovedRequest && existingRequest) {
+
+    <div class="status-card approved-card">
+
+        <div class="status-icon approved-icon">
+
+            <span class="material-symbols-outlined">
+                verified
+            </span>
+
+        </div>
+
+
+        <span class="status-label approved-label">
+            APROBADO
+        </span>
+
+
+        <h2>
+            ¡Tu establecimiento ya fue aprobado!
+        </h2>
+
+
+        <p class="status-description">
+
+            Tu solicitud fue aprobada correctamente.
+            Ya puedes administrar la información de
+            accesibilidad de tu establecimiento.
+
+        </p>
+
+
+        <div class="request-summary">
+
+            <div class="summary-row">
+
+                <span>
+                    Establecimiento
+                </span>
+
+                <strong>
+                    {{ existingRequest.businessName }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Dirección
+                </span>
+
+                <strong>
+                    {{ existingRequest.businessAddress }}
+                </strong>
+
+            </div>
+
+
+            @if (existingRequest.reviewedAt) {
+
+            <div class="summary-row">
+
+                <span>
+                    Aprobado el
+                </span>
+
+                <strong>
+                    {{ existingRequest.reviewedAt | date:'dd/MM/yyyy HH:mm' }}
+                </strong>
+
+            </div>
+
+            }
+
+        </div>
+
+
+        @if (existingRequest.reviewComment) {
+
+        <div class="status-info approved-info">
+
+            <span class="material-symbols-outlined">
+                comment
+            </span>
+
+            <span>
+                {{ existingRequest.reviewComment }}
+            </span>
+
+        </div>
+
+        }
+
+
+        <div class="status-actions">
+
+            <button type="button" class="primary-button" (click)="goToMyEstablishment()">
+
+                <span class="material-symbols-outlined">
+                    business
+                </span>
+
+                Ir a mi establecimiento
+
+            </button>
+
+        </div>
+
+    </div>
+
+    }
+
+
+    <!-- ===================================================== -->
+    <!-- FORMULARIO -->
+    <!-- ===================================================== -->
+
+    @if (
+    !checkingRequest &&
+    !hasPendingRequest &&
+    !hasApprovedRequest
+    ) {
+
+    <form class="request-card" (ngSubmit)="submit()">
+
+
+        <!-- ================================================= -->
+        <!-- ERROR -->
+        <!-- ================================================= -->
+
+        @if (errorMessage) {
+
+        <div class="error-message">
+
+            <span class="material-symbols-outlined">
+                error
+            </span>
+
+            <span>
+                {{ errorMessage }}
+            </span>
+
+        </div>
+
+        }
+
+
+        <!-- ================================================= -->
+        <!-- ÉXITO -->
+        <!-- ================================================= -->
+
+        @if (success && existingRequest) {
+
+        <div class="success-message">
+
+            <span class="material-symbols-outlined">
+                check_circle
+            </span>
+
+            <div>
+
+                <strong>
+                    Solicitud enviada correctamente
+                </strong>
+
+                <span>
+                    Tu solicitud quedó en revisión.
+                </span>
+
+            </div>
+
+        </div>
+
+        }
+
+
+        <!-- ================================================= -->
+        <!-- BÚSQUEDA -->
+        <!-- ================================================= -->
+
+        <div class="form-section">
+
+            <div class="section-heading">
+
+                <span class="step-number">
+                    01
+                </span>
+
+                <div>
+
+                    <h2>
+                        Selecciona tu establecimiento
+                    </h2>
+
+                    <p>
+                        Busca el establecimiento que deseas
+                        administrar en AccesoYa.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            @if (!selectedPlace) {
+
+            <div class="search-container">
+
+                <div class="search-input-wrapper">
+
+                    <span class="material-symbols-outlined">
+                        search
+                    </span>
+
+                    <input type="text" name="searchTerm" [(ngModel)]="searchTerm" (input)="searchPlaces()"
+                        placeholder="Buscar por nombre del establecimiento..." autocomplete="off">
+
+                    @if (searching) {
+
+                    <span class="material-symbols-outlined search-loading">
+                        progress_activity
+                    </span>
+
+                    }
+
+                </div>
+
+
+                @if (searchResults.length > 0) {
+
+                <div class="search-results">
+
+                    @for (
+                    place of searchResults;
+                    track place.id
+                    ) {
+
+                    <button type="button" class="search-result" (click)="selectPlace(place)">
+
+                        <div class="result-icon">
+
+                            <span class="material-symbols-outlined">
+                                business
+                            </span>
+
+                        </div>
+
+
+                        <div class="result-info">
+
+                            <strong>
+                                {{ place.name }}
+                            </strong>
+
+                            @if (place.address) {
+
+                            <span>
+                                {{ place.address }}
+                            </span>
+
+                            }
+
+                        </div>
+
+
+                        <span class="material-symbols-outlined">
+                            chevron_right
+                        </span>
+
+                    </button>
+
+                    }
+
+                </div>
+
+                }
+
+            </div>
+
+            }
+
+
+            @if (selectedPlace) {
+
+            <div class="selected-place">
+
+                <div class="selected-place-icon">
+
+                    <span class="material-symbols-outlined">
+                        business
+                    </span>
+
+                </div>
+
+
+                <div class="selected-place-info">
+
+                    <span>
+                        ESTABLECIMIENTO SELECCIONADO
+                    </span>
+
+                    <strong>
+                        {{ selectedPlace.name }}
+                    </strong>
+
+                    @if (selectedPlace.address) {
+
+                    <p>
+                        {{ selectedPlace.address }}
+                    </p>
+
+                    }
+
+                </div>
+
+
+                <button type="button" class="change-button" (click)="changePlace()">
+
+                    Cambiar
+
+                </button>
+
+            </div>
+
+            }
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- INFORMACIÓN -->
+        <!-- ================================================= -->
+
+        @if (selectedPlace) {
+
+        <div class="form-section">
+
+            <div class="section-heading">
+
+                <span class="step-number">
+                    02
+                </span>
+
+                <div>
+
+                    <h2>
+                        Información del establecimiento
+                    </h2>
+
+                    <p>
+                        Revisa y completa la información
+                        antes de enviar la solicitud.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>
+                        Teléfono
+                    </label>
+
+                    <input type="text" name="businessPhone" [(ngModel)]="businessPhone"
+                        placeholder="Número de teléfono">
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Tipo de establecimiento
+                    </label>
+
+                    <input type="text" name="businessType" [(ngModel)]="businessType"
+                        placeholder="Tipo de establecimiento">
+
+                </div>
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label>
+                    Información adicional
+                </label>
+
+                <textarea name="description" [(ngModel)]="description" maxlength="1000" rows="5"
+                    placeholder="Agrega información que pueda ayudar al moderador...">
+                </textarea>
+
+                <span class="field-hint">
+                    Máximo 1000 caracteres.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- INFORMACIÓN IMPORTANTE -->
+        <!-- ================================================= -->
+
+        <div class="important-box">
+
+            <span class="material-symbols-outlined">
+                info
+            </span>
+
+            <div>
+
+                <strong>
+                    Importante
+                </strong>
+
+                <p>
+                    Tu solicitud será revisada por un moderador.
+                    Si es aprobada, tu cuenta se convertirá en
+                    una cuenta de establecimiento y podrás
+                    administrar la información de accesibilidad
+                    correspondiente.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- ACCIONES -->
+        <!-- ================================================= -->
+
+        <div class="form-actions">
+
+            <button type="button" class="secondary-button" (click)="goBack()" [disabled]="submitting">
+
+                Cancelar
+
+            </button>
+
+
+            <button type="submit" class="primary-button submit-button" [disabled]="submitting">
+
+                @if (submitting) {
+
+                <span class="material-symbols-outlined spinning">
+                    progress_activity
+                </span>
+
+                <span>
+                    Enviando solicitud...
+                </span>
+
+                } @else {
+
+                <span class="material-symbols-outlined">
+                    send
+                </span>
+
+                <span>
+                    Enviar solicitud
+                </span>
+
+                }
+
+            </button>
+
+        </div>
+
+        }
+
+    </form>
+
+    }
+
+</div>

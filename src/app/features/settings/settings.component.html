@@ -1,0 +1,149 @@
+<div class="settings-page">
+
+    <div class="page-header">
+
+        <span class="page-label">
+            MI CUENTA
+        </span>
+
+        <h1>
+            Configuración
+        </h1>
+
+        <p>
+            Personaliza tu experiencia en AccesoYa.
+        </p>
+
+    </div>
+
+
+    <div class="settings-card">
+
+        <div class="settings-section">
+
+            <div class="section-heading">
+
+                <span class="material-symbols-outlined">
+                    notifications
+                </span>
+
+                <div>
+
+                    <h2>
+                        Notificaciones
+                    </h2>
+
+                    <p>
+                        Controla cómo quieres recibir
+                        información de AccesoYa.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="setting-item" (click)="toggleNotifications()">
+
+                <div>
+
+                    <strong>
+                        Notificaciones de la aplicación
+                    </strong>
+
+                    <span>
+                        Recibe alertas sobre tus actividades.
+                    </span>
+
+                </div>
+
+
+                <div class="toggle" [class.enabled]="notificationsEnabled">
+
+                    <div class="toggle-circle"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="setting-item" (click)="toggleEmailNotifications()">
+
+                <div>
+
+                    <strong>
+                        Notificaciones por correo
+                    </strong>
+
+                    <span>
+                        Recibe actualizaciones importantes
+                        en tu correo electrónico.
+                    </span>
+
+                </div>
+
+
+                <div class="toggle" [class.enabled]="emailNotifications">
+
+                    <div class="toggle-circle"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="settings-section">
+
+            <div class="section-heading">
+
+                <span class="material-symbols-outlined">
+                    accessibility
+                </span>
+
+                <div>
+
+                    <h2>
+                        Accesibilidad
+                    </h2>
+
+                    <p>
+                        Personaliza las funciones de
+                        accesibilidad de la plataforma.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="setting-item" (click)="toggleMapAccessibility()">
+
+                <div>
+
+                    <strong>
+                        Mostrar información de accesibilidad
+                    </strong>
+
+                    <span>
+                        Destaca información relevante sobre
+                        accesibilidad en los lugares.
+                    </span>
+
+                </div>
+
+
+                <div class="toggle" [class.enabled]="mapAccessibility">
+
+                    <div class="toggle-circle"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

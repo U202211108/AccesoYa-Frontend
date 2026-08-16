@@ -1,0 +1,458 @@
+<div class="login-page">
+
+    <!-- ================================================= -->
+    <!-- FONDO ANIMADO -->
+    <!-- ================================================= -->
+
+    <div class="ambient-background">
+
+        <div class="gradient-orb orb-primary"></div>
+        <div class="gradient-orb orb-secondary"></div>
+        <div class="gradient-orb orb-tertiary"></div>
+
+        <div class="grid-overlay"></div>
+
+        <div class="noise-overlay"></div>
+
+        <div class="floating-dot dot-1"></div>
+        <div class="floating-dot dot-2"></div>
+        <div class="floating-dot dot-3"></div>
+        <div class="floating-dot dot-4"></div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- CONTENIDO -->
+    <!-- ================================================= -->
+
+    <main class="login-container">
+
+        <section class="login-card">
+
+            <!-- Brillo superior -->
+            <div class="card-glow"></div>
+
+            <!-- Línea superior -->
+            <div class="card-accent"></div>
+
+
+            <!-- ================================================= -->
+            <!-- HEADER -->
+            <!-- ================================================= -->
+
+            <header class="login-header">
+
+                <div class="brand-wrapper">
+
+                    <div class="brand-icon">
+                        <span>A</span>
+                    </div>
+
+                    <div class="brand-info">
+
+                        <span class="brand">
+                            ACCESOYA
+                        </span>
+
+                        <span class="brand-caption">
+                            ACCESO PARA TODOS
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="header-content">
+
+                    <span class="welcome-label">
+                        BIENVENIDO DE NUEVO
+                    </span>
+
+                    <h1>
+                        Iniciar sesión
+                    </h1>
+
+                    <p>
+                        Accede a tu cuenta y descubre
+                        lugares accesibles cerca de ti
+                    </p>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================================================= -->
+            <!-- FORMULARIO -->
+            <!-- ================================================= -->
+
+            <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form" novalidate>
+
+                <!-- ================================================= -->
+                <!-- EMAIL -->
+                <!-- ================================================= -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Correo electrónico
+                    </label>
+
+                    <div class="input-wrapper" [class.input-invalid]="
+                emailInput.invalid &&
+                (emailInput.touched || emailInput.dirty)
+            " [class.input-valid]="
+                emailInput.valid &&
+                emailInput.value
+            ">
+
+                        <div class="input-icon">
+
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                                <rect x="3" y="5" width="18" height="14" rx="2" />
+
+                                <polyline points="3,7 12,13 21,7" />
+
+                            </svg>
+
+                        </div>
+
+
+                        <input id="email" type="email" name="email" [(ngModel)]="email" #emailInput="ngModel"
+                            placeholder="correo@ejemplo.com" autocomplete="email" required email (input)="clearError()"
+                            (blur)="emailInput.control.markAsTouched()" aria-describedby="email-error" />
+
+
+                        <!-- Estado válido -->
+
+                        @if (
+                        emailInput.valid &&
+                        emailInput.value
+                        ) {
+
+                        <div class="validation-icon valid-icon">
+
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                                <polyline points="5,12 10,17 19,7" />
+
+                            </svg>
+
+                        </div>
+
+                        }
+
+
+                        <div class="input-focus-line"></div>
+
+                    </div>
+
+
+                    <!-- Validaciones -->
+
+                    @if (
+                    emailInput.invalid &&
+                    (emailInput.touched || emailInput.dirty)
+                    ) {
+
+                    <div class="field-error" id="email-error">
+
+                        <span class="field-error-icon">
+                            !
+                        </span>
+
+                        @if (emailInput.errors?.['required']) {
+
+                        <span>
+                            El correo electrónico es obligatorio
+                        </span>
+
+                        } @else if (emailInput.errors?.['email']) {
+
+                        <span>
+                            Ingresa un correo electrónico válido
+                        </span>
+
+                        }
+
+                    </div>
+
+                    }
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- PASSWORD -->
+                <!-- ================================================= -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Contraseña
+                    </label>
+
+                    <div class="input-wrapper password-wrapper" [class.input-invalid]="
+                passwordInput.invalid &&
+                (passwordInput.touched || passwordInput.dirty)
+            " [class.input-valid]="
+                passwordInput.valid &&
+                passwordInput.value
+            ">
+
+                        <div class="input-icon">
+
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                                <rect x="3" y="10" width="18" height="11" rx="2" />
+
+                                <path d="M7 10V7a5 5 0 0 1 10 0v3" />
+
+                            </svg>
+
+                        </div>
+
+
+                        <input id="password" [type]="showPassword ? 'text' : 'password'" name="password"
+                            [(ngModel)]="password" #passwordInput="ngModel" placeholder="Ingresa tu contraseña"
+                            autocomplete="current-password" required (input)="clearError()"
+                            (blur)="passwordInput.control.markAsTouched()" aria-describedby="password-error" />
+
+
+                        <!-- Mostrar / ocultar -->
+
+                        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()"
+                            [attr.aria-label]="
+                    showPassword
+                        ? 'Ocultar contraseña'
+                        : 'Mostrar contraseña'
+                ">
+
+                            @if (showPassword) {
+
+                            <!-- Ojo cerrado -->
+
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                                <path d="M3 3l18 18" />
+
+                                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+
+                                <path d="M9.9 4.3A10.8 10.8 0 0 1 12 4c5 0 9 4 10 8-0.4 1.6-1.3 3-2.5 4.2" />
+
+                                <path d="M6.1 6.1C4.5 7.3 3.3 9 2 12c1 4 5 8 10 8 1 0 2-.2 2.9-.5" />
+
+                            </svg>
+
+                            } @else {
+
+                            <!-- Ojo abierto -->
+
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+
+                                <circle cx="12" cy="12" r="3" />
+
+                            </svg>
+
+                            }
+
+                        </button>
+
+
+                        @if (
+                        passwordInput.valid &&
+                        passwordInput.value
+                        ) {
+
+                        <div class="validation-icon valid-icon password-valid-icon">
+
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                                <polyline points="5,12 10,17 19,7" />
+
+                            </svg>
+
+                        </div>
+
+                        }
+
+
+                        <div class="input-focus-line"></div>
+
+                    </div>
+
+
+                    <!-- Validaciones -->
+
+                    @if (
+                    passwordInput.invalid &&
+                    (passwordInput.touched || passwordInput.dirty)
+                    ) {
+
+                    <div class="field-error" id="password-error">
+
+                        <span class="field-error-icon">
+                            !
+                        </span>
+
+                        <span>
+                            La contraseña es obligatoria
+                        </span>
+
+                    </div>
+
+                    }
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- ERROR GENERAL -->
+                <!-- ================================================= -->
+
+                @if (errorMessage) {
+
+                <div class="error-message">
+
+                    <div class="error-icon">
+                        !
+                    </div>
+
+                    <div class="error-content">
+
+                        <strong>
+                            No se pudo iniciar sesión
+                        </strong>
+
+                        <span>
+                            {{ errorMessage }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                }
+
+
+                <!-- ================================================= -->
+                <!-- BOTÓN -->
+                <!-- ================================================= -->
+
+                <button type="submit" class="login-button" [disabled]="
+            isLoading ||
+            loginForm.invalid
+        ">
+
+                    <span class="button-background"></span>
+
+                    @if (isLoading) {
+
+                    <span class="loading-content">
+
+                        <span class="spinner"></span>
+
+                        <span>
+                            Verificando acceso...
+                        </span>
+
+                    </span>
+
+                    } @else {
+
+                    <span class="button-content">
+
+                        <span>
+                            Iniciar sesión
+                        </span>
+
+                        <span class="button-arrow">
+                            →
+                        </span>
+
+                    </span>
+
+                    }
+
+                </button>
+
+            </form>
+
+
+            <!-- ================================================= -->
+            <!-- REGISTRO -->
+            <!-- ================================================= -->
+
+            <div class="register-section">
+
+                <span>
+                    ¿Aún no tienes una cuenta?
+                </span>
+
+                <button type="button" (click)="goToRegister()">
+                    Crear cuenta
+                    <span>↗</span>
+                </button>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SECURITY -->
+            <!-- ================================================= -->
+
+            <div class="security-badge">
+
+                <div class="security-icon">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                        <rect x="4" y="10" width="16" height="11" rx="2" />
+
+                        <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+
+                        <circle cx="12" cy="15" r="1" />
+
+                    </svg>
+
+                </div>
+
+                <span>
+                    Acceso protegido
+                </span>
+
+                <span class="security-dot"></span>
+
+                <span>
+                    Conexión segura
+                </span>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FOOTER -->
+            <!-- ================================================= -->
+
+            <footer class="login-footer">
+
+                <span class="footer-line"></span>
+
+                <span>
+                    ACCESOYA
+                </span>
+
+                <span class="footer-line"></span>
+
+            </footer>
+
+        </section>
+
+    </main>
+
+</div>

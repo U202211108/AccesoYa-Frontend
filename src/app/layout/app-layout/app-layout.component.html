@@ -1,0 +1,767 @@
+<div class="app-layout" [class.sidebar-collapsed]="!sidebarOpen">
+
+    <!-- ================================================= -->
+    <!-- SIDEBAR -->
+    <!-- ================================================= -->
+
+    <aside class="sidebar">
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+
+        <div class="sidebar-header">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+
+                    <span class="material-symbols-outlined">
+                        accessible
+                    </span>
+
+                </div>
+
+                @if (sidebarOpen) {
+
+                <span class="brand-name">
+                    AccesoYa
+                </span>
+
+                }
+
+            </div>
+
+
+            <button type="button" class="sidebar-toggle" (click)="toggleSidebar()" aria-label="Alternar menú">
+
+                <span class="material-symbols-outlined">
+                    menu
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- NAVEGACIÓN -->
+        <!-- ================================================= -->
+
+        <nav class="navigation">
+
+            <!-- ================================================= -->
+            <!-- PRINCIPAL -->
+            <!-- ================================================= -->
+
+            <div class="navigation-section">
+
+                @if (sidebarOpen) {
+
+                <span class="section-title">
+                    PRINCIPAL
+                </span>
+
+                }
+
+
+                <!-- INICIO -->
+
+                <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{
+                       exact: true
+                   }" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        home
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Inicio
+                    </span>
+
+                    }
+
+                </a>
+
+
+                <!-- EXPLORAR MAPA -->
+
+                <a routerLink="/places/map" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        map
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Explorar mapa
+                    </span>
+
+                    }
+
+                </a>
+
+
+                <!-- FAVORITOS -->
+
+                <a routerLink="/favorites" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        star
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Favoritos
+                    </span>
+
+                    }
+
+                </a>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- MI CUENTA -->
+            <!-- ================================================= -->
+
+            <div class="navigation-section">
+
+                @if (sidebarOpen) {
+
+                <span class="section-title">
+                    MI CUENTA
+                </span>
+
+                }
+
+                <!-- MIS SOLICITUDES -->
+
+                @if (currentRole === 'USER') {
+
+                <a routerLink="/establishment/requests" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        assignment
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Mis solicitudes
+                    </span>
+
+                    }
+
+                </a>
+
+                }
+
+
+                <!-- MI PERFIL -->
+
+                <a routerLink="/profile" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        person
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Mi perfil
+                    </span>
+
+                    }
+
+                </a>
+
+
+                <!-- CONFIGURACIÓN -->
+
+                <a routerLink="/settings" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        settings
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Configuración
+                    </span>
+
+                    }
+
+                </a>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- USER -->
+            <!-- ================================================= -->
+
+            @if (currentRole === 'USER') {
+
+            <div class="navigation-section">
+
+                @if (sidebarOpen) {
+
+                <span class="section-title">
+                    ESTABLECIMIENTO
+                </span>
+
+                }
+
+                <!-- SOLICITAR ESTABLECIMIENTO -->
+
+                <a routerLink="/establishment/request" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        add_business
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Solicitar establecimiento
+                    </span>
+
+                    }
+
+                </a>
+
+            </div>
+
+            }
+
+
+            <!-- ================================================= -->
+            <!-- ESTABLISHMENT -->
+            <!-- ================================================= -->
+
+            @if (currentRole === 'ESTABLISHMENT') {
+
+            <div class="navigation-section">
+
+                @if (sidebarOpen) {
+
+                <span class="section-title">
+                    MI ESTABLECIMIENTO
+                </span>
+
+                }
+
+
+                <!-- MIS ESTABLECIMIENTOS -->
+
+                <a routerLink="/establishments" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        business
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Mis establecimientos
+                    </span>
+
+                    }
+
+                </a>
+
+
+                <!-- ACCESIBILIDAD -->
+
+                <a routerLink="/establishments/accessibility" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        accessible
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Accesibilidad
+                    </span>
+
+                    }
+
+                </a>
+
+            </div>
+
+            }
+
+
+            <!-- ================================================= -->
+            <!-- MODERATOR -->
+            <!-- ================================================= -->
+
+            @if (currentRole === 'MODERATOR') {
+
+            <div class="navigation-section">
+
+                @if (sidebarOpen) {
+
+                <span class="section-title">
+                    MODERACIÓN
+                </span>
+
+                }
+
+                <a routerLink="/moderator/requests" routerLinkActive="active" [routerLinkActiveOptions]="{
+           exact: true
+       }" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        fact_check
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Solicitudes
+                    </span>
+
+                    }
+
+                </a>
+
+            </div>
+
+            }
+
+
+            <!-- ================================================= -->
+            <!-- ADMIN -->
+            <!-- ================================================= -->
+
+            @if (currentRole === 'ADMIN') {
+
+            <div class="navigation-section">
+
+                @if (sidebarOpen) {
+
+                <span class="section-title">
+                    ADMINISTRACIÓN
+                </span>
+
+                }
+
+                <a routerLink="/moderator/requests" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        fact_check
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Solicitudes
+                    </span>
+
+                    }
+
+                </a>
+
+            </div>
+
+            }
+
+
+            <!-- ================================================= -->
+            <!-- ESPACIADOR -->
+            <!-- ================================================= -->
+
+            <div class="navigation-spacer"></div>
+
+
+            <!-- ================================================= -->
+            <!-- CERRAR SESIÓN -->
+            <!-- ================================================= -->
+
+            <div class="navigation-section">
+
+                <button type="button" class="navigation-item logout-button" (click)="logout()">
+
+                    <span class="material-symbols-outlined">
+                        logout
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Cerrar sesión
+                    </span>
+
+                    }
+
+                </button>
+
+            </div>
+
+        </nav>
+
+
+        <!-- ================================================= -->
+        <!-- USUARIO -->
+        <!-- ================================================= -->
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">
+
+                <span class="material-symbols-outlined">
+                    person
+                </span>
+
+            </div>
+
+
+            @if (sidebarOpen) {
+
+            <div class="user-info">
+
+                <strong>
+                    {{ authService.getFullName() }}
+                </strong>
+
+                <span>
+                    {{ getCurrentRoleLabel() }}
+                </span>
+
+            </div>
+
+            }
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================================================= -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ================================================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================================================= -->
+        <!-- TOPBAR -->
+        <!-- ================================================= -->
+
+        <header class="topbar">
+
+
+            <!-- MENÚ MOBILE -->
+
+            <button type="button" class="mobile-menu-button" (click)="toggleSidebar()" aria-label="Abrir menú">
+
+                <span class="material-symbols-outlined">
+                    menu
+                </span>
+
+            </button>
+
+
+            <div class="topbar-spacer"></div>
+
+
+            <!-- ================================================= -->
+            <!-- NOTIFICACIONES -->
+            <!-- ================================================= -->
+
+            <button type="button" class="notification-button" aria-label="Notificaciones"
+                [attr.aria-expanded]="notificationPanelOpen" (click)="toggleNotifications()">
+
+                <span class="material-symbols-outlined">
+                    notifications
+                </span>
+
+
+                <!-- CONTADOR -->
+
+                @if (unreadCount > 0) {
+
+                <span class="notification-badge">
+
+                    @if (unreadCount > 99) {
+
+                    99+
+
+                    } @else {
+
+                    {{ unreadCount }}
+
+                    }
+
+                </span>
+
+                }
+
+            </button>
+
+
+            <!-- ================================================= -->
+            <!-- PANEL DE NOTIFICACIONES -->
+            <!-- ================================================= -->
+
+            @if (notificationPanelOpen) {
+
+            <div class="notification-panel">
+
+
+                <!-- ================================================= -->
+                <!-- HEADER -->
+                <!-- ================================================= -->
+
+                <div class="notification-panel-header">
+
+                    <div>
+
+                        <h3>
+                            Notificaciones
+                        </h3>
+
+                        <span>
+
+                            @if (unreadCount > 0) {
+
+                            {{ unreadCount }} sin leer
+
+                            } @else {
+
+                            Todo al día
+
+                            }
+
+                        </span>
+
+                    </div>
+
+
+                    @if (unreadCount > 0) {
+
+                    <button type="button" class="mark-all-button" (click)="markAllNotificationsAsRead()">
+
+                        Marcar todas como leídas
+
+                    </button>
+
+                    }
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- LISTA -->
+                <!-- ================================================= -->
+
+                <div class="notification-list">
+
+
+                    <!-- ================================================= -->
+                    <!-- SIN NOTIFICACIONES -->
+                    <!-- ================================================= -->
+
+                    @if (notifications.length === 0) {
+
+                    <div class="notification-empty">
+
+                        <span class="material-symbols-outlined">
+                            notifications_none
+                        </span>
+
+                        <strong>
+                            No tienes notificaciones
+                        </strong>
+
+                        <p>
+                            Aquí aparecerán las novedades de tu cuenta.
+                        </p>
+
+                    </div>
+
+                    }
+
+
+                    <!-- ================================================= -->
+                    <!-- NOTIFICACIONES -->
+                    <!-- ================================================= -->
+
+                    @if (notifications.length > 0) {
+
+                    @for (
+                    notification of notifications;
+                    track notification.id
+                    ) {
+
+                    <button type="button" class="notification-item" [class.unread]="!notification.read"
+                        (click)="openNotification(notification)">
+
+
+                        <!-- ================================= -->
+                        <!-- ICONO -->
+                        <!-- ================================= -->
+
+                        <div class="notification-icon" [class.approved]="
+                                notification.type ===
+                                'ESTABLISHMENT_APPROVED'
+                            " [class.rejected]="
+                                notification.type ===
+                                'ESTABLISHMENT_REJECTED'
+                            " [class.accessibility]="
+                                notification.type ===
+                                'ACCESSIBILITY_UPDATED'
+                            " [class.updated]="
+                                notification.type ===
+                                'ESTABLISHMENT_UPDATED'
+                            " [class.info]="
+                                notification.type ===
+                                'ESTABLISHMENT_REQUEST_CREATED' ||
+                                notification.type ===
+                                'SYSTEM'
+                            ">
+
+
+                            <span class="material-symbols-outlined">
+
+                                @if (
+                                notification.type ===
+                                'ESTABLISHMENT_APPROVED'
+                                ) {
+
+                                check_circle
+
+                                } @else if (
+                                notification.type ===
+                                'ESTABLISHMENT_REJECTED'
+                                ) {
+
+                                cancel
+
+                                } @else if (
+                                notification.type ===
+                                'ACCESSIBILITY_UPDATED'
+                                ) {
+
+                                accessible
+
+                                } @else if (
+                                notification.type ===
+                                'ESTABLISHMENT_UPDATED'
+                                ) {
+
+                                edit_location
+
+                                } @else if (
+                                notification.type ===
+                                'ESTABLISHMENT_REQUEST_CREATED'
+                                ) {
+
+                                business
+
+                                } @else {
+
+                                notifications
+
+                                }
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- ================================= -->
+                        <!-- CONTENIDO -->
+                        <!-- ================================= -->
+
+                        <div class="notification-content">
+
+                            <strong>
+                                {{ notification.title }}
+                            </strong>
+
+                            <p>
+                                {{ notification.message }}
+                            </p>
+
+                            <span class="notification-date">
+
+                                {{ notification.createdAt |
+                                date:'dd/MM/yyyy HH:mm' }}
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- ================================= -->
+                        <!-- INDICADOR NO LEÍDA -->
+                        <!-- ================================= -->
+
+                        @if (!notification.read) {
+
+                        <span class="unread-dot"></span>
+
+                        }
+
+                    </button>
+
+                    }
+
+                    }
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- FOOTER -->
+                <!-- ================================================= -->
+
+                @if (notifications.length > 0) {
+
+                <div class="notification-panel-footer">
+
+                    <button type="button" class="view-all-button" (click)="viewAllNotifications()">
+
+                        Ver todas las notificaciones
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </div>
+
+                }
+
+            </div>
+
+            }
+
+        </header>
+
+
+        <!-- ================================================= -->
+        <!-- CONTENIDO -->
+        <!-- ================================================= -->
+
+        <section class="page-content">
+
+            <router-outlet></router-outlet>
+
+        </section>
+
+    </main>
+
+</div>

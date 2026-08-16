@@ -1,0 +1,299 @@
+$text: #1e293b;
+$text-secondary: #64748b;
+$border: #e2e8f0;
+$primary: #2563eb;
+$success: #16a34a;
+
+.establishments-page {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-label {
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.page-header h1 {
+    margin: 7px 0;
+    color: $text;
+    font-size: 30px;
+}
+
+.page-header p {
+    margin: 0;
+    color: $text-secondary;
+    font-size: 14px;
+}
+
+.loading-state,
+.empty-state {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: white;
+    border: 1px solid $border;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.loading-state .material-symbols-outlined {
+    color: $primary;
+    font-size: 34px;
+    animation: rotate 1.2s linear infinite;
+}
+
+.loading-state p {
+    color: $text-secondary;
+}
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: $primary;
+}
+
+.empty-icon .material-symbols-outlined {
+    font-size: 32px;
+}
+
+.empty-state h2 {
+    margin: 0 0 8px;
+    color: $text;
+}
+
+.empty-state p {
+    color: $text-secondary;
+}
+
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 9px;
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.establishments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.establishment-card {
+    padding: 22px;
+    background: white;
+    border: 1px solid $border;
+    border-radius: 14px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.business-icon {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: $primary;
+}
+
+.business-icon .material-symbols-outlined {
+    font-size: 26px;
+}
+
+.business-info {
+    flex: 1;
+}
+
+.business-info h2 {
+    margin: 0 0 4px;
+    color: $text;
+    font-size: 18px;
+}
+
+.business-info p {
+    margin: 0;
+    color: $text-secondary;
+    font-size: 13px;
+}
+
+.approved-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 11px;
+    border-radius: 20px;
+    background: #f0fdf4;
+    color: $success;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.approved-badge .material-symbols-outlined {
+    font-size: 17px;
+}
+
+.details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid $border;
+}
+
+.detail {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: $text-secondary;
+    font-size: 13px;
+}
+
+.detail .material-symbols-outlined {
+    font-size: 18px;
+}
+
+.description {
+    margin-top: 18px;
+}
+
+.description strong {
+    color: $text;
+    font-size: 13px;
+}
+
+.description p {
+    margin: 6px 0 0;
+    color: $text-secondary;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.primary-button,
+.secondary-button {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 650;
+}
+
+.primary-button {
+    border: none;
+    background: $primary;
+    color: white;
+}
+
+.secondary-button {
+    border: 1px solid $border;
+    background: white;
+    color: $text;
+}
+
+@keyframes rotate {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 650px) {
+
+    .card-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .approved-badge {
+        margin-left: 66px;
+    }
+
+    .card-actions {
+        justify-content: stretch;
+    }
+
+    .primary-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.location-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 16px;
+
+    padding-top: 14px;
+
+    border-top: 1px solid $border;
+
+    color: $text-secondary;
+
+    font-size: 12px;
+}
+
+
+.location-info .material-symbols-outlined {
+
+    font-size: 18px;
+
+    color: $primary;
+}
+
+
+.card-actions .primary-button {
+
+    justify-content: center;
+}
+
+
+.primary-button .material-symbols-outlined:last-child {
+
+    font-size: 18px;
+
+    margin-left: 2px;
+}

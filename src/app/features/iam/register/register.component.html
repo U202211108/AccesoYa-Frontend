@@ -1,0 +1,810 @@
+<div class="register-page">
+
+    <!-- ================================================= -->
+    <!-- FONDO -->
+    <!-- ================================================= -->
+
+    <div class="ambient-background">
+
+        <div class="gradient-orb orb-primary"></div>
+
+        <div class="gradient-orb orb-secondary"></div>
+
+        <div class="gradient-orb orb-tertiary"></div>
+
+        <div class="grid-overlay"></div>
+
+        <div class="noise-overlay"></div>
+
+        <div class="floating-dot dot-1"></div>
+
+        <div class="floating-dot dot-2"></div>
+
+        <div class="floating-dot dot-3"></div>
+
+        <div class="floating-dot dot-4"></div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- CONTENIDO -->
+    <!-- ================================================= -->
+
+    <main class="register-container">
+
+        <section class="register-card">
+
+            <div class="card-glow"></div>
+
+            <div class="card-accent"></div>
+
+
+            <!-- ================================================= -->
+            <!-- HEADER -->
+            <!-- ================================================= -->
+
+            <header class="register-header">
+
+                <div class="brand-wrapper">
+
+                    <div class="brand-icon">
+                        <span>A</span>
+                    </div>
+
+                    <div class="brand-info">
+
+                        <span class="brand">
+                            ACCESOYA
+                        </span>
+
+                        <span class="brand-caption">
+                            ACCESO PARA TODOS
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="header-content">
+
+                    <span class="welcome-label">
+                        ÚNETE A ACCESOYA
+                    </span>
+
+                    <h1>
+                        Crear cuenta
+                    </h1>
+
+                    <p>
+                        Crea tu cuenta y comienza a
+                        descubrir lugares accesibles.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================================================= -->
+            <!-- FORMULARIO -->
+            <!-- ================================================= -->
+
+            <form
+                class="register-form"
+                (ngSubmit)="onSubmit()"
+                #registerForm="ngForm"
+                novalidate
+            >
+
+
+                <!-- ================================================= -->
+                <!-- NOMBRES Y APELLIDOS -->
+                <!-- ================================================= -->
+
+                <div class="form-row">
+
+
+                    <!-- NOMBRES -->
+
+                    <div class="form-group">
+
+                        <label for="firstName">
+                            Nombres
+                        </label>
+
+                        <div
+                            class="input-wrapper"
+                            [class.input-invalid]="
+                                firstNameInput.invalid &&
+                                (
+                                    firstNameInput.touched ||
+                                    firstNameInput.dirty
+                                )
+                            "
+                            [class.input-valid]="
+                                firstNameInput.valid &&
+                                firstNameInput.value
+                            "
+                        >
+
+                            <input
+                                id="firstName"
+                                type="text"
+                                name="firstName"
+                                [(ngModel)]="firstName"
+                                #firstNameInput="ngModel"
+                                placeholder="Tus nombres"
+                                autocomplete="given-name"
+                                required
+                                minlength="2"
+                                (input)="clearError()"
+                            />
+
+                            @if (
+                                firstNameInput.valid &&
+                                firstNameInput.value
+                            ) {
+
+                                <div class="validation-icon">
+
+                                    ✓
+
+                                </div>
+
+                            }
+
+                            <div class="input-focus-line"></div>
+
+                        </div>
+
+
+                        @if (
+                            firstNameInput.invalid &&
+                            (
+                                firstNameInput.touched ||
+                                firstNameInput.dirty
+                            )
+                        ) {
+
+                            <div class="field-error">
+
+                                <span>!</span>
+
+                                @if (
+                                    firstNameInput.errors?.['required']
+                                ) {
+
+                                    <span>
+                                        Ingresa tus nombres.
+                                    </span>
+
+                                } @else {
+
+                                    <span>
+                                        Mínimo 2 caracteres.
+                                    </span>
+
+                                }
+
+                            </div>
+
+                        }
+
+                    </div>
+
+
+                    <!-- APELLIDOS -->
+
+                    <div class="form-group">
+
+                        <label for="lastName">
+                            Apellidos
+                        </label>
+
+                        <div
+                            class="input-wrapper"
+                            [class.input-invalid]="
+                                lastNameInput.invalid &&
+                                (
+                                    lastNameInput.touched ||
+                                    lastNameInput.dirty
+                                )
+                            "
+                            [class.input-valid]="
+                                lastNameInput.valid &&
+                                lastNameInput.value
+                            "
+                        >
+
+                            <input
+                                id="lastName"
+                                type="text"
+                                name="lastName"
+                                [(ngModel)]="lastName"
+                                #lastNameInput="ngModel"
+                                placeholder="Tus apellidos"
+                                autocomplete="family-name"
+                                required
+                                minlength="2"
+                                (input)="clearError()"
+                            />
+
+                            @if (
+                                lastNameInput.valid &&
+                                lastNameInput.value
+                            ) {
+
+                                <div class="validation-icon">
+
+                                    ✓
+
+                                </div>
+
+                            }
+
+                            <div class="input-focus-line"></div>
+
+                        </div>
+
+
+                        @if (
+                            lastNameInput.invalid &&
+                            (
+                                lastNameInput.touched ||
+                                lastNameInput.dirty
+                            )
+                        ) {
+
+                            <div class="field-error">
+
+                                <span>!</span>
+
+                                @if (
+                                    lastNameInput.errors?.['required']
+                                ) {
+
+                                    <span>
+                                        Ingresa tus apellidos.
+                                    </span>
+
+                                } @else {
+
+                                    <span>
+                                        Mínimo 2 caracteres.
+                                    </span>
+
+                                }
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- EMAIL -->
+                <!-- ================================================= -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Correo electrónico
+                    </label>
+
+                    <div
+                        class="input-wrapper"
+                        [class.input-invalid]="
+                            emailInput.invalid &&
+                            (
+                                emailInput.touched ||
+                                emailInput.dirty
+                            )
+                        "
+                        [class.input-valid]="
+                            emailInput.valid &&
+                            emailInput.value
+                        "
+                    >
+
+                        <div class="input-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <rect
+                                    x="3"
+                                    y="5"
+                                    width="18"
+                                    height="14"
+                                    rx="2"
+                                />
+
+                                <polyline
+                                    points="3,7 12,13 21,7"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <input
+                            id="email"
+                            type="email"
+                            name="email"
+                            [(ngModel)]="email"
+                            #emailInput="ngModel"
+                            placeholder="correo@ejemplo.com"
+                            autocomplete="email"
+                            required
+                            email
+                            (input)="clearError()"
+                        />
+
+
+                        @if (
+                            emailInput.valid &&
+                            emailInput.value
+                        ) {
+
+                            <div class="validation-icon">
+                                ✓
+                            </div>
+
+                        }
+
+
+                        <div class="input-focus-line"></div>
+
+                    </div>
+
+
+                    @if (
+                        emailInput.invalid &&
+                        (
+                            emailInput.touched ||
+                            emailInput.dirty
+                        )
+                    ) {
+
+                        <div class="field-error">
+
+                            <span>!</span>
+
+                            @if (
+                                emailInput.errors?.['required']
+                            ) {
+
+                                <span>
+                                    El correo es obligatorio.
+                                </span>
+
+                            } @else {
+
+                                <span>
+                                    Ingresa un correo válido.
+                                </span>
+
+                            }
+
+                        </div>
+
+                    }
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- PASSWORD -->
+                <!-- ================================================= -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Contraseña
+                    </label>
+
+                    <div
+                        class="input-wrapper password-wrapper"
+                        [class.input-invalid]="
+                            passwordInput.invalid &&
+                            (
+                                passwordInput.touched ||
+                                passwordInput.dirty
+                            )
+                        "
+                        [class.input-valid]="
+                            passwordInput.valid &&
+                            passwordInput.value
+                        "
+                    >
+
+                        <div class="input-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <rect
+                                    x="3"
+                                    y="10"
+                                    width="18"
+                                    height="11"
+                                    rx="2"
+                                />
+
+                                <path
+                                    d="M7 10V7a5 5 0 0 1 10 0v3"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <input
+                            id="password"
+                            [type]="
+                                showPassword
+                                    ? 'text'
+                                    : 'password'
+                            "
+                            name="password"
+                            [(ngModel)]="password"
+                            #passwordInput="ngModel"
+                            placeholder="Mínimo 8 caracteres"
+                            autocomplete="new-password"
+                            required
+                            minlength="8"
+                            (input)="clearError()"
+                        />
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            (click)="togglePasswordVisibility()"
+                            [attr.aria-label]="
+                                showPassword
+                                    ? 'Ocultar contraseña'
+                                    : 'Mostrar contraseña'
+                            "
+                        >
+
+                            @if (showPassword) {
+
+                                ◉
+
+                            } @else {
+
+                                👁
+
+                            }
+
+                        </button>
+
+
+                        <div class="input-focus-line"></div>
+
+                    </div>
+
+
+                    @if (
+                        passwordInput.invalid &&
+                        (
+                            passwordInput.touched ||
+                            passwordInput.dirty
+                        )
+                    ) {
+
+                        <div class="field-error">
+
+                            <span>!</span>
+
+                            <span>
+                                La contraseña debe tener
+                                al menos 8 caracteres.
+                            </span>
+
+                        </div>
+
+                    }
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- CONFIRM PASSWORD -->
+                <!-- ================================================= -->
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Confirmar contraseña
+                    </label>
+
+                    <div
+                        class="input-wrapper password-wrapper"
+                        [class.input-invalid]="
+                            confirmPasswordInput.touched &&
+                            password !== confirmPassword
+                        "
+                        [class.input-valid]="
+                            confirmPasswordInput.value &&
+                            password === confirmPassword
+                        "
+                    >
+
+                        <div class="input-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <rect
+                                    x="3"
+                                    y="10"
+                                    width="18"
+                                    height="11"
+                                    rx="2"
+                                />
+
+                                <path
+                                    d="M7 10V7a5 5 0 0 1 10 0v3"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <input
+                            id="confirmPassword"
+                            [type]="
+                                showConfirmPassword
+                                    ? 'text'
+                                    : 'password'
+                            "
+                            name="confirmPassword"
+                            [(ngModel)]="confirmPassword"
+                            #confirmPasswordInput="ngModel"
+                            placeholder="Repite tu contraseña"
+                            autocomplete="new-password"
+                            required
+                            (input)="clearError()"
+                        />
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            (click)="toggleConfirmPasswordVisibility()"
+                            [attr.aria-label]="
+                                showConfirmPassword
+                                    ? 'Ocultar contraseña'
+                                    : 'Mostrar contraseña'
+                            "
+                        >
+
+                            @if (showConfirmPassword) {
+
+                                ◉
+
+                            } @else {
+
+                                👁
+
+                            }
+
+                        </button>
+
+
+                        @if (
+                            confirmPasswordInput.value &&
+                            password === confirmPassword
+                        ) {
+
+                            <div class="validation-icon">
+
+                                ✓
+
+                            </div>
+
+                        }
+
+
+                        <div class="input-focus-line"></div>
+
+                    </div>
+
+
+                    @if (
+                        confirmPasswordInput.touched &&
+                        password !== confirmPassword
+                    ) {
+
+                        <div class="field-error">
+
+                            <span>!</span>
+
+                            <span>
+                                Las contraseñas no coinciden.
+                            </span>
+
+                        </div>
+
+                    }
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- ERROR -->
+                <!-- ================================================= -->
+
+                @if (errorMessage) {
+
+                    <div class="error-message">
+
+                        <div class="error-icon">
+                            !
+                        </div>
+
+                        <div class="error-content">
+
+                            <strong>
+                                No se pudo crear la cuenta
+                            </strong>
+
+                            <span>
+                                {{ errorMessage }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                }
+
+
+                <!-- ================================================= -->
+                <!-- SUCCESS -->
+                <!-- ================================================= -->
+
+                @if (successMessage) {
+
+                    <div class="success-message">
+
+                        <div class="success-icon">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                ¡Cuenta creada!
+                            </strong>
+
+                            <span>
+                                Redirigiendo al inicio de sesión...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                }
+
+
+                <!-- ================================================= -->
+                <!-- BUTTON -->
+                <!-- ================================================= -->
+
+                <button
+                    type="submit"
+                    class="register-button"
+                    [disabled]="
+                        isLoading ||
+                        registerForm.invalid ||
+                        password !== confirmPassword
+                    "
+                >
+
+                    <span class="button-background"></span>
+
+                    @if (isLoading) {
+
+                        <span class="loading-content">
+
+                            <span class="spinner"></span>
+
+                            <span>
+                                Creando cuenta...
+                            </span>
+
+                        </span>
+
+                    } @else {
+
+                        <span class="button-content">
+
+                            <span>
+                                Crear mi cuenta
+                            </span>
+
+                            <span class="button-arrow">
+                                →
+                            </span>
+
+                        </span>
+
+                    }
+
+                </button>
+
+            </form>
+
+
+            <!-- ================================================= -->
+            <!-- LOGIN -->
+            <!-- ================================================= -->
+
+            <div class="login-section">
+
+                <span>
+                    ¿Ya tienes una cuenta?
+                </span>
+
+                <button
+                    type="button"
+                    (click)="goToLogin()"
+                >
+                    Iniciar sesión
+                    <span>↗</span>
+                </button>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SECURITY -->
+            <!-- ================================================= -->
+
+            <div class="security-badge">
+
+                <div class="security-icon">
+
+                    ✓
+
+                </div>
+
+                <span>
+                    Tus datos están protegidos
+                </span>
+
+                <span class="security-dot"></span>
+
+                <span>
+                    Registro seguro
+                </span>
+
+            </div>
+
+
+            <footer class="register-footer">
+
+                <span class="footer-line"></span>
+
+                <span>
+                    ACCESOYA
+                </span>
+
+                <span class="footer-line"></span>
+
+            </footer>
+
+        </section>
+
+    </main>
+
+</div>

@@ -1,0 +1,1274 @@
+$primary: #2563eb;
+$primary-dark: #1d4ed8;
+
+$text: #1e293b;
+$text-secondary: #64748b;
+
+$border: #e2e8f0;
+
+$success: #16a34a;
+$success-bg: #f0fdf4;
+
+$warning: #d97706;
+$warning-bg: #fffbeb;
+
+$danger: #dc2626;
+$danger-bg: #fef2f2;
+
+
+.requests-page {
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding-bottom: 40px;
+}
+
+
+.requests-header {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 24px;
+
+    margin-bottom: 28px;
+}
+
+
+.back-button {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    border: none;
+
+    background: transparent;
+
+    color: $text-secondary;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    margin-bottom: 14px;
+}
+
+
+.back-button:hover {
+
+    color: $primary;
+}
+
+
+.back-button .material-symbols-outlined {
+
+    font-size: 18px;
+}
+
+
+.requests-header h1 {
+
+    margin: 0 0 7px;
+
+    color: $text;
+
+    font-size: 30px;
+
+    font-weight: 750;
+}
+
+
+.requests-header p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 14px;
+}
+
+
+.primary-button {
+
+    min-height: 44px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: $primary;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.primary-button:hover {
+
+    background: $primary-dark;
+
+    transform: translateY(-1px);
+}
+
+
+.primary-button .material-symbols-outlined {
+
+    font-size: 19px;
+}
+
+
+.loading-state,
+.empty-state {
+
+    min-height: 300px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 40px;
+
+    background: #ffffff;
+
+    border: 1px solid $border;
+
+    border-radius: 14px;
+
+    text-align: center;
+}
+
+
+.loading-state .material-symbols-outlined {
+
+    font-size: 34px;
+
+    color: $primary;
+
+    animation: rotate 1.2s linear infinite;
+}
+
+
+.loading-state p {
+
+    color: $text-secondary;
+
+    font-size: 14px;
+}
+
+
+.empty-state .material-symbols-outlined {
+
+    font-size: 46px;
+
+    color: #94a3b8;
+
+    margin-bottom: 12px;
+}
+
+
+.empty-state h2 {
+
+    margin: 0 0 7px;
+
+    color: $text;
+
+    font-size: 20px;
+}
+
+
+.empty-state p {
+
+    max-width: 430px;
+
+    margin: 0 0 20px;
+
+    color: $text-secondary;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+.error-message {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 14px 16px;
+
+    border-radius: 9px;
+
+    background: $danger-bg;
+
+    color: $danger;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.error-message .material-symbols-outlined {
+
+    font-size: 20px;
+}
+
+
+.requests-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+
+.request-card {
+
+    padding: 22px;
+
+    background: #ffffff;
+
+    border: 1px solid $border;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+
+.request-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.business-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #eff6ff;
+
+    color: $primary;
+}
+
+
+.business-icon .material-symbols-outlined {
+
+    font-size: 24px;
+}
+
+
+.business-info {
+
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+.business-info h2 {
+
+    margin: 0 0 4px;
+
+    color: $text;
+
+    font-size: 17px;
+
+    font-weight: 700;
+}
+
+
+.business-info p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+.status .material-symbols-outlined {
+
+    font-size: 17px;
+}
+
+
+.status.pending {
+
+    background: $warning-bg;
+
+    color: $warning;
+}
+
+
+.status.approved {
+
+    background: $success-bg;
+
+    color: $success;
+}
+
+
+.status.rejected {
+
+    background: $danger-bg;
+
+    color: $danger;
+}
+
+
+.status.unknown {
+
+    background: #f1f5f9;
+
+    color: $text-secondary;
+}
+
+
+.request-details {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    margin-top: 20px;
+
+    padding-top: 16px;
+
+    border-top: 1px solid $border;
+}
+
+
+.detail-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: $text-secondary;
+
+    font-size: 13px;
+}
+
+
+.detail-item .material-symbols-outlined {
+
+    font-size: 18px;
+}
+
+
+.description {
+
+    margin-top: 18px;
+}
+
+
+.description strong,
+.review-comment strong {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: $text;
+
+    font-size: 13px;
+}
+
+
+.description p,
+.review-comment p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+.review-comment {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 18px;
+
+    padding: 13px 15px;
+
+    border-radius: 9px;
+}
+
+
+.rejected-comment {
+
+    background: $danger-bg;
+}
+
+
+.rejected-comment strong,
+.rejected-comment p {
+
+    color: $danger;
+}
+
+
+.approved-comment {
+
+    align-items: center;
+
+    background: $success-bg;
+
+    color: $success;
+}
+
+
+.approved-comment .material-symbols-outlined {
+
+    flex-shrink: 0;
+
+    font-size: 21px;
+}
+
+
+.approved-comment p {
+
+    color: $success;
+
+    font-weight: 600;
+}
+
+
+@keyframes rotate {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .requests-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .request-card-header {
+
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+
+    .status {
+
+        margin-left: 62px;
+    }
+
+
+    .business-info {
+
+        width: calc(100% - 62px);
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .requests-page {
+
+        padding-bottom: 20px;
+    }
+
+
+    .requests-header h1 {
+
+        font-size: 25px;
+    }
+
+
+    .request-card {
+
+        padding: 17px;
+    }
+
+
+    .request-details {
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    .status {
+
+        margin-left: 0;
+
+        width: fit-content;
+    }
+
+}
+
+// =====================================================
+// SOLICITANTE
+// =====================================================
+
+.applicant-section {
+
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid $border;
+}
+
+
+.section-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 12px;
+
+    color: $text;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.section-heading .material-symbols-outlined {
+
+    font-size: 19px;
+
+    color: $primary;
+}
+
+
+.applicant-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 12px 14px;
+
+    background: #f8fafc;
+
+    border: 1px solid $border;
+
+    border-radius: 10px;
+}
+
+
+.applicant-avatar {
+
+    width: 40px;
+
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eff6ff;
+
+    color: $primary;
+}
+
+
+.applicant-avatar .material-symbols-outlined {
+
+    font-size: 21px;
+}
+
+
+.applicant-data {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+    min-width: 0;
+}
+
+
+.applicant-data strong {
+
+    color: $text;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+.applicant-data span {
+
+    color: $text-secondary;
+
+    font-size: 12px;
+}
+
+.pending-comment {
+
+    background: $warning-bg;
+
+    color: $warning;
+}
+
+
+.pending-comment .material-symbols-outlined {
+
+    flex-shrink: 0;
+
+    font-size: 21px;
+}
+
+
+.pending-comment strong,
+.pending-comment p {
+
+    color: $warning;
+}
+
+// =====================================================
+// ACCIONES DEL MODERADOR
+// =====================================================
+
+.moderator-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid $border;
+}
+
+
+.approve-button,
+.reject-button {
+
+    min-height: 42px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 15px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.approve-button {
+
+    border: 1px solid $success;
+
+    background: $success;
+
+    color: #ffffff;
+}
+
+
+.approve-button:hover:not(:disabled) {
+
+    transform: translateY(-1px);
+
+    background: #15803d;
+}
+
+
+.reject-button {
+
+    border: 1px solid #fecaca;
+
+    background: #ffffff;
+
+    color: $danger;
+}
+
+
+.reject-button:hover:not(:disabled) {
+
+    background: $danger-bg;
+
+    transform: translateY(-1px);
+}
+
+
+.approve-button:disabled,
+.reject-button:disabled {
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+.approve-button .material-symbols-outlined,
+.reject-button .material-symbols-outlined {
+
+    font-size: 18px;
+}
+
+
+// =====================================================
+// MODAL
+// =====================================================
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.48);
+
+    backdrop-filter: blur(3px);
+}
+
+
+.reject-modal {
+
+    width: 100%;
+
+    max-width: 520px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.22);
+
+    animation: modalEnter 0.2s ease-out;
+}
+
+
+// =====================================================
+// MODAL HEADER
+// =====================================================
+
+.modal-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 22px;
+
+    border-bottom: 1px solid $border;
+}
+
+
+.modal-icon {
+
+    width: 44px;
+
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: $danger-bg;
+
+    color: $danger;
+}
+
+
+.modal-icon .material-symbols-outlined {
+
+    font-size: 23px;
+}
+
+
+.modal-header h2 {
+
+    margin: 0 0 3px;
+
+    color: $text;
+
+    font-size: 18px;
+
+    font-weight: 750;
+}
+
+
+.modal-header p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 13px;
+}
+
+
+// =====================================================
+// MODAL BODY
+// =====================================================
+
+.modal-body {
+
+    padding: 22px;
+}
+
+
+.modal-body label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: $text;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.modal-help {
+
+    margin: 0 0 12px;
+
+    color: $text-secondary;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+.modal-body textarea {
+
+    width: 100%;
+
+    min-height: 125px;
+
+    box-sizing: border-box;
+
+    padding: 12px 13px;
+
+    resize: vertical;
+
+    border: 1px solid $border;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: $text;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.modal-body textarea:focus {
+
+    border-color: $primary;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+.modal-body textarea::placeholder {
+
+    color: #94a3b8;
+}
+
+
+.character-counter {
+
+    margin-top: 5px;
+
+    text-align: right;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+// =====================================================
+// ERROR MODAL
+// =====================================================
+
+.modal-error {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 12px;
+
+    padding: 10px 12px;
+
+    border-radius: 8px;
+
+    background: $danger-bg;
+
+    color: $danger;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+.modal-error .material-symbols-outlined {
+
+    font-size: 18px;
+}
+
+
+// =====================================================
+// MODAL ACTIONS
+// =====================================================
+
+.modal-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    padding: 17px 22px;
+
+    background: #f8fafc;
+
+    border-top: 1px solid $border;
+}
+
+
+.cancel-button,
+.confirm-reject-button {
+
+    min-height: 40px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 15px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.cancel-button {
+
+    border: 1px solid $border;
+
+    background: #ffffff;
+
+    color: $text-secondary;
+}
+
+
+.cancel-button:hover:not(:disabled) {
+
+    background: #f1f5f9;
+
+    color: $text;
+}
+
+
+.confirm-reject-button {
+
+    border: 1px solid $danger;
+
+    background: $danger;
+
+    color: #ffffff;
+}
+
+
+.confirm-reject-button:hover:not(:disabled) {
+
+    background: #b91c1c;
+}
+
+
+.cancel-button:disabled,
+.confirm-reject-button:disabled {
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+// =====================================================
+// ANIMACIONES
+// =====================================================
+
+.spinning {
+
+    animation:
+        rotate 1s linear infinite;
+}
+
+
+@keyframes modalEnter {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(10px) scale(0.98);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0) scale(1);
+    }
+}
+
+
+// =====================================================
+// RESPONSIVE
+// =====================================================
+
+@media (max-width: 600px) {
+
+    .moderator-actions {
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .approve-button,
+    .reject-button {
+
+        width: 100%;
+    }
+
+
+    .modal-overlay {
+
+        align-items: flex-end;
+
+        padding: 0;
+    }
+
+
+    .reject-modal {
+
+        max-width: none;
+
+        border-radius:
+            16px 16px 0 0;
+    }
+
+
+    .modal-actions {
+
+        flex-direction: column-reverse;
+    }
+
+
+    .cancel-button,
+    .confirm-reject-button {
+
+        width: 100%;
+    }
+}

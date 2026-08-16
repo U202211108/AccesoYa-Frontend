@@ -1,0 +1,417 @@
+<div class="dashboard">
+
+    <!-- ================================================= -->
+    <!-- BIENVENIDA -->
+    <!-- ================================================= -->
+
+    <section class="welcome-section">
+
+        <div>
+
+            <span class="welcome-label">
+                INICIO
+            </span>
+
+            <h1>
+                Hola, {{ firstName }} 👋
+            </h1>
+
+            <p>
+                Encuentra lugares y servicios que se
+                adapten a tus necesidades de accesibilidad.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- BUSCADOR -->
+    <!-- ================================================= -->
+
+    <section class="search-card">
+
+        <div class="search-icon">
+
+            <span class="material-symbols-outlined">
+                search
+            </span>
+
+        </div>
+
+
+        <div class="search-content">
+
+            <strong>
+                ¿Qué lugar estás buscando?
+            </strong>
+
+            <span>
+                Busca establecimientos, servicios o lugares.
+            </span>
+
+        </div>
+
+
+        <a [routerLink]="['/places/map']" [queryParams]="{ mode: 'search' }" class="search-button">
+
+            Buscar
+
+        </a>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- CATEGORÍAS -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Explorar por categoría
+                </h2>
+
+                <p>
+                    Encuentra rápidamente el tipo de lugar
+                    que necesitas.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="categories-grid">
+
+            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'HEALTHCARE' }" class="category-card">
+                <div class="category-icon">
+                    <span class="material-symbols-outlined">
+                        medical_services
+                    </span>
+                </div>
+
+                <span>Salud</span>
+            </a>
+
+
+            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'RESTAURANT' }" class="category-card">
+                <div class="category-icon">
+                    <span class="material-symbols-outlined">
+                        restaurant
+                    </span>
+                </div>
+
+                <span>Restaurantes</span>
+            </a>
+
+
+            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'BANK' }" class="category-card">
+                <div class="category-icon">
+                    <span class="material-symbols-outlined">
+                        account_balance
+                    </span>
+                </div>
+
+                <span>Bancos</span>
+            </a>
+
+
+            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'EDUCATION' }" class="category-card">
+                <div class="category-icon">
+                    <span class="material-symbols-outlined">
+                        school
+                    </span>
+                </div>
+
+                <span>Educación</span>
+            </a>
+
+
+            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'SHOPPING' }" class="category-card">
+                <div class="category-icon">
+                    <span class="material-symbols-outlined">
+                        shopping_cart
+                    </span>
+                </div>
+
+                <span>Compras</span>
+            </a>
+
+
+            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'HOTEL' }" class="category-card">
+                <div class="category-icon">
+                    <span class="material-symbols-outlined">
+                        hotel
+                    </span>
+                </div>
+
+                <span>Hoteles</span>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- ACCIONES RÁPIDAS -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Acciones rápidas
+                </h2>
+
+                <p>
+                    Accede rápidamente a las principales
+                    funcionalidades.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="quick-actions">
+
+
+            <a routerLink="/places/map" class="quick-card">
+
+                <div class="quick-icon">
+
+                    <span class="material-symbols-outlined">
+                        map
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Explorar mapa
+                    </h3>
+
+                    <p>
+                        Consulta lugares accesibles
+                        disponibles en el mapa.
+                    </p>
+
+                </div>
+
+                <span class="material-symbols-outlined arrow">
+                    arrow_forward
+                </span>
+
+            </a>
+
+
+            @if (role === 'USER') {
+
+            <a routerLink="/establishment/request" class="quick-card">
+
+                <div class="quick-icon">
+
+                    <span class="material-symbols-outlined">
+                        add_business
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Registrar establecimiento
+                    </h3>
+
+                    <p>
+                        Solicita registrar tu establecimiento
+                        en AccesoYa.
+                    </p>
+
+                </div>
+
+                <span class="material-symbols-outlined arrow">
+                    arrow_forward
+                </span>
+
+            </a>
+
+
+            <a routerLink="/establishment/requests" class="quick-card">
+
+                <div class="quick-icon">
+
+                    <span class="material-symbols-outlined">
+                        assignment
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Mis solicitudes
+                    </h3>
+
+                    <p>
+                        Consulta el estado de tus solicitudes
+                        de establecimiento.
+                    </p>
+
+                </div>
+
+                <span class="material-symbols-outlined arrow">
+                    arrow_forward
+                </span>
+
+            </a>
+
+            }
+
+
+            @if (role === 'ESTABLISHMENT') {
+
+            <a routerLink="/establishment/my-establishments" class="quick-card">
+
+                <div class="quick-icon">
+
+                    <span class="material-symbols-outlined">
+                        business
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Mi establecimiento
+                    </h3>
+
+                    <p>
+                        Consulta y administra la información
+                        de tu establecimiento.
+                    </p>
+
+                </div>
+
+                <span class="material-symbols-outlined arrow">
+                    arrow_forward
+                </span>
+
+            </a>
+
+            }
+
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- ADMINISTRACIÓN -->
+    <!-- ================================================= -->
+
+    @if (role === 'ADMIN' || role === 'MODERATOR') {
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Administración
+                </h2>
+
+                <p>
+                    Gestiona las solicitudes de establecimientos
+                    pendientes de revisión.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="quick-actions">
+
+            <a routerLink="/moderator/requests" class="quick-card">
+
+                <div class="quick-icon">
+
+                    <span class="material-symbols-outlined">
+                        rate_review
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Solicitudes de establecimientos
+                    </h3>
+
+                    <p>
+                        Revisa, aprueba o rechaza las solicitudes
+                        enviadas por los usuarios.
+                    </p>
+
+                </div>
+
+
+                <span class="material-symbols-outlined arrow">
+                    arrow_forward
+                </span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+    }
+
+
+    <!-- ================================================= -->
+    <!-- INFORMACIÓN -->
+    <!-- ================================================= -->
+
+    <section class="information-card">
+
+        <div class="information-icon">
+
+            <span class="material-symbols-outlined">
+                accessibility_new
+            </span>
+
+        </div>
+
+        <div>
+
+            <h3>
+                Construyamos una ciudad más accesible
+            </h3>
+
+            <p>
+                Tu participación ayuda a mantener actualizada
+                la información sobre accesibilidad de los
+                establecimientos.
+            </p>
+
+        </div>
+
+    </section>
+
+</div>

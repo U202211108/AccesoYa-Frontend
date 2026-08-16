@@ -1,0 +1,169 @@
+<div class="favorites-page">
+
+
+    <!-- ================================================= -->
+    <!-- ENCABEZADO -->
+    <!-- ================================================= -->
+
+    <div class="page-header">
+
+        <div>
+
+            <span class="page-label">
+                MI CUENTA
+            </span>
+
+            <h1>
+                Favoritos
+            </h1>
+
+            <p>
+                Guarda y consulta rápidamente
+                tus lugares accesibles favoritos.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- SIN FAVORITOS -->
+    <!-- ================================================= -->
+
+    @if (favorites.length === 0) {
+
+    <div class="empty-state">
+
+        <div class="empty-icon">
+
+            <span class="material-symbols-outlined">
+                star
+            </span>
+
+        </div>
+
+
+        <h2>
+            Aún no tienes favoritos
+        </h2>
+
+
+        <p>
+            Cuando encuentres un lugar que quieras
+            consultar nuevamente, podrás guardarlo
+            como favorito.
+        </p>
+
+
+        <button type="button" class="primary-button" (click)="goToMap()">
+
+            <span class="material-symbols-outlined">
+                map
+            </span>
+
+            Explorar lugares
+
+        </button>
+
+    </div>
+
+    }
+
+
+    <!-- ================================================= -->
+    <!-- LISTA DE FAVORITOS -->
+    <!-- ================================================= -->
+
+    @if (favorites.length > 0) {
+
+    <div class="favorites-grid">
+
+        @for (
+        favorite of favorites;
+        track favorite.id
+        ) {
+
+        <article class="favorite-card">
+
+
+            <!-- ICONO -->
+
+            <div class="favorite-icon">
+
+                <span class="material-symbols-outlined">
+                    business
+                </span>
+
+            </div>
+
+
+            <!-- INFORMACIÓN -->
+
+            <div class="favorite-content">
+
+                <h2>
+                    {{ favorite.name }}
+                </h2>
+
+
+                <span class="favorite-type">
+                    {{ favorite.type }}
+                </span>
+
+
+                <p>
+                    {{ favorite.address }}
+                </p>
+
+
+                @if (favorite.description) {
+
+                <p class="description">
+                    {{ favorite.description }}
+                </p>
+
+                }
+
+            </div>
+
+
+            <!-- ACCIONES -->
+
+            <div class="favorite-actions">
+
+
+                <!-- VER LUGAR -->
+
+                <button type="button" (click)="goToPlace(favorite.id)" title="Ver lugar">
+
+                    <span class="material-symbols-outlined">
+                        arrow_forward
+                    </span>
+
+                </button>
+
+
+                <!-- ELIMINAR -->
+
+                <button type="button" class="remove-button" (click)="removeFavorite(favorite.id)"
+                    title="Eliminar favorito">
+
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+
+                </button>
+
+            </div>
+
+
+        </article>
+
+        }
+
+    </div>
+
+    }
+
+</div>
