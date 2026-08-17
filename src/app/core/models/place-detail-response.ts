@@ -1,6 +1,7 @@
 import { PlaceStatus } from './place-status';
 import { PlaceType } from './place-type';
 import { PlaceAccessibilityResponse } from './place-accessibility-response';
+import { FlmNocData } from './flm-noc-data';
 
 export interface PlaceDetailResponse {
 
@@ -49,6 +50,8 @@ export interface PlaceDetailResponse {
     imageUrl3?: string;
 
     accessibility: PlaceAccessibilityResponse;
+
+    flmNocData?: FlmNocData;
 
     createdAt: string;
 

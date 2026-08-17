@@ -1,9 +1,12 @@
 import { PlaceStatus } from './place-status';
 import { PlaceType } from './place-type';
+import { FlmNocData } from './flm-noc-data';
 
 export interface PlaceMapResponse {
 
     id: string;
+
+    externalId?: string;
 
     name: string;
 
@@ -28,4 +31,6 @@ export interface PlaceMapResponse {
     description?: string;
 
     establishmentType?: string;
+
+    flmNocData?: FlmNocData;
 }

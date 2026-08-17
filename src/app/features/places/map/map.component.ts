@@ -941,6 +941,17 @@ export class MapComponent
           'PUBLIC_SERVICE'
         );
 
+      // =================================================
+      // FLM / NOC
+      // =================================================
+
+      case 'TELECOMMUNICATION_SITE':
+
+        return (
+          normalizedPlaceType ===
+          'TELECOMMUNICATION_SITE'
+        );
+
 
       default:
 
@@ -1296,6 +1307,9 @@ export class MapComponent
       case 'TRANSPORTATION':
         return '#059669';
 
+      case 'TELECOMMUNICATION_SITE':
+        return '#0f766e';
+
       default:
         return '#64748b';
     }
@@ -1354,6 +1368,9 @@ export class MapComponent
       case 'TRANSPORTATION':
         return 'Transporte';
 
+      case 'TELECOMMUNICATION_SITE':
+        return 'Sitio de telecomunicaciones';
+
       default:
         return 'Lugar';
     }
@@ -1383,6 +1400,9 @@ export class MapComponent
 
       case 'ACCESOYA':
         return 'ACCESOYA';
+
+      case 'FLM_NOC':
+        return 'FLM / NOC';
 
       default:
         return 'ACCESOYA';
@@ -1580,6 +1600,239 @@ export class MapComponent
         `
         : '';
 
+    const flmNoc =
+      place.flmNocData;
+
+    const flmNocDetails =
+      place.source?.toUpperCase() === 'FLM_NOC' &&
+        flmNoc
+        ? `
+
+        <div class="popup-divider"></div>
+
+        <div class="popup-section-title">
+            Información FLM / NOC
+        </div>
+
+
+        ${flmNoc.codigoEmplazamiento?.trim()
+          ? `
+                    <div class="popup-detail">
+
+                        <div class="popup-detail-content">
+
+                            <span class="popup-detail-label">
+                                Código de emplazamiento
+                            </span>
+
+                            <span class="popup-detail-value">
+                                ${this.escapeHtml(
+            flmNoc.codigoEmplazamiento
+          )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `
+          : ''
+        }
+
+
+        ${flmNoc.zonal?.trim()
+          ? `
+                    <div class="popup-detail">
+
+                        <div class="popup-detail-content">
+
+                            <span class="popup-detail-label">
+                                Zonal
+                            </span>
+
+                            <span class="popup-detail-value">
+                                ${this.escapeHtml(
+            flmNoc.zonal
+          )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `
+          : ''
+        }
+
+
+        ${flmNoc.propietarioTorre?.trim()
+          ? `
+                    <div class="popup-detail">
+
+                        <div class="popup-detail-content">
+
+                            <span class="popup-detail-label">
+                                Propietario de torre
+                            </span>
+
+                            <span class="popup-detail-value">
+                                ${this.escapeHtml(
+            flmNoc.propietarioTorre
+          )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `
+          : ''
+        }
+
+
+        ${flmNoc.coberturaReaccion?.trim()
+          ? `
+                    <div class="popup-detail">
+
+                        <div class="popup-detail-content">
+
+                            <span class="popup-detail-label">
+                                Cobertura de reacción
+                            </span>
+
+                            <span class="popup-detail-value">
+                                ${this.escapeHtml(
+            flmNoc.coberturaReaccion
+          )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `
+          : ''
+        }
+
+
+        ${flmNoc.patrullaje?.trim()
+          ? `
+                    <div class="popup-detail">
+
+                        <div class="popup-detail-content">
+
+                            <span class="popup-detail-label">
+                                Patrullaje
+                            </span>
+
+                            <span class="popup-detail-value">
+                                ${this.escapeHtml(
+            flmNoc.patrullaje
+          )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `
+          : ''
+        }
+
+
+        ${flmNoc.guardiania?.trim()
+          ? `
+                    <div class="popup-detail">
+
+                        <div class="popup-detail-content">
+
+                            <span class="popup-detail-label">
+                                Guardianía
+                            </span>
+
+                            <span class="popup-detail-value">
+                                ${this.escapeHtml(
+            flmNoc.guardiania
+          )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `
+          : ''
+        }
+
+
+        ${flmNoc.vigilancia?.trim()
+          ? `
+                    <div class="popup-detail">
+
+                        <div class="popup-detail-content">
+
+                            <span class="popup-detail-label">
+                                Vigilancia
+                            </span>
+
+                            <span class="popup-detail-value">
+                                ${this.escapeHtml(
+            flmNoc.vigilancia
+          )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `
+          : ''
+        }
+
+
+        ${flmNoc.rondaDinamica?.trim()
+          ? `
+                    <div class="popup-detail">
+
+                        <div class="popup-detail-content">
+
+                            <span class="popup-detail-label">
+                                Ronda dinámica
+                            </span>
+
+                            <span class="popup-detail-value">
+                                ${this.escapeHtml(
+            flmNoc.rondaDinamica
+          )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `
+          : ''
+        }
+
+
+        ${flmNoc.monitoreoCsi?.trim()
+          ? `
+                    <div class="popup-detail">
+
+                        <div class="popup-detail-content">
+
+                            <span class="popup-detail-label">
+                                Monitoreo CSI
+                            </span>
+
+                            <span class="popup-detail-value">
+                                ${this.escapeHtml(
+            flmNoc.monitoreoCsi
+          )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `
+          : ''
+        }
+
+        `
+        : '';
+
 
     return `
       <div
@@ -1624,13 +1877,16 @@ export class MapComponent
 
         <div class="popup-details">
 
-          ${address}
+    ${address}
 
-          ${phone}
+    ${phone}
 
-          ${openingHours}
+    ${openingHours}
 
-        </div>
+</div>
+
+
+${flmNocDetails}
 
 
         <div class="popup-footer">
@@ -1824,14 +2080,37 @@ export class MapComponent
               place.description
             );
 
+          const externalId =
+            this.normalizeSearch(
+              place.externalId
+            );
+
+          const flmCodigo =
+            this.normalizeSearch(
+              place.flmNocData?.codigoEmplazamiento
+            );
+
+          const flmZonal =
+            this.normalizeSearch(
+              place.flmNocData?.zonal
+            );
+
+          const flmControlCentral =
+            this.normalizeSearch(
+              place.flmNocData?.nombreControlCentral
+            );
+
 
           return (
             name.includes(search) ||
             address.includes(search) ||
             type.includes(search) ||
-            description.includes(search)
+            description.includes(search) ||
+            externalId.includes(search) ||
+            flmCodigo.includes(search) ||
+            flmZonal.includes(search) ||
+            flmControlCentral.includes(search)
           );
-
         })
         .slice(
           0,

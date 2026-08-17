@@ -456,6 +456,28 @@
 
                 </button>
 
+                <!-- FLM / NOC -->
+
+                <button type="button" class="legend-item"
+                    [class.selected]="isCategorySelected('TELECOMMUNICATION_SITE')"
+                    (click)="toggleCategory('TELECOMMUNICATION_SITE')">
+
+                    <span class="legend-dot flm-noc"></span>
+
+                    <span class="legend-label">
+                        FLM / NOC
+                    </span>
+
+                    @if (isCategorySelected('TELECOMMUNICATION_SITE')) {
+
+                    <span class="legend-check">
+                        ✓
+                    </span>
+
+                    }
+
+                </button>
+
             </div>
 
         </div>
