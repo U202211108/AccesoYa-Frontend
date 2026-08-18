@@ -114,4 +114,18 @@ export class PlaceService {
             `${this.apiUrl}/me`
         );
     }
+
+    searchPlacesForMap(
+        query: string
+    ): Observable<PlaceMapResponse[]> {
+
+        return this.http.get<PlaceMapResponse[]>(
+            `${this.apiUrl}/map/search`,
+            {
+                params: {
+                    query
+                }
+            }
+        );
+    }
 }

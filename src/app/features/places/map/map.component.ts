@@ -14,10 +14,15 @@ import * as L from 'leaflet';
 
 import 'leaflet.markercluster';
 
+
 import {
   Subject,
   debounceTime,
+  distinctUntilChanged,
   switchMap,
+  finalize,
+  tap,
+  map,
   takeUntil,
   catchError,
   of
@@ -68,6 +73,11 @@ export class MapComponent
 
   private readonly mapMove$ =
     new Subject<void>();
+
+  private readonly search$ =
+    new Subject<string>();
+
+  isSearching = false;
 
 
   // =====================================================
@@ -128,6 +138,8 @@ export class MapComponent
 
     this.configureRouteFilters();
 
+    this.configureSearch();
+
     this.loadPlaces();
   }
 
@@ -143,6 +155,65 @@ export class MapComponent
     if (this.map) {
       this.map.remove();
     }
+  }
+
+  private configureSearch(): void {
+
+    this.search$
+      .pipe(
+        map(query => query.trim()),
+
+        distinctUntilChanged(),
+
+        switchMap(query => {
+
+          if (query.length < 2) {
+            return of([] as PlaceMapResponse[]);
+          }
+
+          console.log(
+            '[SEARCH] Consultando:',
+            query
+          );
+
+          return this.placeService
+            .searchPlacesForMap(query)
+            .pipe(
+              tap(results => {
+
+                console.log(
+                  '[SEARCH] Respuesta:',
+                  query,
+                  results
+                );
+
+              }),
+
+              catchError(error => {
+
+                console.error(
+                  '[SEARCH] Error:',
+                  error
+                );
+
+                return of(
+                  [] as PlaceMapResponse[]
+                );
+              })
+            );
+        }),
+
+        takeUntil(this.destroy$)
+      )
+      .subscribe(results => {
+
+        console.log(
+          '[SEARCH] Actualizando resultados:',
+          results
+        );
+
+        this.searchResults = results;
+      });
   }
 
 
@@ -1984,19 +2055,17 @@ ${flmNocDetails}
   // BÚSQUEDA
   // =====================================================
 
-  onSearchInput(
-    event: Event
-  ): void {
+  onSearchInput(event: Event): void {
 
     const input =
       event.target as HTMLInputElement;
 
-
     this.searchTerm =
       input.value.trim();
 
-
-    this.updateSearchResults();
+    this.search$.next(
+      this.searchTerm
+    );
   }
 
 
@@ -2158,7 +2227,6 @@ ${flmNocDetails}
       return;
     }
 
-
     if (
       !Number.isFinite(
         place.latitude
@@ -2170,10 +2238,47 @@ ${flmNocDetails}
       return;
     }
 
+    this.searchResults = [];
 
-    this.searchResults =
-      [];
 
+    // =================================================
+    // CREAR MARCADOR DEL RESULTADO SI TODAVÍA
+    // NO EXISTE EN EL MAPA
+    // =================================================
+
+    let marker =
+      this.placeMarkers.get(
+        String(place.id)
+      );
+
+
+    if (!marker) {
+
+      const color =
+        this.getPlaceColor(
+          place.type
+        );
+
+      marker =
+        this.createPlaceMarker(
+          place,
+          color
+        );
+
+      this.markersLayer.addLayer(
+        marker
+      );
+
+      this.placeMarkers.set(
+        String(place.id),
+        marker
+      );
+    }
+
+
+    // =================================================
+    // MOVER MAPA
+    // =================================================
 
     this.map.flyTo(
       [
@@ -2188,23 +2293,27 @@ ${flmNocDetails}
     );
 
 
-    setTimeout(
+    // =================================================
+    // ABRIR POPUP
+    // =================================================
+
+    const targetMarker =
+      marker;
+
+    this.map.once(
+      'moveend',
       () => {
 
-        const marker =
-          this.placeMarkers.get(
-            String(place.id)
-          );
+        setTimeout(
+          () => {
 
+            targetMarker.openPopup();
 
-        if (marker) {
+          },
+          150
+        );
 
-          marker.openPopup();
-
-        }
-
-      },
-      1300
+      }
     );
   }
 
