@@ -1,0 +1,1042 @@
+<div class="plans-page">
+
+    <!-- ================================================= -->
+    <!-- ENCABEZADO -->
+    <!-- ================================================= -->
+
+    <section class="page-header">
+
+        <div>
+
+            <span class="eyebrow">
+                FLM / NOC
+            </span>
+
+            <h1>
+                Gestión de planos
+            </h1>
+
+            <p>
+                Administra los planos asociados a los sitios
+                registrados en la plataforma.
+            </p>
+
+        </div>
+
+
+        <a routerLink="/dashboard" class="back-button">
+
+            <span class="material-symbols-outlined">
+                arrow_back
+            </span>
+
+            Volver al inicio
+
+        </a>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- MENSAJES -->
+    <!-- ================================================= -->
+
+    @if (errorMessage) {
+
+    <div class="message error">
+
+        <span class="material-symbols-outlined">
+            error
+        </span>
+
+        <span>
+            {{ errorMessage }}
+        </span>
+
+    </div>
+
+    }
+
+
+    @if (successMessage) {
+
+    <div class="message success">
+
+        <span class="material-symbols-outlined">
+            check_circle
+        </span>
+
+        <span>
+            {{ successMessage }}
+        </span>
+
+    </div>
+
+    }
+
+
+    <!-- ================================================= -->
+    <!-- SELECTOR DE SITIO -->
+    <!-- ================================================= -->
+
+    <section class="site-selector card">
+
+        <div class="section-heading">
+
+            <div class="heading-icon">
+
+                <span class="material-symbols-outlined">
+                    cell_tower
+                </span>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Seleccionar sitio
+                </h2>
+
+                <p>
+                    Busca un sitio FLM/NOC para administrar
+                    sus planos.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- BUSCADOR -->
+
+        <div class="search-box">
+
+            <span class="material-symbols-outlined">
+                search
+            </span>
+
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch()"
+                placeholder="Buscar por nombre, código, zonal o ubicación...">
+
+            @if (searchTerm) {
+
+            <button type="button" class="clear-button" (click)="searchTerm = ''; onSearch()">
+
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+
+            </button>
+
+            }
+
+        </div>
+
+
+        <!-- LOADING -->
+
+        @if (loadingSites) {
+
+        <div class="loading-state">
+
+            <span class="loader"></span>
+
+            <span>
+                Cargando sitios FLM/NOC...
+            </span>
+
+        </div>
+
+        }
+
+
+        <!-- RESULTADOS -->
+
+        @if (!loadingSites) {
+
+        <div class="site-results">
+
+            @for (
+            site of filteredSites;
+            track site.id
+            ) {
+
+            <button type="button" class="site-result" [class.selected]="
+                            selectedSite?.id === site.id
+                        " (click)="selectSite(site)">
+
+                <div class="site-result-icon">
+
+                    <span class="material-symbols-outlined">
+                        cell_tower
+                    </span>
+
+                </div>
+
+
+                <div class="site-result-content">
+
+                    <strong>
+                        {{ site.name }}
+                    </strong>
+
+                    <span>
+                        Código:
+                        {{ site.codigoEmplazamiento || site.externalId }}
+                    </span>
+
+                    <span>
+                        {{ site.zonal || 'Zonal no disponible' }}
+                        ·
+                        {{ site.district || site.province || 'Ubicación no disponible' }}
+                    </span>
+
+                </div>
+
+
+                @if (
+                selectedSite?.id === site.id
+                ) {
+
+                <span class="material-symbols-outlined selected-icon">
+                    check_circle
+                </span>
+
+                }
+
+            </button>
+
+            }
+
+
+            @if (
+            filteredSites.length === 0
+            ) {
+
+            <div class="empty-state">
+
+                <span class="material-symbols-outlined">
+                    search_off
+                </span>
+
+                <strong>
+                    No se encontraron sitios
+                </strong>
+
+                <span>
+                    Prueba con otro nombre,
+                    código o ubicación.
+                </span>
+
+            </div>
+
+            }
+
+        </div>
+
+        }
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- SITIO SELECCIONADO -->
+    <!-- ================================================= -->
+
+    @if (selectedSite) {
+
+    <section class="selected-site card">
+
+        <div class="selected-site-main">
+
+            <div class="selected-site-icon">
+
+                <span class="material-symbols-outlined">
+                    router
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <span class="selected-label">
+                    SITIO SELECCIONADO
+                </span>
+
+                <h2>
+                    {{ selectedSite.name }}
+                </h2>
+
+                <p>
+
+                    {{ selectedSite.codigoEmplazamiento || selectedSite.externalId }}
+
+                    @if (selectedSite.zonal) {
+                    · {{ selectedSite.zonal }}
+                    }
+
+                    @if (selectedSite.district) {
+                    · {{ selectedSite.district }}
+                    }
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- PLANOS -->
+    <!-- ================================================= -->
+
+    <section class="plans-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    DOCUMENTACIÓN
+                </span>
+
+                <h2>
+                    Planos del sitio
+                </h2>
+
+                <p>
+                    Consulta y administra los documentos
+                    asociados al sitio seleccionado.
+                </p>
+
+            </div>
+
+
+            <label class="upload-button" [class.disabled]="uploading">
+
+                <span class="material-symbols-outlined">
+                    upload_file
+                </span>
+
+                {{ uploading
+                ? 'Importando...'
+                : 'Importar plano'
+                }}
+
+                <input type="file" hidden accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
+                    [disabled]="uploading" (change)="onFileSelected($event)">
+
+            </label>
+
+        </div>
+
+
+        <!-- ARCHIVO SELECCIONADO -->
+
+        @if (selectedFile) {
+
+        <div class="selected-file">
+
+            <div class="selected-file-icon">
+
+                <span class="material-symbols-outlined">
+                    description
+                </span>
+
+            </div>
+
+
+            <div class="selected-file-info">
+
+                <strong>
+                    {{ selectedFile.name }}
+                </strong>
+
+                <span>
+                    {{ formatFileSize(selectedFile.size) }}
+                </span>
+
+            </div>
+
+
+            <button type="button" class="upload-confirm" [disabled]="uploading" (click)="uploadPlan()">
+
+                <span class="material-symbols-outlined">
+                    cloud_upload
+                </span>
+
+                Confirmar importación
+
+            </button>
+
+
+            <button type="button" class="remove-file" [disabled]="uploading" (click)="selectedFile = null">
+
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+
+            </button>
+
+        </div>
+
+        }
+
+
+        <!-- LOADING -->
+
+        @if (loadingPlans) {
+
+        <div class="loading-state plans-loading">
+
+            <span class="loader"></span>
+
+            <span>
+                Cargando planos...
+            </span>
+
+        </div>
+
+        }
+
+
+        <!-- LISTA -->
+
+        @if (!loadingPlans) {
+
+        <div class="plans-grid">
+
+            @for (
+            plan of plans;
+            track plan.id
+            ) {
+
+            <article class="plan-card">
+
+                <div class="plan-icon">
+
+                    @if (
+                    plan.contentType ===
+                    'application/pdf'
+                    ) {
+
+                    <span class="material-symbols-outlined">
+                        picture_as_pdf
+                    </span>
+
+                    } @else {
+
+                    <span class="material-symbols-outlined">
+                        image
+                    </span>
+
+                    }
+
+                </div>
+
+
+                <div class="plan-content">
+
+                    <h3>
+                        {{ plan.fileName }}
+                    </h3>
+
+                    <div class="plan-meta">
+
+                        <span>
+                            {{ plan.contentType }}
+                        </span>
+
+                        <span>
+                            {{ formatFileSize(plan.fileSize) }}
+                        </span>
+
+                    </div>
+
+                    <span class="plan-date">
+                        {{ formatDate(plan.uploadedAt) }}
+                    </span>
+
+                </div>
+
+
+                <div class="plan-actions">
+
+                    <button type="button" class="icon-button" title="Visualizar" (click)="viewPlan(plan)">
+
+                        <span class="material-symbols-outlined">
+                            visibility
+                        </span>
+
+                    </button>
+
+
+                    <button type="button" class="icon-button danger" title="Eliminar" [disabled]="
+                                        deletingPlanId === plan.id
+                                    " (click)="deletePlan(plan)">
+
+                        @if (
+                        deletingPlanId === plan.id
+                        ) {
+
+                        <span class="loader small"></span>
+
+                        } @else {
+
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+
+                        }
+
+                    </button>
+
+                </div>
+
+            </article>
+
+            }
+
+
+            @if (plans.length === 0) {
+
+            <div class="empty-plans">
+
+                <div class="empty-plans-icon">
+
+                    <span class="material-symbols-outlined">
+                        architecture
+                    </span>
+
+                </div>
+
+                <h3>
+                    No hay planos registrados
+                </h3>
+
+                <p>
+                    Este sitio todavía no tiene
+                    documentos asociados.
+                </p>
+
+                <label class="empty-upload">
+
+                    <span class="material-symbols-outlined">
+                        upload_file
+                    </span>
+
+                    Importar primer plano
+
+                    <input type="file" hidden accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
+                        (change)="onFileSelected($event)">
+
+                </label>
+
+            </div>
+
+            }
+
+        </div>
+
+        }
+
+    </section>
+
+    } @else {
+
+    <!-- ================================================= -->
+    <!-- SIN SITIO SELECCIONADO -->
+    <!-- ================================================= -->
+
+    <section class="no-site card">
+
+        <div class="no-site-icon">
+
+            <span class="material-symbols-outlined">
+                architecture
+            </span>
+
+        </div>
+
+        <h2>
+            Selecciona un sitio FLM/NOC
+        </h2>
+
+        <p>
+            Selecciona un sitio de la lista para consultar
+            o importar sus planos.
+        </p>
+
+    </section>
+
+    }
+
+    <!-- ================================================= -->
+    <!-- MODAL ELIMINAR PLANO -->
+    <!-- ================================================= -->
+
+    @if (showDeleteModal && planToDelete) {
+
+    <div class="modal-backdrop" (click)="cancelDelete()">
+
+        <div class="delete-modal" (click)="$event.stopPropagation()">
+
+            <div class="delete-modal-icon">
+
+                <span class="material-symbols-outlined">
+                    delete
+                </span>
+
+            </div>
+
+
+            <div class="delete-modal-content">
+
+                <h2>
+                    Eliminar plano
+                </h2>
+
+                <p>
+                    ¿Estás seguro de que deseas eliminar
+                    este documento?
+                </p>
+
+
+                <div class="delete-file-preview">
+
+                    <span class="material-symbols-outlined">
+                        description
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            {{ planToDelete.fileName }}
+                        </strong>
+
+                        <span>
+                            {{ formatFileSize(planToDelete.fileSize) }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p class="delete-warning">
+                    Esta acción no se puede deshacer.
+                </p>
+
+            </div>
+
+
+            <div class="delete-modal-actions">
+
+                <button type="button" class="modal-cancel-button" [disabled]="deletingPlanId !== null"
+                    (click)="cancelDelete()">
+
+                    Cancelar
+
+                </button>
+
+
+                <button type="button" class="modal-delete-button" [disabled]="deletingPlanId !== null"
+                    (click)="confirmDelete()">
+
+                    @if (deletingPlanId === planToDelete.id) {
+
+                    <span class="loader small"></span>
+
+                    Eliminando...
+
+                    } @else {
+
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+
+                    Eliminar
+
+                    }
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    }
+
+    <!-- ================================================= -->
+    <!-- VISOR DE PLANO -->
+    <!-- ================================================= -->
+
+    @if (showPlanViewer && viewerPlan) {
+
+    <div class="viewer-backdrop" (click)="closePlanViewer()">
+
+        <div class="plan-viewer" (click)="$event.stopPropagation()">
+
+
+            <!-- ============================================= -->
+            <!-- HEADER -->
+            <!-- ============================================= -->
+
+            <div class="viewer-header">
+
+                <div class="viewer-title">
+
+                    <div class="viewer-title-icon">
+
+                        <span class="material-symbols-outlined">
+
+                            @if (
+                            viewerPlan.contentType ===
+                            'application/pdf'
+                            ) {
+
+                            picture_as_pdf
+
+                            } @else {
+
+                            image
+
+                            }
+
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            {{ viewerPlan.fileName }}
+                        </strong>
+
+                        <span>
+                            {{ formatFileSize(viewerPlan.fileSize) }}
+                            ·
+                            {{ viewerPlan.contentType }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button type="button" class="viewer-close" title="Cerrar" (click)="closePlanViewer()">
+
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- CONTENIDO -->
+            <!-- ============================================= -->
+
+            <div class="viewer-content">
+
+
+                @if (viewingPlan) {
+
+                <div class="viewer-loading">
+
+                    <span class="loader"></span>
+
+                    <span>
+                        Cargando documento...
+                    </span>
+
+                </div>
+
+                }
+
+
+                @if (
+                !viewingPlan &&
+                viewerPlan.contentType ===
+                'application/pdf'
+                ) {
+
+                <div class="pdf-viewer">
+
+                    <!-- ================================================= -->
+                    <!-- BARRA DE HERRAMIENTAS -->
+                    <!-- ================================================= -->
+
+                    <div class="pdf-toolbar">
+
+                        <!-- PAGINACIÓN -->
+
+                        <div class="pdf-toolbar-group">
+
+                            <button type="button" class="pdf-control-button" title="Página anterior" [disabled]="
+                    pdfCurrentPage <= 1 ||
+                    pdfLoading
+                " (click)="previousPdfPage()">
+
+                                <span class="material-symbols-outlined">
+                                    chevron_left
+                                </span>
+
+                            </button>
+
+
+                            <span class="pdf-page-counter">
+
+                                Página
+                                <strong>
+                                    {{ pdfCurrentPage }}
+                                </strong>
+                                de
+                                <strong>
+                                    {{ pdfTotalPages }}
+                                </strong>
+
+                            </span>
+
+
+                            <button type="button" class="pdf-control-button" title="Página siguiente" [disabled]="
+                    pdfCurrentPage >= pdfTotalPages ||
+                    pdfLoading
+                " (click)="nextPdfPage()">
+
+                                <span class="material-symbols-outlined">
+                                    chevron_right
+                                </span>
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- ZOOM -->
+
+                        <div class="pdf-toolbar-group">
+
+                            <button type="button" class="pdf-control-button" title="Alejar" [disabled]="
+                    pdfZoom <= 0.75 ||
+                    pdfLoading
+                " (click)="zoomOutPdf()">
+
+                                <span class="material-symbols-outlined">
+                                    remove
+                                </span>
+
+                            </button>
+
+
+                            <button type="button" class="pdf-zoom-value" title="Restablecer zoom"
+                                [disabled]="pdfLoading" (click)="resetPdfZoom()">
+
+                                {{ (pdfZoom * 100) | number:'1.0-0' }}%
+
+                            </button>
+
+
+                            <button type="button" class="pdf-control-button" title="Acercar" [disabled]="
+                    pdfZoom >= 3 ||
+                    pdfLoading
+                " (click)="zoomInPdf()">
+
+                                <span class="material-symbols-outlined">
+                                    add
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- ÁREA DEL PDF -->
+                    <!-- ================================================= -->
+
+                    <div class="pdf-stage">
+
+                        @if (pdfLoading) {
+
+                        <div class="pdf-loading">
+
+                            <span class="loader"></span>
+
+                            <span>
+                                Preparando vista previa...
+                            </span>
+
+                        </div>
+
+                        }
+
+
+                        @if (pdfError) {
+
+                        <div class="pdf-error">
+
+                            <span class="material-symbols-outlined">
+                                error
+                            </span>
+
+                            <strong>
+                                No se pudo mostrar el documento
+                            </strong>
+
+                            <span>
+                                Intenta cerrar el visor y abrir nuevamente
+                                el plano.
+                            </span>
+
+                        </div>
+
+                        }
+
+
+                        <canvas #pdfCanvas class="pdf-canvas">
+                        </canvas>
+
+                    </div>
+
+                </div>
+
+                }
+
+
+                @if (
+                !viewingPlan &&
+                viewerUrl &&
+                (
+                viewerPlan.contentType ===
+                'image/png' ||
+                viewerPlan.contentType ===
+                'image/jpeg'
+                )
+                ) {
+
+                <div class="image-viewer">
+
+                    <!-- ================================================= -->
+                    <!-- TOOLBAR -->
+                    <!-- ================================================= -->
+
+                    <div class="image-toolbar">
+
+                        <div class="image-toolbar-group">
+
+                            <!-- ALEJAR -->
+
+                            <button type="button" class="image-control-button" title="Alejar"
+                                [disabled]="imageZoom <= 0.5" (click)="zoomOutImage()">
+
+                                <span class="material-symbols-outlined">
+                                    remove
+                                </span>
+
+                            </button>
+
+
+                            <!-- PORCENTAJE -->
+
+                            <button type="button" class="image-zoom-value" title="Restablecer zoom"
+                                (click)="resetImageZoom()">
+
+                                {{ (imageZoom * 100) | number:'1.0-0' }}%
+
+                            </button>
+
+
+                            <!-- ACERCAR -->
+
+                            <button type="button" class="image-control-button" title="Acercar"
+                                [disabled]="imageZoom >= 4" (click)="zoomInImage()">
+
+                                <span class="material-symbols-outlined">
+                                    add
+                                </span>
+
+                            </button>
+
+
+                            <!-- AJUSTAR -->
+
+                            <button type="button" class="image-fit-button" [class.active]="imageFitMode"
+                                title="Ajustar a pantalla" (click)="fitImageToScreen()">
+
+                                <span class="material-symbols-outlined">
+                                    fit_screen
+                                </span>
+
+                                <span class="image-fit-label">
+                                    Ajustar
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- ÁREA DE LA IMAGEN -->
+                    <!-- ================================================= -->
+
+                    <div class="image-stage" [class.fit-mode]="imageFitMode" [class.zoom-mode]="!imageFitMode">
+
+                        <img class="viewer-image" [src]="viewerUrl" [alt]="viewerPlan.fileName" [style.transform]="
+                'scale(' + imageZoom + ')'
+            ">
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- FOOTER -->
+            <!-- ============================================= -->
+
+            <div class="viewer-footer">
+
+                <span>
+
+                    <span class="material-symbols-outlined">
+                        info
+                    </span>
+
+                    Vista previa del documento
+
+                </span>
+
+
+                <button type="button" class="viewer-close-button" (click)="closePlanViewer()">
+
+                    Cerrar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    }
+
+</div>

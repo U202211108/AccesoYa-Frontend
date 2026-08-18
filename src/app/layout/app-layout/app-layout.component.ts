@@ -34,6 +34,7 @@ import {
 
 
 @Component({
+
     selector: 'app-layout',
 
     standalone: true,
@@ -54,7 +55,13 @@ import {
 export class AppLayoutComponent
     implements OnInit {
 
+
+    // =====================================================
+    // USUARIO
+    // =====================================================
+
     currentRole: UserRole | null = null;
+
 
     // =====================================================
     // SERVICIOS
@@ -92,13 +99,6 @@ export class AppLayoutComponent
 
 
     // =====================================================
-    // ACTUALIZACIÓN DE SESIÓN
-    // =====================================================
-
-    private sessionRefreshInProgress = false;
-
-
-    // =====================================================
     // INICIALIZACIÓN
     // =====================================================
 
@@ -113,7 +113,13 @@ export class AppLayoutComponent
         );
 
         this.loadNotifications();
+
     }
+
+
+    // =====================================================
+    // ACTUALIZAR ESTADO DEL USUARIO
+    // =====================================================
 
     refreshUserState(): void {
 
@@ -123,17 +129,8 @@ export class AppLayoutComponent
         this.currentRole =
             user?.role ?? null;
 
-        console.log(
-            'Estado del usuario actualizado:',
-            user
-        );
-
-        console.log(
-            'Nuevo rol:',
-            this.currentRole
-        );
-
         this.changeDetector.detectChanges();
+
     }
 
 
@@ -154,24 +151,14 @@ export class AppLayoutComponent
                         notifications
                     );
 
-
                     this.notifications =
                         notifications ?? [];
 
-
                     this.updateUnreadCount();
 
-
-                    // -----------------------------------------
-                    // COMPROBAR APROBACIÓN
-                    // -----------------------------------------
-
-                    this.checkEstablishmentApproval();
-
-
                     this.changeDetector.detectChanges();
-                },
 
+                },
 
                 error: error => {
 
@@ -180,172 +167,22 @@ export class AppLayoutComponent
                         error
                     );
 
-
                     this.notifications = [];
 
                     this.unreadCount = 0;
 
-
                     this.changeDetector.detectChanges();
+
                 }
 
             });
+
     }
 
 
     // =====================================================
-    // DETECTAR APROBACIÓN
+    // ETIQUETA DEL ROL
     // =====================================================
-
-    private checkEstablishmentApproval(): void {
-
-        // -----------------------------------------
-        // OBTENER ROL ACTUAL
-        // -----------------------------------------
-
-        const currentRole =
-            this.authService.getCurrentRole();
-
-
-        console.log(
-            'Rol actual al comprobar aprobación:',
-            currentRole
-        );
-
-
-        // -----------------------------------------
-        // SOLO USER NECESITA ACTUALIZACIÓN
-        // -----------------------------------------
-
-        if (
-            currentRole !== 'USER'
-        ) {
-
-            return;
-        }
-
-
-        // -----------------------------------------
-        // EVITAR PETICIONES SIMULTÁNEAS
-        // -----------------------------------------
-
-        if (
-            this.sessionRefreshInProgress
-        ) {
-
-            return;
-        }
-
-
-        // -----------------------------------------
-        // BUSCAR APROBACIÓN NO LEÍDA
-        // -----------------------------------------
-
-        const approvalNotification =
-            this.notifications.find(
-                notification =>
-                    notification.type ===
-                    'ESTABLISHMENT_APPROVED' &&
-                    notification.read === false
-            );
-
-
-        if (!approvalNotification) {
-
-            return;
-        }
-
-
-        console.log(
-            'Solicitud de establecimiento aprobada.',
-            approvalNotification
-        );
-
-
-        // -----------------------------------------
-        // ACTIVAR BLOQUEO
-        // -----------------------------------------
-
-        this.sessionRefreshInProgress =
-            true;
-
-
-        // -----------------------------------------
-        // GENERAR NUEVO JWT
-        // -----------------------------------------
-
-        this.authService
-            .refreshSession()
-            .subscribe({
-
-                next: response => {
-
-                    console.log(
-                        'Sesión actualizada correctamente.'
-                    );
-
-                    console.log(
-                        'Nuevo rol:',
-                        response.role
-                    );
-
-
-                    // =========================================
-                    // ACTUALIZAR ROL DEL LAYOUT
-                    // =========================================
-
-                    this.currentRole =
-                        response.role as UserRole;
-
-
-                    // =========================================
-                    // LIBERAR BLOQUEO
-                    // =========================================
-
-                    this.sessionRefreshInProgress =
-                        false;
-
-
-                    // =========================================
-                    // ACTUALIZAR INTERFAZ
-                    // =========================================
-
-                    this.changeDetector.detectChanges();
-
-
-                    // =========================================
-                    // CONFIRMAR CAMBIO
-                    // =========================================
-
-                    if (
-                        this.currentRole ===
-                        'ESTABLISHMENT'
-                    ) {
-
-                        console.log(
-                            'Usuario convertido a ESTABLISHMENT.'
-                        );
-                    }
-                },
-
-
-                error: error => {
-
-                    console.error(
-                        'Error actualizando la sesión:',
-                        error
-                    );
-
-
-                    this.sessionRefreshInProgress =
-                        false;
-
-
-                    this.changeDetector.detectChanges();
-                }
-
-            });
-    }
 
     getCurrentRoleLabel(): string {
 
@@ -365,12 +202,14 @@ export class AppLayoutComponent
 
             default:
                 return 'Usuario';
+
         }
+
     }
 
 
     // =====================================================
-    // ACTUALIZAR CONTADOR
+    // CONTADOR DE NO LEÍDAS
     // =====================================================
 
     updateUnreadCount(): void {
@@ -380,11 +219,12 @@ export class AppLayoutComponent
                 notification =>
                     notification.read === false
             ).length;
+
     }
 
 
     // =====================================================
-    // ABRIR / CERRAR PANEL
+    // NOTIFICACIONES
     // =====================================================
 
     toggleNotifications(): void {
@@ -393,6 +233,7 @@ export class AppLayoutComponent
             !this.notificationPanelOpen;
 
         this.changeDetector.detectChanges();
+
     }
 
 
@@ -404,23 +245,9 @@ export class AppLayoutComponent
         notification: Notification
     ): void {
 
-        console.log(
-            'Notificación seleccionada:',
-            notification
-        );
-
-
-        // -----------------------------------------
-        // CERRAR PANEL
-        // -----------------------------------------
-
         this.notificationPanelOpen =
             false;
 
-
-        // -----------------------------------------
-        // SI YA ESTÁ LEÍDA
-        // -----------------------------------------
 
         if (notification.read) {
 
@@ -429,12 +256,9 @@ export class AppLayoutComponent
             );
 
             return;
+
         }
 
-
-        // -----------------------------------------
-        // MARCAR COMO LEÍDA
-        // -----------------------------------------
 
         this.notificationService
             .markAsRead(
@@ -447,18 +271,15 @@ export class AppLayoutComponent
                     notification.read =
                         true;
 
-
                     this.updateUnreadCount();
 
-
                     this.changeDetector.detectChanges();
-
 
                     this.navigateFromNotification(
                         notification
                     );
-                },
 
+                },
 
                 error: error => {
 
@@ -467,34 +288,30 @@ export class AppLayoutComponent
                         error
                     );
 
-
-                    // Aunque falle el PATCH,
-                    // permitimos abrirla.
-
                     this.navigateFromNotification(
                         notification
                     );
+
                 }
 
             });
+
     }
 
 
     // =====================================================
-    // MARCAR COMO LEÍDA
+    // MARCAR UNA COMO LEÍDA
     // =====================================================
 
     markAsRead(
         notification: Notification
     ): void {
 
-        if (
-            notification.read
-        ) {
+        if (notification.read) {
 
             return;
-        }
 
+        }
 
         this.notificationService
             .markAsRead(
@@ -507,13 +324,11 @@ export class AppLayoutComponent
                     notification.read =
                         true;
 
-
                     this.updateUnreadCount();
 
-
                     this.changeDetector.detectChanges();
-                },
 
+                },
 
                 error: error => {
 
@@ -521,9 +336,11 @@ export class AppLayoutComponent
                         'Error marcando notificación como leída:',
                         error
                     );
+
                 }
 
             });
+
     }
 
 
@@ -539,8 +356,8 @@ export class AppLayoutComponent
         ) {
 
             return;
-        }
 
+        }
 
         this.notificationService
             .markAllAsRead()
@@ -556,14 +373,11 @@ export class AppLayoutComponent
                             })
                         );
 
-
-                    this.unreadCount =
-                        0;
-
+                    this.unreadCount = 0;
 
                     this.changeDetector.detectChanges();
-                },
 
+                },
 
                 error: error => {
 
@@ -571,14 +385,16 @@ export class AppLayoutComponent
                         'Error marcando todas las notificaciones como leídas:',
                         error
                     );
+
                 }
 
             });
+
     }
 
 
     // =====================================================
-    // VER TODAS LAS NOTIFICACIONES
+    // VER TODAS
     // =====================================================
 
     viewAllNotifications(): void {
@@ -586,112 +402,57 @@ export class AppLayoutComponent
         this.notificationPanelOpen =
             false;
 
-
         this.router.navigate([
             '/notifications'
         ]);
+
     }
 
 
     // =====================================================
-    // NAVEGACIÓN SEGÚN NOTIFICACIÓN
+    // NAVEGACIÓN DE NOTIFICACIONES
     // =====================================================
 
     navigateFromNotification(
         notification: Notification
     ): void {
 
-        switch (
-        notification.type
-        ) {
+        /*
+         * Por ahora las notificaciones siguen utilizando
+         * los tipos existentes del backend.
+         *
+         * Cuando migremos el bounded context de
+         * notificaciones al dominio FLM/NOC, esta lógica
+         * será reemplazada por los nuevos tipos.
+         */
 
-            // =============================================
-            // SOLICITUD CREADA
-            // =============================================
+        switch (notification.type) {
 
             case 'ESTABLISHMENT_REQUEST_CREATED':
 
-                this.router.navigate([
-                    '/establishment/requests'
-                ]);
-
-                break;
-
-
-            // =============================================
-            // ESTABLECIMIENTO APROBADO
-            // =============================================
-
             case 'ESTABLISHMENT_APPROVED':
-
-                this.router.navigate([
-                    '/establishments'
-                ]);
-
-                break;
-
-
-            // =============================================
-            // ESTABLECIMIENTO RECHAZADO
-            // =============================================
 
             case 'ESTABLISHMENT_REJECTED':
 
-                this.router.navigate([
-                    '/establishment/requests'
-                ]);
+                console.log(
+                    'Notificación heredada de establecimiento:',
+                    notification
+                );
 
                 break;
 
-
-            // =============================================
-            // ACCESIBILIDAD ACTUALIZADA
-            // =============================================
 
             case 'ACCESSIBILITY_UPDATED':
 
-                if (
-                    notification.relatedEntityId
-                ) {
-
-                    this.router.navigate(
-                        [
-                            '/establishments/accessibility'
-                        ],
-                        {
-                            queryParams: {
-                                placeId:
-                                    notification.relatedEntityId
-                            }
-                        }
-                    );
-
-                } else {
-
-                    this.router.navigate([
-                        '/establishments'
-                    ]);
-                }
-
-                break;
-
-
-            // =============================================
-            // ESTABLECIMIENTO ACTUALIZADO
-            // =============================================
-
             case 'ESTABLISHMENT_UPDATED':
 
-                this.router.navigate([
-                    '/establishments'
-                ]);
+                console.log(
+                    'Notificación heredada:',
+                    notification
+                );
 
                 break;
 
-
-            // =============================================
-            // SISTEMA
-            // =============================================
 
             case 'SYSTEM':
 
@@ -703,10 +464,6 @@ export class AppLayoutComponent
                 break;
 
 
-            // =============================================
-            // DEFAULT
-            // =============================================
-
             default:
 
                 console.warn(
@@ -715,7 +472,9 @@ export class AppLayoutComponent
                 );
 
                 break;
+
         }
+
     }
 
 
@@ -729,6 +488,7 @@ export class AppLayoutComponent
             !this.sidebarOpen;
 
         this.changeDetector.detectChanges();
+
     }
 
 
@@ -746,6 +506,7 @@ export class AppLayoutComponent
         this.router.navigate([
             '/login'
         ]);
+
     }
 
 }

@@ -19,6 +19,7 @@
     "@angular/router": "^21.2.0",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
+    "pdfjs-dist": "^6.2.108",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

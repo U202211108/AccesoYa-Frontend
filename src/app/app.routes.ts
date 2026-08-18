@@ -247,6 +247,16 @@ export const routes: Routes = [
                     )
             },
 
+            {
+                path: 'plans',
+                loadComponent: () =>
+                    import(
+                        './features/plans/plan-management/plan-management.component'
+                    ).then(
+                        m => m.PlanManagementComponent
+                    )
+            },
+
 
             // =================================================
             // MIS ESTABLECIMIENTOS

@@ -20,8 +20,6 @@ import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
-  finalize,
-  tap,
   map,
   takeUntil,
   catchError,
@@ -161,15 +159,49 @@ export class MapComponent
 
     this.search$
       .pipe(
-        map(query => query.trim()),
+
+        // =============================================
+        // NORMALIZAR
+        // =============================================
+
+        map(query =>
+          query.trim()
+        ),
+
+        // =============================================
+        // ESPERAR A QUE EL USUARIO TERMINE DE ESCRIBIR
+        // =============================================
+
+        debounceTime(300),
+
+        // =============================================
+        // NO REPETIR LA MISMA BÚSQUEDA
+        // =============================================
 
         distinctUntilChanged(),
 
+        // =============================================
+        // BUSCAR
+        // =============================================
+
         switchMap(query => {
 
+          // -------------------------------------------
+          // MENOS DE 2 CARACTERES
+          // -------------------------------------------
+
           if (query.length < 2) {
-            return of([] as PlaceMapResponse[]);
+
+            return of(
+              [] as PlaceMapResponse[]
+            );
           }
+
+          // -------------------------------------------
+          // LIMPIAR RESULTADOS ANTERIORES
+          // -------------------------------------------
+
+          this.searchResults = [];
 
           console.log(
             '[SEARCH] Consultando:',
@@ -179,15 +211,6 @@ export class MapComponent
           return this.placeService
             .searchPlacesForMap(query)
             .pipe(
-              tap(results => {
-
-                console.log(
-                  '[SEARCH] Respuesta:',
-                  query,
-                  results
-                );
-
-              }),
 
               catchError(error => {
 
@@ -199,20 +222,32 @@ export class MapComponent
                 return of(
                   [] as PlaceMapResponse[]
                 );
+
               })
+
             );
         }),
 
-        takeUntil(this.destroy$)
+        // =============================================
+        // DESTRUIR SUSCRIPCIÓN
+        // =============================================
+
+        takeUntil(
+          this.destroy$
+        )
+
       )
+
       .subscribe(results => {
 
         console.log(
-          '[SEARCH] Actualizando resultados:',
-          results
+          '[SEARCH] Resultados:',
+          results.length
         );
 
-        this.searchResults = results;
+        this.searchResults =
+          results;
+
       });
   }
 
@@ -823,13 +858,6 @@ export class MapComponent
 
       }
     );
-
-
-    // =================================================
-    // ACTUALIZAR RESULTADOS DE BÚSQUEDA
-    // =================================================
-
-    this.updateSearchResults();
   }
 
 
@@ -2063,128 +2091,18 @@ ${flmNocDetails}
     this.searchTerm =
       input.value.trim();
 
-    this.search$.next(
-      this.searchTerm
-    );
-  }
-
-
-  // =====================================================
-  // ACTUALIZAR RESULTADOS
-  // =====================================================
-
-  private updateSearchResults(): void {
-
     if (!this.searchTerm) {
 
       this.searchResults = [];
 
+      this.search$.next('');
+
       return;
     }
 
-
-    const search =
-      this.normalizeSearch(
-        this.searchTerm
-      );
-
-
-    this.searchResults =
-      this.allPlaces
-        .filter(place => {
-
-          // ---------------------------------------------
-          // RESPETAR FILTRO DE CATEGORÍA
-          // ---------------------------------------------
-
-          if (
-            this.selectedCategories.size > 0
-          ) {
-
-            const placeType =
-              (
-                place.type
-                ?? ''
-              ).toUpperCase();
-
-
-            const matchesCategory =
-              Array.from(
-                this.selectedCategories
-              ).some(
-                category =>
-                  this.categoryMatchesPlace(
-                    category,
-                    placeType
-                  )
-              );
-
-
-            if (!matchesCategory) {
-              return false;
-            }
-          }
-
-
-          const name =
-            this.normalizeSearch(
-              place.name
-            );
-
-
-          const address =
-            this.normalizeSearch(
-              place.address
-            );
-
-
-          const type =
-            this.normalizeSearch(
-              place.type
-            );
-
-
-          const description =
-            this.normalizeSearch(
-              place.description
-            );
-
-          const externalId =
-            this.normalizeSearch(
-              place.externalId
-            );
-
-          const flmCodigo =
-            this.normalizeSearch(
-              place.flmNocData?.codigoEmplazamiento
-            );
-
-          const flmZonal =
-            this.normalizeSearch(
-              place.flmNocData?.zonal
-            );
-
-          const flmControlCentral =
-            this.normalizeSearch(
-              place.flmNocData?.nombreControlCentral
-            );
-
-
-          return (
-            name.includes(search) ||
-            address.includes(search) ||
-            type.includes(search) ||
-            description.includes(search) ||
-            externalId.includes(search) ||
-            flmCodigo.includes(search) ||
-            flmZonal.includes(search) ||
-            flmControlCentral.includes(search)
-          );
-        })
-        .slice(
-          0,
-          8
-        );
+    this.search$.next(
+      this.searchTerm
+    );
   }
 
 

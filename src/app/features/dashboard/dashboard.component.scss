@@ -7,6 +7,7 @@ $primary-dark: #1d4ed8;
 
 $text: #1e293b;
 $text-secondary: #64748b;
+$text-muted: #94a3b8;
 
 $border: #e2e8f0;
 
@@ -21,9 +22,11 @@ $background: #f8fafc;
 
     width: 100%;
 
-    max-width: 1200px;
+    max-width: 1250px;
 
     margin: 0 auto;
+
+    box-sizing: border-box;
 }
 
 
@@ -33,7 +36,15 @@ $background: #f8fafc;
 
 .welcome-section {
 
-    margin-bottom: 26px;
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 28px;
 }
 
 
@@ -47,15 +58,15 @@ $background: #f8fafc;
 
     font-size: 11px;
 
-    font-weight: 750;
+    font-weight: 800;
 
-    letter-spacing: 0.08em;
+    letter-spacing: 0.09em;
 }
 
 
 .welcome-section h1 {
 
-    margin: 0 0 8px;
+    margin: 0 0 7px;
 
     color: $text;
 
@@ -73,132 +84,220 @@ $background: #f8fafc;
 
     color: $text-secondary;
 
-    font-size: 15px;
+    font-size: 14px;
 
     line-height: 1.5;
 }
 
 
-// =====================================================
-// BUSCADOR
-// =====================================================
-
-.search-card {
+.dashboard-status {
 
     display: flex;
 
     align-items: center;
 
-    gap: 16px;
+    gap: 8px;
+
+    padding: 9px 13px;
+
+    border: 1px solid #bbf7d0;
+
+    border-radius: 999px;
+
+    background: #f0fdf4;
+
+    color: #15803d;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+.status-dot {
+
+    width: 8px;
+
+    height: 8px;
+
+    display: inline-block;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow: 0 0 0 3px #dcfce7;
+}
+
+
+// =====================================================
+// KPIs
+// =====================================================
+
+.kpi-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 14px;
+
+    margin-bottom: 34px;
+}
+
+
+.kpi-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-height: 112px;
 
     padding: 18px;
 
-    margin-bottom: 34px;
+    border: 1px solid $border;
 
-    border: 1px solid #dbeafe;
-
-    border-radius: 16px;
+    border-radius: 15px;
 
     background: #ffffff;
 
     box-shadow:
-        0 5px 18px rgba(15, 23, 42, 0.05);
+        0 3px 12px rgba(15, 23, 42, 0.035);
+
+    box-sizing: border-box;
 }
 
 
-.search-icon {
+.kpi-icon {
 
     width: 48px;
 
     height: 48px;
 
+    flex-shrink: 0;
+
     display: flex;
 
     align-items: center;
 
     justify-content: center;
 
-    flex-shrink: 0;
-
     border-radius: 12px;
-
-    background: #eff6ff;
-
-    color: $primary;
 }
 
 
-.search-icon .material-symbols-outlined {
+.kpi-icon .material-symbols-outlined {
 
     font-size: 24px;
 }
 
 
-.search-content {
+.kpi-icon.blue,
+.tool-icon.blue,
+.operation-icon.blue {
 
-    flex: 1;
+    background: #eff6ff;
+
+    color: #2563eb;
+}
+
+
+.kpi-icon.green,
+.tool-icon.green,
+.operation-icon.green {
+
+    background: #f0fdf4;
+
+    color: #16a34a;
+}
+
+
+.kpi-icon.orange,
+.tool-icon.orange,
+.operation-icon.orange {
+
+    background: #fff7ed;
+
+    color: #ea580c;
+}
+
+
+.kpi-icon.purple,
+.tool-icon.purple,
+.operation-icon.purple {
+
+    background: #faf5ff;
+
+    color: #9333ea;
+}
+
+
+.operation-icon.cyan {
+
+    background: #ecfeff;
+
+    color: #0891b2;
+}
+
+
+.operation-icon.red,
+.tool-icon.red {
+
+    background: #fef2f2;
+
+    color: #dc2626;
+}
+
+
+.kpi-content {
+
+    min-width: 0;
 
     display: flex;
 
     flex-direction: column;
-
-    gap: 3px;
 }
 
 
-.search-content strong {
+.kpi-label {
+
+    color: $text-muted;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.06em;
+}
+
+
+.kpi-content strong {
+
+    margin-top: 2px;
 
     color: $text;
 
-    font-size: 15px;
+    font-size: 25px;
+
+    line-height: 1.15;
+
+    font-weight: 800;
 }
 
 
-.search-content span {
+.kpi-description {
+
+    margin-top: 3px;
 
     color: $text-secondary;
 
-    font-size: 13px;
-}
-
-
-.search-button {
-
-    min-width: 90px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    height: 42px;
-
-    padding: 0 18px;
-
-    border-radius: 9px;
-
-    background: $primary;
-
-    color: #ffffff;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    text-decoration: none;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.search-button:hover {
-
-    background: $primary-dark;
-
-    transform: translateY(-1px);
+    font-size: 11px;
 }
 
 
@@ -214,7 +313,27 @@ $background: #f8fafc;
 
 .section-header {
 
+    display: flex;
+
+    justify-content: space-between;
+
     margin-bottom: 16px;
+}
+
+
+.section-eyebrow {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: $primary;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
 }
 
 
@@ -226,7 +345,7 @@ $background: #f8fafc;
 
     font-size: 19px;
 
-    font-weight: 700;
+    font-weight: 750;
 }
 
 
@@ -241,130 +360,347 @@ $background: #f8fafc;
 
 
 // =====================================================
-// CATEGORÍAS
+// OPERACIONES
 // =====================================================
 
-.categories-grid {
+.operations-grid {
 
     display: grid;
 
     grid-template-columns:
-        repeat(6, 1fr);
+        repeat(3, 1fr);
 
-    gap: 12px;
+    gap: 14px;
 }
 
 
-.category-card {
+.operation-card {
 
-    min-height: 110px;
+    padding: 17px;
+
+    border: 1px solid $border;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 3px 12px rgba(15, 23, 42, 0.03);
+}
+
+
+.operation-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.operation-icon {
+
+    width: 39px;
+
+    height: 39px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+}
+
+
+.operation-icon .material-symbols-outlined {
+
+    font-size: 20px;
+}
+
+
+.operation-header>div:nth-child(2) {
+
+    min-width: 0;
+
+    flex: 1;
 
     display: flex;
 
     flex-direction: column;
 
-    align-items: center;
+    gap: 2px;
+}
 
-    justify-content: center;
 
-    gap: 10px;
-
-    padding: 14px;
-
-    border: 1px solid $border;
-
-    border-radius: 13px;
-
-    background: #ffffff;
+.operation-header strong {
 
     color: $text;
 
-    text-decoration: none;
-
-    transition:
-        border-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    font-size: 12px;
 }
 
 
-.category-card:hover {
+.operation-header span {
 
-    border-color: #bfdbfe;
+    color: $text-muted;
 
-    transform: translateY(-2px);
+    font-size: 10px;
+}
+
+
+.operation-value {
+
+    color: $text !important;
+
+    font-size: 17px !important;
+
+    font-weight: 800;
+}
+
+
+.progress-bar {
+
+    width: 100%;
+
+    height: 5px;
+
+    margin-top: 14px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: #f1f5f9;
+}
+
+
+.progress-fill {
+
+    height: 100%;
+
+    border-radius: inherit;
+}
+
+
+.blue-fill {
+
+    background: #2563eb;
+}
+
+
+.green-fill {
+
+    background: #16a34a;
+}
+
+
+.cyan-fill {
+
+    background: #0891b2;
+}
+
+
+.red-fill {
+
+    background: #dc2626;
+}
+
+
+.purple-fill {
+
+    background: #9333ea;
+}
+
+
+.orange-fill {
+
+    background: #ea580c;
+}
+
+
+// =====================================================
+// DISTRIBUCIÓN
+// =====================================================
+
+.distribution-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 16px;
+}
+
+
+.chart-card {
+
+    padding: 20px;
+
+    border: 1px solid $border;
+
+    border-radius: 15px;
+
+    background: #ffffff;
 
     box-shadow:
-        0 7px 18px rgba(15, 23, 42, 0.07);
+        0 3px 12px rgba(15, 23, 42, 0.03);
 }
 
 
-.category-icon {
+.chart-header {
 
-    width: 42px;
+    display: flex;
 
-    height: 42px;
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+
+.chart-header h3 {
+
+    margin: 0 0 3px;
+
+    color: $text;
+
+    font-size: 15px;
+
+    font-weight: 750;
+}
+
+
+.chart-header span {
+
+    color: $text-secondary;
+
+    font-size: 11px;
+}
+
+
+.chart-header>.material-symbols-outlined {
+
+    color: $primary;
+
+    font-size: 21px;
+}
+
+
+.bars-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+
+.bar-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.bar-label {
 
     display: flex;
 
     align-items: center;
 
-    justify-content: center;
-
-    border-radius: 11px;
-
-    background: #eff6ff;
-
-    color: $primary;
+    justify-content: space-between;
 }
 
 
-.category-icon .material-symbols-outlined {
+.bar-label span {
 
-    font-size: 22px;
+    color: $text-secondary;
+
+    font-size: 11px;
+
+    font-weight: 600;
 }
 
 
-.category-card>span {
+.bar-label strong {
 
     color: $text;
 
-    font-size: 13px;
+    font-size: 11px;
+}
 
-    font-weight: 600;
 
-    text-align: center;
+.bar-track {
+
+    width: 100%;
+
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: #f1f5f9;
+}
+
+
+.bar-fill {
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: $primary;
+
+    transition: width 0.4s ease;
+}
+
+
+.station-fill {
+
+    background: #475569;
 }
 
 
 // =====================================================
-// ACCIONES RÁPIDAS
+// HERRAMIENTAS
 // =====================================================
 
-.quick-actions {
+.tools-grid {
 
     display: grid;
 
     grid-template-columns:
         repeat(2, 1fr);
 
-    gap: 16px;
+    gap: 14px;
 }
 
 
-.quick-card {
+.tool-card {
 
-    min-height: 115px;
+    min-height: 118px;
 
     display: flex;
 
     align-items: center;
 
-    gap: 16px;
+    gap: 15px;
 
     position: relative;
 
-    padding: 20px;
+    padding: 19px;
 
     border: 1px solid $border;
 
@@ -376,6 +712,14 @@ $background: #f8fafc;
 
     text-decoration: none;
 
+    font-family: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
     transition:
         border-color 0.2s ease,
         transform 0.2s ease,
@@ -383,7 +727,7 @@ $background: #f8fafc;
 }
 
 
-.quick-card:hover {
+.tool-card:hover {
 
     border-color: #bfdbfe;
 
@@ -394,11 +738,13 @@ $background: #f8fafc;
 }
 
 
-.quick-icon {
+.tool-icon {
 
     width: 48px;
 
     height: 48px;
+
+    flex-shrink: 0;
 
     display: flex;
 
@@ -406,71 +752,85 @@ $background: #f8fafc;
 
     justify-content: center;
 
-    flex-shrink: 0;
-
     border-radius: 12px;
-
-    background: #eff6ff;
-
-    color: $primary;
 }
 
 
-.quick-icon .material-symbols-outlined {
+.tool-icon .material-symbols-outlined {
 
     font-size: 24px;
 }
 
 
-.quick-card h3 {
+.tool-content {
+
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+.tool-content h3 {
 
     margin: 0 0 5px;
 
     color: $text;
 
-    font-size: 15px;
+    font-size: 14px;
 
-    font-weight: 700;
+    font-weight: 750;
 }
 
 
-.quick-card p {
+.tool-content p {
 
     margin: 0;
 
     color: $text-secondary;
 
-    font-size: 12px;
+    font-size: 11px;
 
     line-height: 1.5;
 }
 
 
-.arrow {
+.tool-status {
 
-    margin-left: auto;
+    display: inline-block;
+
+    margin-top: 7px;
+
+    color: $primary;
+
+    font-size: 9px;
+
+    font-weight: 750;
+}
+
+
+.tool-arrow {
 
     color: #94a3b8;
 
-    font-size: 21px;
+    font-size: 20px;
 }
 
 
 // =====================================================
-// INFORMACIÓN
+// ESTADO DE BASE
 // =====================================================
 
-.information-card {
+.database-status {
 
     display: flex;
 
     align-items: center;
 
-    gap: 16px;
+    gap: 14px;
 
-    padding: 20px;
+    padding: 18px 20px;
 
-    margin-top: 6px;
+    margin-top: 5px;
 
     border: 1px solid #dbeafe;
 
@@ -480,11 +840,13 @@ $background: #f8fafc;
 }
 
 
-.information-icon {
+.database-icon {
 
-    width: 46px;
+    width: 43px;
 
-    height: 46px;
+    height: 43px;
+
+    flex-shrink: 0;
 
     display: flex;
 
@@ -492,9 +854,7 @@ $background: #f8fafc;
 
     justify-content: center;
 
-    flex-shrink: 0;
-
-    border-radius: 12px;
+    border-radius: 11px;
 
     background: #ffffff;
 
@@ -502,33 +862,57 @@ $background: #f8fafc;
 }
 
 
-.information-icon .material-symbols-outlined {
+.database-icon .material-symbols-outlined {
 
-    font-size: 23px;
+    font-size: 22px;
 }
 
 
-.information-card h3 {
+.database-content {
 
-    margin: 0 0 4px;
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.database-content strong {
 
     color: #1e40af;
 
-    font-size: 15px;
-
-    font-weight: 700;
+    font-size: 14px;
 }
 
 
-.information-card p {
-
-    margin: 0;
+.database-content span {
 
     color: #475569;
 
-    font-size: 13px;
+    font-size: 11px;
+}
 
-    line-height: 1.5;
+
+.database-indicator {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #15803d;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
 }
 
 
@@ -536,12 +920,43 @@ $background: #f8fafc;
 // TABLET
 // =====================================================
 
-@media (max-width: 1000px) {
+@media (max-width: 1050px) {
 
-    .categories-grid {
+    .kpi-grid {
 
         grid-template-columns:
-            repeat(3, 1fr);
+            repeat(2, 1fr);
+    }
+
+    .operations-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+
+// =====================================================
+// TABLET PEQUEÑO
+// =====================================================
+
+@media (max-width: 800px) {
+
+    .distribution-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .tools-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-section {
+
+        align-items: flex-start;
+
+        flex-direction: column;
     }
 }
 
@@ -550,66 +965,655 @@ $background: #f8fafc;
 // MÓVIL
 // =====================================================
 
-@media (max-width: 650px) {
+@media (max-width: 600px) {
+
+    .kpi-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .operations-grid {
+
+        grid-template-columns: 1fr;
+    }
 
     .welcome-section h1 {
 
         font-size: 25px;
     }
 
+    .dashboard-status {
 
-    .search-card {
+        align-self: flex-start;
+    }
+
+    .database-status {
 
         align-items: flex-start;
 
         flex-wrap: wrap;
     }
 
-
-    .search-content {
-
-        min-width: 0;
-    }
-
-
-    .search-button {
+    .database-indicator {
 
         width: 100%;
+
+        margin-left: 57px;
+    }
+}
+
+// =====================================================
+// ANIMACIONES DEL DASHBOARD
+// =====================================================
+
+// -----------------------------------------------------
+// VARIABLES DE ANIMACIÓN
+// -----------------------------------------------------
+
+$animation-duration: 0.55s;
+$animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+
+// =====================================================
+// KEYFRAMES
+// =====================================================
+
+// Entrada general desde abajo
+
+@keyframes dashboardFadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(18px);
     }
 
-
-    .categories-grid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-
-    .quick-actions {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    .information-card {
-
-        align-items: flex-start;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
 
-@media (max-width: 400px) {
+// Entrada suave desde la izquierda
 
-    .categories-grid {
+@keyframes dashboardFadeLeft {
 
-        grid-template-columns: 1fr 1fr;
-
-        gap: 8px;
+    from {
+        opacity: 0;
+        transform: translateX(-14px);
     }
 
-
-    .category-card {
-
-        min-height: 100px;
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
+}
+
+
+// Entrada suave desde la derecha
+
+@keyframes dashboardFadeRight {
+
+    from {
+        opacity: 0;
+        transform: translateX(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+// Pulso del indicador de sistema
+
+@keyframes statusPulse {
+
+    0% {
+        box-shadow:
+            0 0 0 0 rgba(34, 197, 94, 0.35);
+    }
+
+    70% {
+        box-shadow:
+            0 0 0 7px rgba(34, 197, 94, 0);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(34, 197, 94, 0);
+    }
+}
+
+
+// Entrada de las barras
+
+@keyframes barGrow {
+
+    from {
+        transform: scaleX(0);
+        transform-origin: left center;
+    }
+
+    to {
+        transform: scaleX(1);
+        transform-origin: left center;
+    }
+}
+
+
+// Pequeño movimiento del icono
+
+@keyframes iconFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+
+// Entrada de número
+
+@keyframes numberReveal {
+
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+// =====================================================
+// ENTRADA DEL DASHBOARD
+// =====================================================
+
+.dashboard {
+
+    animation:
+        dashboardFadeUp 0.55s $animation-easing both;
+}
+
+
+// =====================================================
+// ENCABEZADO
+// =====================================================
+
+.welcome-section {
+
+    animation:
+        dashboardFadeLeft 0.55s $animation-easing both;
+}
+
+
+.welcome-label {
+
+    animation:
+        dashboardFadeLeft 0.45s $animation-easing 0.05s both;
+}
+
+
+.welcome-section h1 {
+
+    animation:
+        dashboardFadeLeft 0.5s $animation-easing 0.1s both;
+}
+
+
+.welcome-section p {
+
+    animation:
+        dashboardFadeLeft 0.5s $animation-easing 0.15s both;
+}
+
+
+// =====================================================
+// ESTADO DEL SISTEMA
+// =====================================================
+
+.dashboard-status {
+
+    animation:
+        dashboardFadeRight 0.5s $animation-easing 0.2s both;
+}
+
+
+.dashboard-status .status-dot {
+
+    animation:
+        statusPulse 2.2s ease-out infinite;
+}
+
+
+// =====================================================
+// KPIs
+// =====================================================
+
+.kpi-card {
+
+    opacity: 0;
+
+    animation:
+        dashboardFadeUp $animation-duration $animation-easing both;
+
+    transition:
+        transform 0.25s $animation-easing,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+// Entrada escalonada
+
+.kpi-card:nth-child(1) {
+    animation-delay: 0.10s;
+}
+
+.kpi-card:nth-child(2) {
+    animation-delay: 0.17s;
+}
+
+.kpi-card:nth-child(3) {
+    animation-delay: 0.24s;
+}
+
+.kpi-card:nth-child(4) {
+    animation-delay: 0.31s;
+}
+
+
+// Hover de KPI
+
+.kpi-card:hover {
+
+    transform: translateY(-4px);
+
+    border-color: #bfdbfe;
+
+    box-shadow:
+        0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+
+// Icono del KPI
+
+.kpi-card:hover .kpi-icon {
+
+    animation:
+        iconFloat 0.55s ease-in-out;
+}
+
+
+// =====================================================
+// NÚMEROS DE KPI
+// =====================================================
+
+.kpi-content strong {
+
+    animation:
+        numberReveal 0.5s $animation-easing 0.25s both;
+}
+
+
+// =====================================================
+// TÍTULOS DE SECCIÓN
+// =====================================================
+
+.dashboard-section {
+
+    animation:
+        dashboardFadeUp 0.55s $animation-easing 0.15s both;
+}
+
+
+.section-header {
+
+    animation:
+        dashboardFadeLeft 0.45s $animation-easing 0.15s both;
+}
+
+
+// =====================================================
+// TARJETAS DE OPERACIÓN
+// =====================================================
+
+.operation-card {
+
+    opacity: 0;
+
+    animation:
+        dashboardFadeUp $animation-duration $animation-easing both;
+
+    transition:
+        transform 0.25s $animation-easing,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+// Entrada escalonada
+
+.operation-card:nth-child(1) {
+    animation-delay: 0.10s;
+}
+
+.operation-card:nth-child(2) {
+    animation-delay: 0.17s;
+}
+
+.operation-card:nth-child(3) {
+    animation-delay: 0.24s;
+}
+
+.operation-card:nth-child(4) {
+    animation-delay: 0.31s;
+}
+
+.operation-card:nth-child(5) {
+    animation-delay: 0.38s;
+}
+
+.operation-card:nth-child(6) {
+    animation-delay: 0.45s;
+}
+
+
+// Hover
+
+.operation-card:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #bfdbfe;
+
+    box-shadow:
+        0 9px 22px rgba(15, 23, 42, 0.07);
+}
+
+
+// Icono
+
+.operation-card:hover .operation-icon {
+
+    animation:
+        iconFloat 0.55s ease-in-out;
+}
+
+
+// =====================================================
+// BARRAS DE OPERACIÓN
+// =====================================================
+
+.progress-fill {
+
+    transform-origin: left center;
+
+    animation:
+        barGrow 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+
+// =====================================================
+// TARJETAS DE GRÁFICOS
+// =====================================================
+
+.chart-card {
+
+    opacity: 0;
+
+    animation:
+        dashboardFadeUp 0.55s $animation-easing 0.2s both;
+
+    transition:
+        transform 0.25s $animation-easing,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.chart-card:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #dbeafe;
+
+    box-shadow:
+        0 9px 22px rgba(15, 23, 42, 0.06);
+}
+
+
+// =====================================================
+// ENCABEZADOS DE GRÁFICOS
+// =====================================================
+
+.chart-header {
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+.chart-card:hover .chart-header {
+
+    transform: translateX(2px);
+}
+
+
+// =====================================================
+// BARRAS DE DISTRIBUCIÓN
+// =====================================================
+
+.bar-fill {
+
+    transform-origin: left center;
+
+    animation:
+        barGrow 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+
+
+// Hover individual
+
+.bar-item {
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.bar-item:hover {
+
+    transform: translateX(3px);
+}
+
+
+.bar-item:hover .bar-label span {
+
+    color: $primary;
+}
+
+
+.bar-item:hover .bar-label strong {
+
+    transform: scale(1.04);
+}
+
+
+.bar-label strong {
+
+    display: inline-block;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+// =====================================================
+// HERRAMIENTAS OPERATIVAS
+// =====================================================
+
+.tool-card {
+
+    opacity: 0;
+
+    animation:
+        dashboardFadeUp 0.55s $animation-easing both;
+
+    transition:
+        transform 0.25s $animation-easing,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+
+// Entrada escalonada
+
+.tool-card:nth-child(1) {
+    animation-delay: 0.10s;
+}
+
+.tool-card:nth-child(2) {
+    animation-delay: 0.18s;
+}
+
+.tool-card:nth-child(3) {
+    animation-delay: 0.26s;
+}
+
+.tool-card:nth-child(4) {
+    animation-delay: 0.34s;
+}
+
+
+// Hover
+
+.tool-card:hover {
+
+    transform:
+        translateY(-4px) scale(1.005);
+
+    border-color: #bfdbfe;
+
+    box-shadow:
+        0 12px 25px rgba(15, 23, 42, 0.08);
+}
+
+
+// Icono
+
+.tool-card:hover .tool-icon {
+
+    transform: scale(1.06);
+
+    transition:
+        transform 0.25s $animation-easing;
+}
+
+
+// Flecha
+
+.tool-arrow {
+
+    transition:
+        transform 0.25s $animation-easing,
+        color 0.2s ease;
+}
+
+
+.tool-card:hover .tool-arrow {
+
+    transform: translateX(5px);
+
+    color: $primary;
+}
+
+
+// =====================================================
+// ESTADO DE LA BASE
+// =====================================================
+
+.database-status {
+
+    animation:
+        dashboardFadeUp 0.6s $animation-easing 0.45s both;
+
+    transition:
+        transform 0.25s $animation-easing,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.database-status:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #bfdbfe;
+
+    box-shadow:
+        0 9px 22px rgba(15, 23, 42, 0.06);
+}
+
+
+.database-status:hover .database-icon {
+
+    animation:
+        iconFloat 0.55s ease-in-out;
+}
+
+
+// =====================================================
+// INDICADOR DE BASE DE DATOS
+// =====================================================
+
+.database-indicator .status-dot {
+
+    animation:
+        statusPulse 2.2s ease-out infinite;
+}
+
+
+// =====================================================
+// BOTONES DE REINTENTO / ESTADOS
+// =====================================================
+
+.tool-card:active {
+
+    transform:
+        translateY(-1px) scale(0.995);
+}
+
+
+// =====================================================
+// REDUCCIÓN DE MOVIMIENTO
+// ACCESIBILIDAD
+// =====================================================
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+
+        scroll-behavior: auto !important;
+    }
+
 }

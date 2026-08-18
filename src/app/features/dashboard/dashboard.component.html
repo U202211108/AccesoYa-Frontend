@@ -1,7 +1,7 @@
 <div class="dashboard">
 
     <!-- ================================================= -->
-    <!-- BIENVENIDA -->
+    <!-- ENCABEZADO -->
     <!-- ================================================= -->
 
     <section class="welcome-section">
@@ -9,7 +9,7 @@
         <div>
 
             <span class="welcome-label">
-                INICIO
+                PANEL DE CONTROL OPERATIVO
             </span>
 
             <h1>
@@ -17,365 +17,62 @@
             </h1>
 
             <p>
-                Encuentra lugares y servicios que se
-                adapten a tus necesidades de accesibilidad.
+                Gestión y monitoreo de sitios de telecomunicaciones
+                y operaciones FLM/NOC.
             </p>
 
         </div>
 
-    </section>
 
+        <div class="dashboard-status">
 
-    <!-- ================================================= -->
-    <!-- BUSCADOR -->
-    <!-- ================================================= -->
-
-    <section class="search-card">
-
-        <div class="search-icon">
-
-            <span class="material-symbols-outlined">
-                search
-            </span>
-
-        </div>
-
-
-        <div class="search-content">
-
-            <strong>
-                ¿Qué lugar estás buscando?
-            </strong>
+            <span class="status-dot"></span>
 
             <span>
-                Busca establecimientos, servicios o lugares.
+                {{
+                loading
+                ? 'Cargando información'
+                : error
+                ? 'Error de conexión'
+                : 'Sistema operativo'
+                }}
             </span>
 
         </div>
 
-
-        <a [routerLink]="['/places/map']" [queryParams]="{ mode: 'search' }" class="search-button">
-
-            Buscar
-
-        </a>
-
     </section>
 
 
     <!-- ================================================= -->
-    <!-- CATEGORÍAS -->
+    <!-- ESTADO DE CARGA -->
     <!-- ================================================= -->
+
+    @if (loading) {
 
     <section class="dashboard-section">
 
-        <div class="section-header">
+        <div class="chart-card">
 
-            <div>
+            <div class="section-header">
 
-                <h2>
-                    Explorar por categoría
-                </h2>
+                <div>
 
-                <p>
-                    Encuentra rápidamente el tipo de lugar
-                    que necesitas.
-                </p>
+                    <span class="section-eyebrow">
+                        FLM / NOC
+                    </span>
+
+                    <h2>
+                        Cargando información
+                    </h2>
+
+                    <p>
+                        Consultando los datos operativos
+                        disponibles.
+                    </p>
+
+                </div>
 
             </div>
-
-        </div>
-
-
-        <div class="categories-grid">
-
-            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'HEALTHCARE' }" class="category-card">
-                <div class="category-icon">
-                    <span class="material-symbols-outlined">
-                        medical_services
-                    </span>
-                </div>
-
-                <span>Salud</span>
-            </a>
-
-
-            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'RESTAURANT' }" class="category-card">
-                <div class="category-icon">
-                    <span class="material-symbols-outlined">
-                        restaurant
-                    </span>
-                </div>
-
-                <span>Restaurantes</span>
-            </a>
-
-
-            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'BANK' }" class="category-card">
-                <div class="category-icon">
-                    <span class="material-symbols-outlined">
-                        account_balance
-                    </span>
-                </div>
-
-                <span>Bancos</span>
-            </a>
-
-
-            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'EDUCATION' }" class="category-card">
-                <div class="category-icon">
-                    <span class="material-symbols-outlined">
-                        school
-                    </span>
-                </div>
-
-                <span>Educación</span>
-            </a>
-
-
-            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'SHOPPING' }" class="category-card">
-                <div class="category-icon">
-                    <span class="material-symbols-outlined">
-                        shopping_cart
-                    </span>
-                </div>
-
-                <span>Compras</span>
-            </a>
-
-
-            <a [routerLink]="['/places/map']" [queryParams]="{ category: 'HOTEL' }" class="category-card">
-                <div class="category-icon">
-                    <span class="material-symbols-outlined">
-                        hotel
-                    </span>
-                </div>
-
-                <span>Hoteles</span>
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================================================= -->
-    <!-- ACCIONES RÁPIDAS -->
-    <!-- ================================================= -->
-
-    <section class="dashboard-section">
-
-        <div class="section-header">
-
-            <div>
-
-                <h2>
-                    Acciones rápidas
-                </h2>
-
-                <p>
-                    Accede rápidamente a las principales
-                    funcionalidades.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="quick-actions">
-
-
-            <a routerLink="/places/map" class="quick-card">
-
-                <div class="quick-icon">
-
-                    <span class="material-symbols-outlined">
-                        map
-                    </span>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Explorar mapa
-                    </h3>
-
-                    <p>
-                        Consulta lugares accesibles
-                        disponibles en el mapa.
-                    </p>
-
-                </div>
-
-                <span class="material-symbols-outlined arrow">
-                    arrow_forward
-                </span>
-
-            </a>
-
-
-            @if (role === 'USER') {
-
-            <a routerLink="/establishment/request" class="quick-card">
-
-                <div class="quick-icon">
-
-                    <span class="material-symbols-outlined">
-                        add_business
-                    </span>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Registrar establecimiento
-                    </h3>
-
-                    <p>
-                        Solicita registrar tu establecimiento
-                        en AccesoYa.
-                    </p>
-
-                </div>
-
-                <span class="material-symbols-outlined arrow">
-                    arrow_forward
-                </span>
-
-            </a>
-
-
-            <a routerLink="/establishment/requests" class="quick-card">
-
-                <div class="quick-icon">
-
-                    <span class="material-symbols-outlined">
-                        assignment
-                    </span>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Mis solicitudes
-                    </h3>
-
-                    <p>
-                        Consulta el estado de tus solicitudes
-                        de establecimiento.
-                    </p>
-
-                </div>
-
-                <span class="material-symbols-outlined arrow">
-                    arrow_forward
-                </span>
-
-            </a>
-
-            }
-
-
-            @if (role === 'ESTABLISHMENT') {
-
-            <a routerLink="/establishment/my-establishments" class="quick-card">
-
-                <div class="quick-icon">
-
-                    <span class="material-symbols-outlined">
-                        business
-                    </span>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Mi establecimiento
-                    </h3>
-
-                    <p>
-                        Consulta y administra la información
-                        de tu establecimiento.
-                    </p>
-
-                </div>
-
-                <span class="material-symbols-outlined arrow">
-                    arrow_forward
-                </span>
-
-            </a>
-
-            }
-
-
-        </div>
-
-    </section>
-
-    <!-- ================================================= -->
-    <!-- ADMINISTRACIÓN -->
-    <!-- ================================================= -->
-
-    @if (role === 'ADMIN' || role === 'MODERATOR') {
-
-    <section class="dashboard-section">
-
-        <div class="section-header">
-
-            <div>
-
-                <h2>
-                    Administración
-                </h2>
-
-                <p>
-                    Gestiona las solicitudes de establecimientos
-                    pendientes de revisión.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="quick-actions">
-
-            <a routerLink="/moderator/requests" class="quick-card">
-
-                <div class="quick-icon">
-
-                    <span class="material-symbols-outlined">
-                        rate_review
-                    </span>
-
-                </div>
-
-
-                <div>
-
-                    <h3>
-                        Solicitudes de establecimientos
-                    </h3>
-
-                    <p>
-                        Revisa, aprueba o rechaza las solicitudes
-                        enviadas por los usuarios.
-                    </p>
-
-                </div>
-
-
-                <span class="material-symbols-outlined arrow">
-                    arrow_forward
-                </span>
-
-            </a>
 
         </div>
 
@@ -385,33 +82,1348 @@
 
 
     <!-- ================================================= -->
-    <!-- INFORMACIÓN -->
+    <!-- ERROR -->
     <!-- ================================================= -->
 
-    <section class="information-card">
+    @if (error) {
 
-        <div class="information-icon">
+    <section class="dashboard-section">
 
-            <span class="material-symbols-outlined">
-                accessibility_new
-            </span>
+        <div class="chart-card">
 
-        </div>
+            <div class="section-header">
 
-        <div>
+                <div>
 
-            <h3>
-                Construyamos una ciudad más accesible
-            </h3>
+                    <span class="section-eyebrow">
+                        FLM / NOC
+                    </span>
 
-            <p>
-                Tu participación ayuda a mantener actualizada
-                la información sobre accesibilidad de los
-                establecimientos.
-            </p>
+                    <h2>
+                        No se pudo cargar el dashboard
+                    </h2>
+
+                    <p>
+                        No fue posible obtener la información
+                        operativa desde el servidor.
+                    </p>
+
+                </div>
+
+
+                <button type="button" class="tool-card" (click)="retry()">
+
+                    <span class="material-symbols-outlined">
+                        refresh
+                    </span>
+
+                    Reintentar
+
+                </button>
+
+            </div>
 
         </div>
 
     </section>
+
+    }
+
+
+    <!-- ================================================= -->
+    <!-- DASHBOARD -->
+    <!-- ================================================= -->
+
+    @if (dashboard) {
+
+
+    <!-- =============================================== -->
+    <!-- KPIs -->
+    <!-- =============================================== -->
+
+    <section class="kpi-grid">
+
+
+        <!-- =========================================== -->
+        <!-- SITIOS REGISTRADOS -->
+        <!-- =========================================== -->
+
+        <div class="kpi-card">
+
+            <div class="kpi-icon blue">
+
+                <span class="material-symbols-outlined">
+                    cell_tower
+                </span>
+
+            </div>
+
+
+            <div class="kpi-content">
+
+                <span class="kpi-label">
+                    SITIOS REGISTRADOS
+                </span>
+
+                <strong>
+                    {{ dashboard.totalSites | number }}
+                </strong>
+
+                <span class="kpi-description">
+                    Sitios FLM/NOC
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================== -->
+        <!-- MONITOREO CSI -->
+        <!-- =========================================== -->
+
+        <div class="kpi-card">
+
+            <div class="kpi-icon green">
+
+                <span class="material-symbols-outlined">
+                    monitoring
+                </span>
+
+            </div>
+
+
+            <div class="kpi-content">
+
+                <span class="kpi-label">
+                    MONITOREO CSI
+                </span>
+
+                <strong>
+
+                    @for (
+                    item of dashboard.csiMonitoring;
+                    track item.value
+                    ) {
+
+                    @if (
+                    item.value?.toUpperCase() === 'SI'
+                    ) {
+
+                    {{ item.count | number }}
+
+                    }
+
+                    }
+
+                </strong>
+
+                <span class="kpi-description">
+                    Sitios con monitoreo CSI
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================== -->
+        <!-- COBERTURA DE REACCIÓN -->
+        <!-- =========================================== -->
+
+        <div class="kpi-card">
+
+            <div class="kpi-icon orange">
+
+                <span class="material-symbols-outlined">
+                    shield
+                </span>
+
+            </div>
+
+
+            <div class="kpi-content">
+
+                <span class="kpi-label">
+                    COBERTURA DE REACCIÓN
+                </span>
+
+                <strong>
+
+                    @for (
+                    item of dashboard.reactionCoverage;
+                    track item.value
+                    ) {
+
+                    @if (
+                    item.value?.toUpperCase() === 'SI'
+                    ) {
+
+                    {{ item.count | number }}
+
+                    }
+
+                    }
+
+                </strong>
+
+                <span class="kpi-description">
+                    Sitios con cobertura
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================== -->
+        <!-- PATRULLAJE -->
+        <!-- =========================================== -->
+
+        <div class="kpi-card">
+
+            <div class="kpi-icon purple">
+
+                <span class="material-symbols-outlined">
+                    local_police
+                </span>
+
+            </div>
+
+
+            <div class="kpi-content">
+
+                <span class="kpi-label">
+                    PATRULLAJE
+                </span>
+
+                <strong>
+
+                    @for (
+                    item of dashboard.patrol;
+                    track item.value
+                    ) {
+
+                    @if (
+                    item.value?.toUpperCase() === 'SI'
+                    ) {
+
+                    {{ item.count | number }}
+
+                    }
+
+                    }
+
+                </strong>
+
+                <span class="kpi-description">
+                    Sitios con patrullaje
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- OPERACIÓN DE SEGURIDAD -->
+    <!-- =============================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    FLM / NOC
+                </span>
+
+                <h2>
+                    Operación de seguridad
+                </h2>
+
+                <p>
+                    Información operativa registrada
+                    en los sitios.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="operations-grid">
+
+
+            <!-- ======================================= -->
+            <!-- COBERTURA DE REACCIÓN -->
+            <!-- ======================================= -->
+
+            <div class="operation-card">
+
+                <div class="operation-header">
+
+                    <div class="operation-icon blue">
+
+                        <span class="material-symbols-outlined">
+                            shield
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Cobertura de reacción
+                        </strong>
+
+                        <span>
+                            Sitios con cobertura
+                        </span>
+
+                    </div>
+
+
+                    <strong class="operation-value">
+
+                        @for (
+                        item of dashboard.reactionCoverage;
+                        track item.value
+                        ) {
+
+                        @if (
+                        item.value?.toUpperCase() === 'SI'
+                        ) {
+
+                        {{ item.count | number }}
+
+                        }
+
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    @for (
+                    item of dashboard.reactionCoverage;
+                    track item.value
+                    ) {
+
+                    @if (
+                    item.value?.toUpperCase() === 'SI'
+                    ) {
+
+                    <div class="progress-fill blue-fill" [style.width.%]="
+                                        getPercentage(item.count)
+                                    ">
+                    </div>
+
+                    }
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ======================================= -->
+            <!-- MONITOREO CSI -->
+            <!-- ======================================= -->
+
+            <div class="operation-card">
+
+                <div class="operation-header">
+
+                    <div class="operation-icon green">
+
+                        <span class="material-symbols-outlined">
+                            monitoring
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Monitoreo CSI
+                        </strong>
+
+                        <span>
+                            Sitios con monitoreo
+                        </span>
+
+                    </div>
+
+
+                    <strong class="operation-value">
+
+                        @for (
+                        item of dashboard.csiMonitoring;
+                        track item.value
+                        ) {
+
+                        @if (
+                        item.value?.toUpperCase() === 'SI'
+                        ) {
+
+                        {{ item.count | number }}
+
+                        }
+
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    @for (
+                    item of dashboard.csiMonitoring;
+                    track item.value
+                    ) {
+
+                    @if (
+                    item.value?.toUpperCase() === 'SI'
+                    ) {
+
+                    <div class="progress-fill green-fill" [style.width.%]="
+                                        getPercentage(item.count)
+                                    ">
+                    </div>
+
+                    }
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ======================================= -->
+            <!-- RONDA DINÁMICA -->
+            <!-- ======================================= -->
+
+            <div class="operation-card">
+
+                <div class="operation-header">
+
+                    <div class="operation-icon cyan">
+
+                        <span class="material-symbols-outlined">
+                            route
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Ronda dinámica
+                        </strong>
+
+                        <span>
+                            Sitios con ronda dinámica
+                        </span>
+
+                    </div>
+
+
+                    <strong class="operation-value">
+
+                        @for (
+                        item of dashboard.dynamicRound;
+                        track item.value
+                        ) {
+
+                        @if (
+                        item.value?.toUpperCase() === 'SI'
+                        ) {
+
+                        {{ item.count | number }}
+
+                        }
+
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    @for (
+                    item of dashboard.dynamicRound;
+                    track item.value
+                    ) {
+
+                    @if (
+                    item.value?.toUpperCase() === 'SI'
+                    ) {
+
+                    <div class="progress-fill cyan-fill" [style.width.%]="
+                                        getPercentage(item.count)
+                                    ">
+                    </div>
+
+                    }
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ======================================= -->
+            <!-- VIGILANCIA -->
+            <!-- ======================================= -->
+
+            <div class="operation-card">
+
+                <div class="operation-header">
+
+                    <div class="operation-icon red">
+
+                        <span class="material-symbols-outlined">
+                            visibility
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Vigilancia
+                        </strong>
+
+                        <span>
+                            Sitios con vigilancia
+                        </span>
+
+                    </div>
+
+
+                    <strong class="operation-value">
+
+                        @for (
+                        item of dashboard.surveillance;
+                        track item.value
+                        ) {
+
+                        @if (
+                        item.value?.toUpperCase() === 'SI'
+                        ) {
+
+                        {{ item.count | number }}
+
+                        }
+
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    @for (
+                    item of dashboard.surveillance;
+                    track item.value
+                    ) {
+
+                    @if (
+                    item.value?.toUpperCase() === 'SI'
+                    ) {
+
+                    <div class="progress-fill red-fill" [style.width.%]="
+                                        getPercentage(item.count)
+                                    ">
+                    </div>
+
+                    }
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ======================================= -->
+            <!-- GUARDIANÍA -->
+            <!-- ======================================= -->
+
+            <div class="operation-card">
+
+                <div class="operation-header">
+
+                    <div class="operation-icon purple">
+
+                        <span class="material-symbols-outlined">
+                            lock
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Guardianía
+                        </strong>
+
+                        <span>
+                            Sitios con guardianía
+                        </span>
+
+                    </div>
+
+
+                    <strong class="operation-value">
+
+                        @for (
+                        item of dashboard.guard;
+                        track item.value
+                        ) {
+
+                        @if (
+                        item.value?.toUpperCase() === 'SI'
+                        ) {
+
+                        {{ item.count | number }}
+
+                        }
+
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    @for (
+                    item of dashboard.guard;
+                    track item.value
+                    ) {
+
+                    @if (
+                    item.value?.toUpperCase() === 'SI'
+                    ) {
+
+                    <div class="progress-fill purple-fill" [style.width.%]="
+                                        getPercentage(item.count)
+                                    ">
+                    </div>
+
+                    }
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ======================================= -->
+            <!-- PATRULLAJE -->
+            <!-- ======================================= -->
+
+            <div class="operation-card">
+
+                <div class="operation-header">
+
+                    <div class="operation-icon orange">
+
+                        <span class="material-symbols-outlined">
+                            local_police
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Patrullaje
+                        </strong>
+
+                        <span>
+                            Sitios con patrullaje
+                        </span>
+
+                    </div>
+
+
+                    <strong class="operation-value">
+
+                        @for (
+                        item of dashboard.patrol;
+                        track item.value
+                        ) {
+
+                        @if (
+                        item.value?.toUpperCase() === 'SI'
+                        ) {
+
+                        {{ item.count | number }}
+
+                        }
+
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    @for (
+                    item of dashboard.patrol;
+                    track item.value
+                    ) {
+
+                    @if (
+                    item.value?.toUpperCase() === 'SI'
+                    ) {
+
+                    <div class="progress-fill orange-fill" [style.width.%]="
+                                        getPercentage(item.count)
+                                    ">
+                    </div>
+
+                    }
+
+                    }
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- DISTRIBUCIÓN -->
+    <!-- =============================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    INVENTARIO
+                </span>
+
+                <h2>
+                    Distribución de sitios
+                </h2>
+
+                <p>
+                    Distribución geográfica y
+                    características de los sitios.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="distribution-grid">
+
+
+            <!-- ========================================= -->
+            <!-- ZONALES -->
+            <!-- ========================================= -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+                            Sitios por zonal
+                        </h3>
+
+                        <span>
+                            Distribución de sitios por zona
+                            operativa.
+                        </span>
+
+                    </div>
+
+
+                    <span class="material-symbols-outlined">
+                        location_on
+                    </span>
+
+                </div>
+
+
+                <div class="bars-list">
+
+                    @if (zonales.length === 0) {
+
+                    <span class="kpi-description">
+                        No hay datos de zonales disponibles.
+                    </span>
+
+                    }
+
+
+                    @for (
+                    zonal of zonales;
+                    track zonal.value
+                    ) {
+
+                    <div class="bar-item">
+
+                        <div class="bar-label">
+
+                            <span>
+                                {{ zonal.value }}
+                            </span>
+
+                            <strong>
+                                {{ zonal.count | number }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="bar-track">
+
+                            <div class="bar-fill" [style.width.%]="
+                                            getPercentage(
+                                                zonal.count
+                                            )
+                                        ">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================= -->
+            <!-- TIPO DE ESTACIÓN -->
+            <!-- ========================================= -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+                            Tipo de estación
+                        </h3>
+
+                        <span>
+                            Distribución de tipos registrados.
+                        </span>
+
+                    </div>
+
+
+                    <span class="material-symbols-outlined">
+                        cell_tower
+                    </span>
+
+                </div>
+
+
+                <div class="bars-list">
+
+                    @if (stationTypes.length === 0) {
+
+                    <span class="kpi-description">
+                        No hay datos de tipos de estación
+                        disponibles.
+                    </span>
+
+                    }
+
+
+                    @for (
+                    station of stationTypes;
+                    track station.value
+                    ) {
+
+                    <div class="bar-item">
+
+                        <div class="bar-label">
+
+                            <span>
+                                {{ station.value }}
+                            </span>
+
+                            <strong>
+                                {{ station.count | number }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="bar-track">
+
+                            <div class="bar-fill station-fill" [style.width.%]="
+                                            getPercentage(
+                                                station.count
+                                            )
+                                        ">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- INFORMACIÓN ADICIONAL -->
+    <!-- =============================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    INFORMACIÓN OPERATIVA
+                </span>
+
+                <h2>
+                    Distribuciones adicionales
+                </h2>
+
+                <p>
+                    Información disponible en la base
+                    FLM/NOC.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="distribution-grid">
+
+
+            <!-- ========================================= -->
+            <!-- TECNOLOGÍA -->
+            <!-- ========================================= -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+                            Tecnología
+                        </h3>
+
+                        <span>
+                            Tecnologías registradas en los sitios.
+                        </span>
+
+                    </div>
+
+
+                    <span class="material-symbols-outlined">
+                        settings_input_antenna
+                    </span>
+
+                </div>
+
+
+                <div class="bars-list">
+
+                    @for (
+                    technology of dashboard.byTechnology;
+                    track technology.value
+                    ) {
+
+                    <div class="bar-item">
+
+                        <div class="bar-label">
+
+                            <span>
+                                {{ technology.value }}
+                            </span>
+
+                            <strong>
+                                {{ technology.count | number }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="bar-track">
+
+                            <div class="bar-fill" [style.width.%]="
+                                            getPercentage(
+                                                technology.count
+                                            )
+                                        ">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================= -->
+            <!-- PROPIETARIO DE TORRE -->
+            <!-- ========================================= -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+                            Propietario de torre
+                        </h3>
+
+                        <span>
+                            Distribución registrada.
+                        </span>
+
+                    </div>
+
+
+                    <span class="material-symbols-outlined">
+                        domain
+                    </span>
+
+                </div>
+
+
+                <div class="bars-list">
+
+                    @for (
+                    owner of dashboard.byTowerOwner;
+                    track owner.value
+                    ) {
+
+                    <div class="bar-item">
+
+                        <div class="bar-label">
+
+                            <span>
+                                {{ owner.value }}
+                            </span>
+
+                            <strong>
+                                {{ owner.count | number }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="bar-track">
+
+                            <div class="bar-fill station-fill" [style.width.%]="
+                                            getPercentage(
+                                                owner.count
+                                            )
+                                        ">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- ACCIONES OPERATIVAS -->
+    <!-- =============================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    HERRAMIENTAS
+                </span>
+
+                <h2>
+                    Acciones operativas
+                </h2>
+
+                <p>
+                    Accede rápidamente a las principales
+                    herramientas de gestión.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="tools-grid">
+
+
+            <!-- MAPA -->
+
+            <a routerLink="/places/map" class="tool-card">
+
+                <div class="tool-icon blue">
+
+                    <span class="material-symbols-outlined">
+                        map
+                    </span>
+
+                </div>
+
+
+                <div class="tool-content">
+
+                    <h3>
+                        Mapa operativo
+                    </h3>
+
+                    <p>
+                        Consulta la ubicación geográfica
+                        de los sitios telecom.
+                    </p>
+
+                </div>
+
+
+                <span class="material-symbols-outlined tool-arrow">
+                    arrow_forward
+                </span>
+
+            </a>
+
+
+            <!-- PLANOS -->
+
+            <!-- PLANOS -->
+
+            <a routerLink="/plans" class="tool-card">
+
+                <div class="tool-icon purple">
+
+                    <span class="material-symbols-outlined">
+                        architecture
+                    </span>
+
+                </div>
+
+
+                <div class="tool-content">
+
+                    <h3>
+                        Gestión de planos
+                    </h3>
+
+                    <p>
+                        Importa, consulta y administra
+                        planos asociados a los sitios.
+                    </p>
+
+                </div>
+
+
+                <span class="material-symbols-outlined tool-arrow">
+                    arrow_forward
+                </span>
+
+            </a>
+
+
+            <!-- REPORTES -->
+
+            <button type="button" class="tool-card" (click)="comingSoon('Generación de reportes PDF')">
+
+                <div class="tool-icon red">
+
+                    <span class="material-symbols-outlined">
+                        picture_as_pdf
+                    </span>
+
+                </div>
+
+
+                <div class="tool-content">
+
+                    <h3>
+                        Reportes PDF
+                    </h3>
+
+                    <p>
+                        Genera reportes operativos de
+                        los sitios seleccionados.
+                    </p>
+
+                    <span class="tool-status">
+                        Próximamente
+                    </span>
+
+                </div>
+
+
+                <span class="material-symbols-outlined tool-arrow">
+                    arrow_forward
+                </span>
+
+            </button>
+
+
+            <!-- IMPORTACIÓN -->
+
+            <button type="button" class="tool-card" (click)="comingSoon('Importación de base FLM/NOC')">
+
+                <div class="tool-icon green">
+
+                    <span class="material-symbols-outlined">
+                        upload_file
+                    </span>
+
+                </div>
+
+
+                <div class="tool-content">
+
+                    <h3>
+                        Importar base FLM/NOC
+                    </h3>
+
+                    <p>
+                        Actualiza la información de sitios
+                        mediante archivos Excel.
+                    </p>
+
+                    <span class="tool-status">
+                        Próximamente
+                    </span>
+
+                </div>
+
+
+                <span class="material-symbols-outlined tool-arrow">
+                    arrow_forward
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- ESTADO DE LA BASE -->
+    <!-- =============================================== -->
+
+    <section class="database-status">
+
+        <div class="database-icon">
+
+            <span class="material-symbols-outlined">
+                database
+            </span>
+
+        </div>
+
+
+        <div class="database-content">
+
+            <strong>
+                Base FLM/NOC
+            </strong>
+
+            <span>
+                {{
+                dashboard.totalSites | number
+                }}
+                sitios registrados
+            </span>
+
+        </div>
+
+
+        <div class="database-indicator">
+
+            <span class="status-dot"></span>
+
+            <span>
+                Datos disponibles
+            </span>
+
+        </div>
+
+    </section>
+
+
+    }
 
 </div>
