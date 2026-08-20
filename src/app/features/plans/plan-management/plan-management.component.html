@@ -13,12 +13,12 @@
             </span>
 
             <h1>
-                Gestión de planos
+                Gestión documental
             </h1>
 
             <p>
-                Administra los planos asociados a los sitios
-                registrados en la plataforma.
+                Administra los planos y documentos asociados
+                a los sitios FLM/NOC registrados en la plataforma.
             </p>
 
         </div>
@@ -304,12 +304,12 @@
                 </span>
 
                 <h2>
-                    Planos del sitio
+                    Documentación del sitio
                 </h2>
 
                 <p>
-                    Consulta y administra los documentos
-                    asociados al sitio seleccionado.
+                    Consulta, importa y administra los planos y
+                    documentos asociados al sitio seleccionado.
                 </p>
 
             </div>
@@ -323,11 +323,26 @@
 
                 {{ uploading
                 ? 'Importando...'
-                : 'Importar plano'
+                : 'Importar documento'
                 }}
 
-                <input type="file" hidden accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
-                    [disabled]="uploading" (change)="onFileSelected($event)">
+                <input type="file" hidden accept="
+        .pdf,
+        .png,
+        .jpg,
+        .jpeg,
+        .doc,
+        .docx,
+        .xls,
+        .xlsx,
+        application/pdf,
+        image/png,
+        image/jpeg,
+        application/msword,
+        application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+        application/vnd.ms-excel,
+        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    " [disabled]="uploading" (change)="onFileSelected($event)">
 
             </label>
 
@@ -418,22 +433,9 @@
 
                 <div class="plan-icon">
 
-                    @if (
-                    plan.contentType ===
-                    'application/pdf'
-                    ) {
-
                     <span class="material-symbols-outlined">
-                        picture_as_pdf
+                        {{ getFileIcon(plan.contentType) }}
                     </span>
-
-                    } @else {
-
-                    <span class="material-symbols-outlined">
-                        image
-                    </span>
-
-                    }
 
                 </div>
 
@@ -447,7 +449,7 @@
                     <div class="plan-meta">
 
                         <span>
-                            {{ plan.contentType }}
+                            {{ getFileTypeLabel(plan.contentType) }}
                         </span>
 
                         <span>
@@ -465,18 +467,36 @@
 
                 <div class="plan-actions">
 
-                    <button type="button" class="icon-button" title="Visualizar" (click)="viewPlan(plan)">
+                    <!-- ============================================= -->
+                    <!-- VISUALIZAR -->
+                    <!-- ============================================= -->
 
+                    <button type="button" class="icon-button" title="Vista previa" (click)="viewPlan(plan)">
                         <span class="material-symbols-outlined">
                             visibility
                         </span>
-
                     </button>
 
 
+                    <!-- ============================================= -->
+                    <!-- ABRIR / DESCARGAR ORIGINAL -->
+                    <!-- ============================================= -->
+
+                    <button type="button" class="icon-button" [title]="'Abrir archivo'"
+                        (click)="openOriginalPlan(plan)">
+                        <span class="material-symbols-outlined">
+                            open_in_new
+                        </span>
+                    </button>
+
+
+                    <!-- ============================================= -->
+                    <!-- ELIMINAR -->
+                    <!-- ============================================= -->
+
                     <button type="button" class="icon-button danger" title="Eliminar" [disabled]="
-                                        deletingPlanId === plan.id
-                                    " (click)="deletePlan(plan)">
+            deletingPlanId === plan.id
+        " (click)="deletePlan(plan)">
 
                         @if (
                         deletingPlanId === plan.id
@@ -495,7 +515,6 @@
                     </button>
 
                 </div>
-
             </article>
 
             }
@@ -530,8 +549,23 @@
 
                     Importar primer plano
 
-                    <input type="file" hidden accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
-                        (change)="onFileSelected($event)">
+                    <input type="file" hidden accept="
+    .pdf,
+    .png,
+    .jpg,
+    .jpeg,
+    .doc,
+    .docx,
+    .xls,
+    .xlsx,
+    application/pdf,
+    image/png,
+    image/jpeg,
+    application/msword,
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+    application/vnd.ms-excel,
+    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+" (change)="onFileSelected($event)">
 
                 </label>
 
@@ -694,20 +728,7 @@
                     <div class="viewer-title-icon">
 
                         <span class="material-symbols-outlined">
-
-                            @if (
-                            viewerPlan.contentType ===
-                            'application/pdf'
-                            ) {
-
-                            picture_as_pdf
-
-                            } @else {
-
-                            image
-
-                            }
-
+                            {{ getFileIcon(viewerPlan.contentType) }}
                         </span>
 
                     </div>
@@ -720,14 +741,28 @@
                         </strong>
 
                         <span>
-                            {{ formatFileSize(viewerPlan.fileSize) }}
+                            {{ getFileTypeLabel(viewerPlan.contentType) }}
                             ·
-                            {{ viewerPlan.contentType }}
+                            {{ formatFileSize(viewerPlan.fileSize) }}
+                            @if (viewerIsPdfPreview) {
+                            · Vista previa
+                            }
                         </span>
 
                     </div>
 
                 </div>
+
+                <button type="button" class="viewer-open-original" title="Abrir archivo en otra pestaña"
+                    (click)="openOriginalPlan(viewerPlan)">
+                    <span class="material-symbols-outlined">
+                        open_in_new
+                    </span>
+
+                    <span>
+                        Abrir en otra pestaña
+                    </span>
+                </button>
 
 
                 <button type="button" class="viewer-close" title="Cerrar" (click)="closePlanViewer()">
@@ -765,8 +800,7 @@
 
                 @if (
                 !viewingPlan &&
-                viewerPlan.contentType ===
-                'application/pdf'
+                viewerIsPdfPreview
                 ) {
 
                 <div class="pdf-viewer">
@@ -837,10 +871,13 @@
                             </button>
 
 
-                            <button type="button" class="pdf-zoom-value" title="Restablecer zoom"
-                                [disabled]="pdfLoading" (click)="resetPdfZoom()">
+                            <button class="pdf-zoom-value" (click)="resetPdfZoom()">
 
+                                @if (pdfFitMode) {
+                                Ajustar
+                                } @else {
                                 {{ (pdfZoom * 100) | number:'1.0-0' }}%
+                                }
 
                             </button>
 
@@ -858,6 +895,24 @@
 
                         </div>
 
+
+                        <!-- AJUSTAR A PANTALLA -->
+
+                        <div class="pdf-toolbar-group">
+
+                            <button type="button" class="pdf-fit-button" [class.active]="pdfFitMode"
+                                title="Ajustar a pantalla" [disabled]="pdfLoading" (click)="fitPdfToScreen()">
+
+                                <span class="material-symbols-outlined">
+                                    fit_screen
+                                </span>
+
+                                <span>Ajustar</span>
+
+                            </button>
+
+                        </div>
+
                     </div>
 
 
@@ -865,7 +920,7 @@
                     <!-- ÁREA DEL PDF -->
                     <!-- ================================================= -->
 
-                    <div class="pdf-stage">
+                    <div #pdfStage class="pdf-stage">
 
                         @if (pdfLoading) {
 

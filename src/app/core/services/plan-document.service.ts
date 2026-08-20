@@ -44,7 +44,7 @@ export class PlanDocumentService {
 
 
     // =====================================================
-    // SUBIR PLANO
+    // SUBIR DOCUMENTO
     // =====================================================
 
     uploadPlan(
@@ -68,7 +68,7 @@ export class PlanDocumentService {
 
 
     // =====================================================
-    // OBTENER URL DEL ARCHIVO
+    // OBTENER URL DEL ARCHIVO ORIGINAL
     // =====================================================
 
     getPlanUrl(
@@ -81,7 +81,7 @@ export class PlanDocumentService {
 
 
     // =====================================================
-    // OBTENER ARCHIVO AUTENTICADO
+    // OBTENER ARCHIVO ORIGINAL AUTENTICADO
     // =====================================================
 
     getPlanFile(
@@ -91,6 +91,24 @@ export class PlanDocumentService {
 
         return this.http.get(
             `${this.apiUrl}/${placeId}/plans/${planId}`,
+            {
+                responseType: 'blob'
+            }
+        );
+    }
+
+
+    // =====================================================
+    // OBTENER VISTA PREVIA
+    // =====================================================
+
+    getPlanPreview(
+        placeId: string,
+        planId: string
+    ): Observable<Blob> {
+
+        return this.http.get(
+            `${this.apiUrl}/${placeId}/plans/${planId}/preview`,
             {
                 responseType: 'blob'
             }
