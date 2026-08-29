@@ -33,6 +33,7 @@ export interface LoginRequest {
     password: string;
 }
 
+
 @Injectable({
     providedIn: 'root'
 })
@@ -65,7 +66,8 @@ export class AuthService {
 
                     const user: AuthUser = {
 
-                        id: response.id,
+                        id:
+                            response.id,
 
                         firstName:
                             response.firstName,
@@ -81,13 +83,16 @@ export class AuthService {
                     };
 
 
-                    localStorage.setItem(
+                    // =================================================
+                    // GUARDAR SESIÓN EN SESSION STORAGE
+                    // =================================================
+
+                    sessionStorage.setItem(
                         'access_token',
                         response.token
                     );
 
-
-                    localStorage.setItem(
+                    sessionStorage.setItem(
                         'user',
                         JSON.stringify(user)
                     );
@@ -96,6 +101,7 @@ export class AuthService {
 
             );
     }
+
 
     // =====================================================
     // REFRESCAR SESIÓN
@@ -131,13 +137,12 @@ export class AuthService {
                     };
 
 
-                    localStorage.setItem(
+                    sessionStorage.setItem(
                         'access_token',
                         response.token
                     );
 
-
-                    localStorage.setItem(
+                    sessionStorage.setItem(
                         'user',
                         JSON.stringify(user)
                     );
@@ -147,10 +152,12 @@ export class AuthService {
                         'Sesión actualizada. Rol:',
                         user.role
                     );
+
                 })
 
             );
     }
+
 
     // =====================================================
     // REGISTER
@@ -173,6 +180,17 @@ export class AuthService {
 
     logout(): void {
 
+        sessionStorage.removeItem(
+            'access_token'
+        );
+
+        sessionStorage.removeItem(
+            'user'
+        );
+
+        // Limpiar posibles datos antiguos
+        // que quedaron de versiones anteriores.
+
         localStorage.removeItem(
             'access_token'
         );
@@ -189,7 +207,7 @@ export class AuthService {
 
     getToken(): string | null {
 
-        return localStorage.getItem(
+        return sessionStorage.getItem(
             'access_token'
         );
     }
@@ -202,7 +220,7 @@ export class AuthService {
     getCurrentUser(): AuthUser | null {
 
         const userJson =
-            localStorage.getItem('user');
+            sessionStorage.getItem('user');
 
 
         if (!userJson) {
@@ -235,7 +253,83 @@ export class AuthService {
 
     isAuthenticated(): boolean {
 
-        return !!this.getToken();
+        const token =
+            this.getToken();
+
+
+        // -------------------------------------------------
+        // No existe token
+        // -------------------------------------------------
+
+        if (!token) {
+
+            return false;
+        }
+
+
+        try {
+
+            // JWT = HEADER.PAYLOAD.SIGNATURE
+            const payloadBase64 =
+                token.split('.')[1];
+
+
+            if (!payloadBase64) {
+
+                this.logout();
+
+                return false;
+            }
+
+
+            // -------------------------------------------------
+            // Convertir Base64URL a Base64
+            // -------------------------------------------------
+
+            const base64 =
+                payloadBase64
+                    .replace(/-/g, '+')
+                    .replace(/_/g, '/');
+
+
+            const payload =
+                JSON.parse(
+                    atob(base64)
+                );
+
+
+            // -------------------------------------------------
+            // Verificar expiración
+            // -------------------------------------------------
+
+            if (
+                !payload.exp ||
+                Date.now() >= payload.exp * 1000
+            ) {
+
+                console.warn(
+                    'JWT expirado. Cerrando sesión.'
+                );
+
+                this.logout();
+
+                return false;
+            }
+
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                'JWT inválido:',
+                error
+            );
+
+            this.logout();
+
+            return false;
+        }
     }
 
 

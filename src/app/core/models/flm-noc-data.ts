@@ -14,6 +14,10 @@ export interface FlmNocData {
 
     zonal?: string;
 
+    tipoEstacion?: string;
+
+    tecnologia?: string;
+
     propietarioTorre?: string;
 
     clasificacionPropietarioTorre?: string;

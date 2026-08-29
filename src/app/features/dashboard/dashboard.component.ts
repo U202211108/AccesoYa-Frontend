@@ -1,6 +1,7 @@
 import {
     Component,
-    OnInit
+    OnInit,
+    ChangeDetectorRef
 } from '@angular/core';
 
 import {
@@ -70,7 +71,10 @@ export class DashboardComponent
 
     constructor(
         private readonly dashboardService:
-            DashboardService
+            DashboardService,
+
+        private readonly changeDetector:
+            ChangeDetectorRef
     ) { }
 
 
@@ -94,7 +98,7 @@ export class DashboardComponent
     private loadUser(): void {
 
         const userData =
-            localStorage.getItem('user');
+            sessionStorage.getItem('user');
 
 
         if (!userData) {
@@ -127,7 +131,6 @@ export class DashboardComponent
             );
 
         }
-
     }
 
 
@@ -138,9 +141,7 @@ export class DashboardComponent
     private loadDashboard(): void {
 
         this.loading = true;
-
         this.error = false;
-
 
         this.dashboardService
             .getDashboard()
@@ -153,15 +154,19 @@ export class DashboardComponent
                         response
                     );
 
-
                     this.dashboard =
                         response;
 
+                    this.loading =
+                        false;
 
-                    this.loading = false;
+                    this.error =
+                        false;
+
+                    // Forzar actualización de la vista
+                    this.changeDetector.detectChanges();
 
                 },
-
 
                 error: (error) => {
 
@@ -170,19 +175,21 @@ export class DashboardComponent
                         error
                     );
 
-
                     this.dashboard =
                         null;
 
+                    this.error =
+                        true;
 
-                    this.error = true;
+                    this.loading =
+                        false;
 
-                    this.loading = false;
+                    // Forzar actualización de la vista
+                    this.changeDetector.detectChanges();
 
                 }
 
             });
-
     }
 
 

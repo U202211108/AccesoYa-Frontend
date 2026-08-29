@@ -192,61 +192,6 @@ export const routes: Routes = [
                     )
             },
 
-
-            // =================================================
-            // SOLICITAR ESTABLECIMIENTO
-            // SOLO USER
-            // =================================================
-
-            {
-                path: 'establishment/request',
-
-                canActivate: [
-                    roleGuard
-                ],
-
-                data: {
-                    roles: [
-                        'USER' as UserRole
-                    ]
-                },
-
-                loadComponent: () =>
-                    import(
-                        './features/establishments/request/establishment-request.component'
-                    ).then(
-                        m => m.EstablishmentRequestComponent
-                    )
-            },
-
-
-            // =================================================
-            // MIS SOLICITUDES
-            // USER + ESTABLISHMENT
-            // =================================================
-
-            {
-                path: 'establishment/requests',
-
-                canActivate: [
-                    roleGuard
-                ],
-
-                data: {
-                    roles: [
-                        'USER' as UserRole,
-                        'ESTABLISHMENT' as UserRole
-                    ]
-                },
-
-                loadComponent: () =>
-                    import(
-                        './features/establishments/my-requests/my-requests.component'
-                    ).then(
-                        m => m.MyRequestsComponent
-                    )
-            },
-
             {
                 path: 'plans',
                 loadComponent: () =>
@@ -254,60 +199,6 @@ export const routes: Routes = [
                         './features/plans/plan-management/plan-management.component'
                     ).then(
                         m => m.PlanManagementComponent
-                    )
-            },
-
-
-            // =================================================
-            // MIS ESTABLECIMIENTOS
-            // SOLO ESTABLISHMENT
-            // =================================================
-
-            {
-                path: 'establishments',
-
-                canActivate: [
-                    roleGuard
-                ],
-
-                data: {
-                    roles: [
-                        'ESTABLISHMENT' as UserRole
-                    ]
-                },
-
-                loadComponent: () =>
-                    import(
-                        './features/establishments/my-establishments/my-establishments.component'
-                    ).then(
-                        m => m.MyEstablishmentsComponent
-                    )
-            },
-
-
-            // =================================================
-            // ACCESIBILIDAD
-            // SOLO ESTABLISHMENT
-            // =================================================
-
-            {
-                path: 'establishments/accessibility',
-
-                canActivate: [
-                    roleGuard
-                ],
-
-                data: {
-                    roles: [
-                        'ESTABLISHMENT' as UserRole
-                    ]
-                },
-
-                loadComponent: () =>
-                    import(
-                        './features/establishments/accessibility/accessibility.component'
-                    ).then(
-                        m => m.AccessibilityComponent
                     )
             },
 

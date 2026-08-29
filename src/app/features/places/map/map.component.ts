@@ -2,7 +2,8 @@ import {
   AfterViewInit,
   Component,
   OnDestroy,
-  inject
+  inject,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import {
@@ -34,11 +35,10 @@ import {
   PlaceMapResponse
 } from '../../../core/models/place-map-response';
 
-
 interface CategoryMarker extends L.Marker {
   placeType?: string;
+  flmNocData?: PlaceMapResponse;
 }
-
 
 @Component({
   selector: 'app-map',
@@ -72,6 +72,9 @@ export class MapComponent
   private readonly mapMove$ =
     new Subject<void>();
 
+  private readonly cdr =
+    inject(ChangeDetectorRef);
+
   private readonly search$ =
     new Subject<string>();
 
@@ -101,6 +104,57 @@ export class MapComponent
 
   readonly selectedCategories =
     new Set<string>();
+
+  // =====================================================
+  // FILTROS FLM / NOC
+  // =====================================================
+
+  selectedTipoEstacion: string | null = null;
+
+  selectedZonal: string | null = null;
+
+  selectedTecnologia: string | null = null;
+
+
+  // =====================================================
+  // OPCIONES DISPONIBLES
+  // =====================================================
+
+  tipoEstaciones: string[] = [];
+
+  zonales: string[] = [];
+
+  tecnologias: string[] = [];
+
+  // =====================================================
+  // CONTADORES Y ESTADO VISUAL DE LOS FILTROS
+  // =====================================================
+
+  readonly maxVisibleFilterOptions = 6;
+
+  // Conteos reales y dinámicos de cada opción.
+  // Cada categoría se calcula considerando los otros dos filtros activos.
+  tipoEstacionCounts = new Map<string, number>();
+  zonalCounts = new Map<string, number>();
+  tecnologiaCounts = new Map<string, number>();
+
+  // Conteo real de "Todos" para cada grupo.
+  // Ejemplo: "Todos los tipos" respeta Zonal + Tecnología seleccionados.
+  tipoEstacionAllCount = 0;
+  zonalAllCount = 0;
+  tecnologiaAllCount = 0;
+
+  // Total general y total actualmente visible en el mapa.
+  totalFlmNocCount = 0;
+  visibleFlmNocCount = 0;
+
+  isTipoEstacionOpen = true;
+  isZonalOpen = true;
+  isTecnologiaOpen = true;
+
+  showAllTipoEstacion = false;
+  showAllZonal = false;
+  showAllTecnologia = false;
 
 
   isFilterPanelOpen =
@@ -134,11 +188,16 @@ export class MapComponent
 
     this.configureMapLoading();
 
+    this.loadPlaces();
+
+    this.loadFlmNocFilters();
+  }
+
+  ngOnInit(): void {
+
     this.configureRouteFilters();
 
     this.configureSearch();
-
-    this.loadPlaces();
   }
 
 
@@ -153,6 +212,59 @@ export class MapComponent
     if (this.map) {
       this.map.remove();
     }
+  }
+
+  private loadFlmNocFilters(): void {
+
+    this.placeService
+      .getFlmNocFilters()
+      .subscribe({
+
+        next: filters => {
+
+          this.tipoEstaciones =
+            filters.tiposEstacion ?? [];
+
+          this.zonales =
+            filters.zonales ?? [];
+
+          this.tecnologias =
+            filters.tecnologias ?? [];
+
+
+          console.log(
+            '[FILTERS] Tipo de estación:',
+            this.tipoEstaciones
+          );
+
+          console.log(
+            '[FILTERS] Zonales:',
+            this.zonales
+          );
+
+          console.log(
+            '[FILTERS] Tecnologías:',
+            this.tecnologias
+          );
+
+
+          // =========================================
+          // FORZAR ACTUALIZACIÓN VISUAL
+          // =========================================
+
+          this.cdr.detectChanges();
+        },
+
+        error: error => {
+
+          console.error(
+            '[FILTERS] Error cargando filtros FLM / NOC:',
+            error
+          );
+
+        }
+
+      });
   }
 
   private configureSearch(): void {
@@ -330,6 +442,109 @@ export class MapComponent
       });
   }
 
+  private buildFlmNocFilters(
+    places: PlaceMapResponse[]
+  ): void {
+
+    const tipoEstaciones = new Set<string>();
+    const zonales = new Set<string>();
+    const tecnologias = new Set<string>();
+
+    const tipoEstacionCounts = new Map<string, number>();
+    const zonalCounts = new Map<string, number>();
+    const tecnologiaCounts = new Map<string, number>();
+
+    this.totalFlmNocCount = 0;
+
+    places.forEach(place => {
+
+      const flm = place.flmNoc;
+
+      if (!flm) {
+        return;
+      }
+
+      this.totalFlmNocCount++;
+
+      if (flm.tipoEstacion?.trim()) {
+        const value = flm.tipoEstacion.trim();
+        tipoEstaciones.add(value);
+        tipoEstacionCounts.set(
+          value,
+          (tipoEstacionCounts.get(value) ?? 0) + 1
+        );
+      }
+
+      if (flm.zonal?.trim()) {
+        const value = flm.zonal.trim();
+        zonales.add(value);
+        zonalCounts.set(
+          value,
+          (zonalCounts.get(value) ?? 0) + 1
+        );
+      }
+
+      if (flm.tecnologia?.trim()) {
+        const value = flm.tecnologia.trim();
+        tecnologias.add(value);
+        tecnologiaCounts.set(
+          value,
+          (tecnologiaCounts.get(value) ?? 0) + 1
+        );
+      }
+    });
+
+    this.tipoEstaciones =
+      Array.from(tipoEstaciones).sort((a, b) =>
+        a.localeCompare(
+          b,
+          'es',
+          { sensitivity: 'base' }
+        )
+      );
+
+    this.zonales =
+      Array.from(zonales).sort((a, b) =>
+        a.localeCompare(
+          b,
+          'es',
+          { sensitivity: 'base' }
+        )
+      );
+
+    this.tecnologias =
+      Array.from(tecnologias).sort((a, b) =>
+        a.localeCompare(
+          b,
+          'es',
+          { sensitivity: 'base' }
+        )
+      );
+
+    this.tipoEstacionCounts = tipoEstacionCounts;
+    this.zonalCounts = zonalCounts;
+    this.tecnologiaCounts = tecnologiaCounts;
+
+    this.showAllTipoEstacion = false;
+    this.showAllZonal = false;
+    this.showAllTecnologia = false;
+
+    console.log(
+      '[FILTERS] Tipo de estación:',
+      this.tipoEstaciones
+    );
+
+    console.log(
+      '[FILTERS] Zonales:',
+      this.zonales
+    );
+
+    console.log(
+      '[FILTERS] Tecnologías:',
+      this.tecnologias
+    );
+  }
+
 
   // =====================================================
   // INICIALIZAR MAPA
@@ -337,70 +552,92 @@ export class MapComponent
 
   private initializeMap(): void {
 
+    const container =
+      document.getElementById('accessoya-map');
+
+    if (!container) {
+      console.error(
+        '[MAP] No se encontró el contenedor #accessoya-map'
+      );
+      return;
+    }
+
+    // =====================================================
+    // EVITAR DOBLE INICIALIZACIÓN DE LEAFLET
+    // =====================================================
+
+    if (this.map) {
+      this.map.off();
+      this.map.remove();
+      this.map = undefined as any;
+    }
+
+    // Si Leaflet dejó el contenedor marcado,
+    // limpiamos esa referencia antes de volver a inicializar.
+    const leafletContainer =
+      container as HTMLElement & {
+        _leaflet_id?: number;
+      };
+
+    if (leafletContainer._leaflet_id) {
+      delete leafletContainer._leaflet_id;
+    }
+
+    // =====================================================
+    // CREAR MAPA
+    // =====================================================
+
     this.map = L.map(
-      'accessoya-map',
+      container,
       {
-        center:
-          this.peruCenter,
-
+        center: this.peruCenter,
         zoom: 6,
-
         minZoom: 5,
-
         maxZoom: 19,
-
         zoomControl: false
       }
     );
 
-
-    // =================================================
+    // =====================================================
     // ZOOM
-    // =================================================
+    // =====================================================
 
     L.control.zoom({
       position: 'topleft'
     }).addTo(this.map);
 
-
-    // =================================================
+    // =====================================================
     // OPENSTREETMAP
-    // =================================================
+    // =====================================================
 
     L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
         maxZoom: 19,
-
         attribution:
           '&copy; OpenStreetMap contributors'
       }
     ).addTo(this.map);
 
-
-    // =================================================
+    // =====================================================
     // CLUSTERS
-    // =================================================
+    // =====================================================
 
     this.markersLayer =
       this.createMarkersLayer();
-
 
     this.markersLayer.addTo(
       this.map
     );
 
-
-    // =================================================
+    // =====================================================
     // MOVIMIENTO
-    // =================================================
+    // =====================================================
 
     this.map.on(
       'moveend',
       () => {
-
         this.mapMove$.next();
-
       }
     );
   }
@@ -660,13 +897,6 @@ export class MapComponent
 
     }
 
-
-    const color =
-      this.getPlaceColor(
-        dominantCategory
-      );
-
-
     const count =
       markers.length;
 
@@ -691,6 +921,11 @@ export class MapComponent
       fontSize = 14;
 
     }
+
+    const color =
+      this.getClusterColor(
+        markers
+      );
 
 
     const label =
@@ -739,6 +974,116 @@ export class MapComponent
     });
   }
 
+  // =====================================================
+  // COLOR DEL CLUSTER
+  // =====================================================
+
+  private getClusterColor(
+    markers: L.Marker[]
+  ): string {
+
+    const categoryMarkers =
+      markers as CategoryMarker[];
+
+
+    // ===================================================
+    // TIPO DE ESTACIÓN
+    // ===================================================
+
+    if (
+      !this.selectedZonal &&
+      !this.selectedTecnologia
+    ) {
+
+      const firstPlace =
+        categoryMarkers.find(
+          marker =>
+            marker.flmNocData?.flmNoc
+              ?.tipoEstacion
+        );
+
+      if (firstPlace) {
+
+        return this.getStableColor(
+          firstPlace.flmNocData
+            ?.flmNoc
+            ?.tipoEstacion,
+
+          this.tipoEstacionColors
+        );
+
+      }
+
+    }
+
+
+    // ===================================================
+    // ZONAL
+    // ===================================================
+
+    if (
+      this.selectedZonal &&
+      !this.selectedTecnologia
+    ) {
+
+      const firstPlace =
+        categoryMarkers.find(
+          marker =>
+            marker.flmNocData?.flmNoc
+              ?.zonal
+        );
+
+      if (firstPlace) {
+
+        return this.getStableColor(
+          firstPlace.flmNocData
+            ?.flmNoc
+            ?.zonal,
+
+          this.zonalColors
+        );
+
+      }
+
+    }
+
+
+    // ===================================================
+    // TECNOLOGÍA
+    // ===================================================
+
+    if (this.selectedTecnologia) {
+
+      const firstPlace =
+        categoryMarkers.find(
+          marker =>
+            marker.flmNocData?.flmNoc
+              ?.tecnologia
+        );
+
+      if (firstPlace) {
+
+        return this.getStableColor(
+          firstPlace.flmNocData
+            ?.flmNoc
+            ?.tecnologia,
+
+          this.tecnologiaColors
+        );
+
+      }
+
+    }
+
+
+    // ===================================================
+    // RESPALDO
+    // =====================================================
+
+    return this.getPlaceColor(
+      'TELECOMMUNICATION_SITE'
+    );
+  }
 
   // =====================================================
   // RENDERIZAR MARCADORES
@@ -748,10 +1093,306 @@ export class MapComponent
     places: PlaceMapResponse[]
   ): void {
 
-    this.allPlaces =
-      places;
+    this.allPlaces = places;
 
+    // Mantener FILTRAR MAPA sincronizado inmediatamente con los
+    // sitios reales que acaba de devolver el backend.
+    // No requiere hacer clic en ningún filtro.
+    this.updateFlmNocFilterCounts();
+
+    // Construir los filtros usando
+    // exactamente los datos que ya llegaron
+    this.buildFlmNocFilters(
+      places
+    );
+
+    // Aplicar filtros actuales
     this.applyCategoryFilters();
+  }
+
+  // =====================================================
+  // ACTUALIZAR CONTADORES REALES DE LOS FILTROS
+  // =====================================================
+  //
+  // Los contadores NO son valores fijos.
+  // Se calculan directamente sobre allPlaces.
+  //
+  // Cada grupo excluye su propio filtro para que el usuario
+  // pueda ver cuántos resultados obtendría al seleccionar
+  // cada opción, manteniendo los otros filtros activos.
+  //
+  // Ejemplo:
+  // Tipo de estación = ADM
+  // Zonal = Norte
+  //
+  // En "Tecnología", cada número cuenta:
+  // ADM + Norte + esa tecnología.
+  // =====================================================
+
+  private updateFlmNocFilterCounts(): void {
+
+    const flmPlaces =
+      this.allPlaces.filter(
+        place => !!place.flmNoc
+      );
+
+    // ---------------------------------------------
+    // TODOS LOS TIPOS
+    // Respeta Zonal + Tecnología
+    // ---------------------------------------------
+
+    this.tipoEstacionAllCount =
+      flmPlaces.filter(place => {
+
+        const flm =
+          place.flmNoc!;
+
+        if (
+          this.selectedZonal &&
+          flm.zonal?.trim() !==
+          this.selectedZonal.trim()
+        ) {
+          return false;
+        }
+
+        if (
+          this.selectedTecnologia &&
+          flm.tecnologia?.trim() !==
+          this.selectedTecnologia.trim()
+        ) {
+          return false;
+        }
+
+        return true;
+      }).length;
+
+
+    // ---------------------------------------------
+    // CADA TIPO DE ESTACIÓN
+    // Respeta Zonal + Tecnología
+    // ---------------------------------------------
+
+    const tipoCounts =
+      new Map<string, number>();
+
+    this.tipoEstaciones.forEach(tipo => {
+
+      const count =
+        flmPlaces.filter(place => {
+
+          const flm =
+            place.flmNoc!;
+
+          if (
+            flm.tipoEstacion?.trim() !==
+            tipo.trim()
+          ) {
+            return false;
+          }
+
+          if (
+            this.selectedZonal &&
+            flm.zonal?.trim() !==
+            this.selectedZonal.trim()
+          ) {
+            return false;
+          }
+
+          if (
+            this.selectedTecnologia &&
+            flm.tecnologia?.trim() !==
+            this.selectedTecnologia.trim()
+          ) {
+            return false;
+          }
+
+          return true;
+
+        }).length;
+
+      tipoCounts.set(
+        tipo,
+        count
+      );
+
+    });
+
+
+    // ---------------------------------------------
+    // TODOS LOS ZONALES
+    // Respeta Tipo de estación + Tecnología
+    // ---------------------------------------------
+
+    this.zonalAllCount =
+      flmPlaces.filter(place => {
+
+        const flm =
+          place.flmNoc!;
+
+        if (
+          this.selectedTipoEstacion &&
+          flm.tipoEstacion?.trim() !==
+          this.selectedTipoEstacion.trim()
+        ) {
+          return false;
+        }
+
+        if (
+          this.selectedTecnologia &&
+          flm.tecnologia?.trim() !==
+          this.selectedTecnologia.trim()
+        ) {
+          return false;
+        }
+
+        return true;
+
+      }).length;
+
+
+    // ---------------------------------------------
+    // CADA ZONAL
+    // Respeta Tipo de estación + Tecnología
+    // ---------------------------------------------
+
+    const zonalCounts =
+      new Map<string, number>();
+
+    this.zonales.forEach(zonal => {
+
+      const count =
+        flmPlaces.filter(place => {
+
+          const flm =
+            place.flmNoc!;
+
+          if (
+            flm.zonal?.trim() !==
+            zonal.trim()
+          ) {
+            return false;
+          }
+
+          if (
+            this.selectedTipoEstacion &&
+            flm.tipoEstacion?.trim() !==
+            this.selectedTipoEstacion.trim()
+          ) {
+            return false;
+          }
+
+          if (
+            this.selectedTecnologia &&
+            flm.tecnologia?.trim() !==
+            this.selectedTecnologia.trim()
+          ) {
+            return false;
+          }
+
+          return true;
+
+        }).length;
+
+      zonalCounts.set(
+        zonal,
+        count
+      );
+
+    });
+
+
+    // ---------------------------------------------
+    // TODAS LAS TECNOLOGÍAS
+    // Respeta Tipo de estación + Zonal
+    // ---------------------------------------------
+
+    this.tecnologiaAllCount =
+      flmPlaces.filter(place => {
+
+        const flm =
+          place.flmNoc!;
+
+        if (
+          this.selectedTipoEstacion &&
+          flm.tipoEstacion?.trim() !==
+          this.selectedTipoEstacion.trim()
+        ) {
+          return false;
+        }
+
+        if (
+          this.selectedZonal &&
+          flm.zonal?.trim() !==
+          this.selectedZonal.trim()
+        ) {
+          return false;
+        }
+
+        return true;
+
+      }).length;
+
+
+    // ---------------------------------------------
+    // CADA TECNOLOGÍA
+    // Respeta Tipo de estación + Zonal
+    // ---------------------------------------------
+
+    const tecnologiaCounts =
+      new Map<string, number>();
+
+    this.tecnologias.forEach(tecnologia => {
+
+      const count =
+        flmPlaces.filter(place => {
+
+          const flm =
+            place.flmNoc!;
+
+          if (
+            flm.tecnologia?.trim() !==
+            tecnologia.trim()
+          ) {
+            return false;
+          }
+
+          if (
+            this.selectedTipoEstacion &&
+            flm.tipoEstacion?.trim() !==
+            this.selectedTipoEstacion.trim()
+          ) {
+            return false;
+          }
+
+          if (
+            this.selectedZonal &&
+            flm.zonal?.trim() !==
+            this.selectedZonal.trim()
+          ) {
+            return false;
+          }
+
+          return true;
+
+        }).length;
+
+      tecnologiaCounts.set(
+        tecnologia,
+        count
+      );
+
+    });
+
+
+    this.tipoEstacionCounts =
+      tipoCounts;
+
+    this.zonalCounts =
+      zonalCounts;
+
+    this.tecnologiaCounts =
+      tecnologiaCounts;
+
   }
 
 
@@ -762,53 +1403,101 @@ export class MapComponent
   private applyCategoryFilters(): void {
 
     if (!this.markersLayer) {
+
       return;
+
     }
 
 
     const placesToShow =
-      this.selectedCategories.size === 0
+      this.allPlaces.filter(
+        place => {
 
-        ? this.allPlaces
+          // =============================================
+          // SOLO FLM / NOC
+          // =============================================
 
-        : this.allPlaces.filter(
-          place => {
+          if (!place.flmNoc) {
 
-            const placeType =
-              (
-                place.type
-                ?? ''
-              ).toUpperCase();
-
-
-            return Array.from(
-              this.selectedCategories
-            ).some(
-              category =>
-
-                this.categoryMatchesPlace(
-                  category,
-                  placeType
-                )
-
-            );
+            return false;
 
           }
-        );
 
 
-    // =================================================
-    // LIMPIAR
-    // =================================================
+          const flm =
+            place.flmNoc;
+
+
+          // =============================================
+          // TIPO DE ESTACIÓN
+          // =============================================
+
+          if (
+            this.selectedTipoEstacion &&
+            flm.tipoEstacion?.trim() !==
+            this.selectedTipoEstacion.trim()
+          ) {
+
+            return false;
+
+          }
+
+
+          // =============================================
+          // ZONAL
+          // =============================================
+
+          if (
+            this.selectedZonal &&
+            flm.zonal?.trim() !==
+            this.selectedZonal.trim()
+          ) {
+
+            return false;
+
+          }
+
+
+          // =============================================
+          // TECNOLOGÍA
+          // =============================================
+
+          if (
+            this.selectedTecnologia &&
+            flm.tecnologia?.trim() !==
+            this.selectedTecnologia.trim()
+          ) {
+
+            return false;
+
+          }
+
+
+          return true;
+
+        }
+      );
+
+    this.visibleFlmNocCount = placesToShow.length;
+
+    // Recalcular los conteos de cada opción con los filtros
+    // actuales. Esto mantiene todos los números sincronizados
+    // con los datos reales del mapa.
+    this.updateFlmNocFilterCounts();
+
+
+    // ===================================================
+    // LIMPIAR MARCADORES
+    // ===================================================
 
     this.markersLayer.clearLayers();
 
     this.placeMarkers.clear();
 
 
-    // =================================================
-    // CREAR
-    // =================================================
+    // ===================================================
+    // CREAR MARCADORES
+    // ===================================================
 
     placesToShow.forEach(
       place => {
@@ -817,7 +1506,9 @@ export class MapComponent
           place.latitude == null ||
           place.longitude == null
         ) {
+
           return;
+
         }
 
 
@@ -829,20 +1520,26 @@ export class MapComponent
             place.longitude
           )
         ) {
+
           return;
+
         }
 
 
-        const color =
-          this.getPlaceColor(
-            place.type
+        // ===============================================
+        // COLOR SEGÚN LOS DATOS DEL SITIO
+        // ===============================================
+
+        const markerColor =
+          this.getFlmNocMarkerColor(
+            place
           );
 
 
         const marker =
           this.createPlaceMarker(
             place,
-            color
+            markerColor
           );
 
 
@@ -860,202 +1557,245 @@ export class MapComponent
     );
   }
 
+  // =====================================================
+  // PALETAS DE COLORES FLM / NOC
+  // =====================================================
+
+  private readonly flmNocColorPalette: string[] = [
+
+    '#7c3aed',
+    '#2563eb',
+    '#16a34a',
+    '#ea580c',
+    '#dc2626',
+    '#0891b2',
+    '#ca8a04',
+    '#db2777',
+    '#4f46e5',
+    '#059669',
+    '#9333ea',
+    '#0284c7',
+    '#65a30d',
+    '#c2410c',
+    '#be123c',
+    '#0f766e'
+
+  ];
 
   // =====================================================
-  // COINCIDENCIA DE CATEGORÍAS
+  // OBTENER COLOR ESTABLE PARA UN VALOR
   // =====================================================
 
-  private categoryMatchesPlace(
-    category: string,
-    placeType: string
-  ): boolean {
+  private getStableColor(
+    value: string | undefined | null,
+    colorMap: Map<string, string>
+  ): string {
 
-    const normalizedCategory =
-      (
-        category
-        ?? ''
-      ).toUpperCase();
+    if (!value) {
+
+      return '#0f766e';
+
+    }
+
+    const normalizedValue =
+      value
+        .trim()
+        .toUpperCase();
+
+    if (!normalizedValue) {
+
+      return '#0f766e';
+
+    }
 
 
-    const normalizedPlaceType =
-      (
-        placeType
-        ?? ''
-      ).toUpperCase();
+    // ===================================================
+    // SI YA EXISTE, DEVOLVER EL MISMO COLOR
+    // ===================================================
+
+    const existingColor =
+      colorMap.get(
+        normalizedValue
+      );
+
+    if (existingColor) {
+
+      return existingColor;
+
+    }
 
 
-    switch (
-    normalizedCategory
+    // ===================================================
+    // GENERAR COLOR DETERMINÍSTICO
+    // ===================================================
+
+    let hash = 0;
+
+    for (
+      let i = 0;
+      i < normalizedValue.length;
+      i++
     ) {
 
-      // =================================================
-      // SALUD
-      // =================================================
-
-      case 'HEALTHCARE':
-
-        return (
-          normalizedPlaceType ===
-          'HEALTHCARE'
+      hash =
+        normalizedValue
+          .charCodeAt(i) +
+        (
+          (hash << 5) -
+          hash
         );
 
-
-      // =================================================
-      // FARMACIA
-      // =================================================
-
-      case 'PHARMACY':
-
-        return (
-          normalizedPlaceType ===
-          'PHARMACY'
-        );
-
-
-      // =================================================
-      // RESTAURANTES
-      // =================================================
-
-      case 'RESTAURANT':
-
-        return (
-          normalizedPlaceType ===
-          'RESTAURANT'
-        );
-
-
-      // =================================================
-      // BANCOS
-      // =================================================
-
-      case 'BANK':
-
-        return (
-          normalizedPlaceType ===
-          'BANK'
-        );
-
-
-      // =================================================
-      // EDUCACIÓN
-      // =================================================
-
-      case 'EDUCATION':
-      case 'SCHOOL':
-
-        return (
-          normalizedPlaceType ===
-          'SCHOOL' ||
-
-          normalizedPlaceType ===
-          'UNIVERSITY'
-        );
-
-
-      // =================================================
-      // HOTELES
-      // =================================================
-
-      case 'HOTEL':
-
-        return (
-          normalizedPlaceType ===
-          'HOTEL'
-        );
-
-
-      // =================================================
-      // COMPRAS
-      // =================================================
-
-      case 'SHOPPING':
-      case 'SUPERMARKET':
-      case 'SHOPPING_CENTER':
-
-        return (
-          normalizedPlaceType ===
-          'SUPERMARKET' ||
-
-          normalizedPlaceType ===
-          'SHOPPING_CENTER'
-        );
-
-
-      // =================================================
-      // DEPORTES
-      // =================================================
-
-      case 'SPORTS':
-
-        return (
-          normalizedPlaceType ===
-          'SPORTS'
-        );
-
-
-      // =================================================
-      // RELIGIOSOS
-      // =================================================
-
-      case 'RELIGIOUS':
-
-        return (
-          normalizedPlaceType ===
-          'RELIGIOUS'
-        );
-
-
-      // =================================================
-      // CULTURA
-      // =================================================
-
-      case 'CULTURAL':
-
-        return (
-          normalizedPlaceType ===
-          'CULTURAL'
-        );
-
-
-      // =================================================
-      // TRANSPORTE
-      // =================================================
-
-      case 'TRANSPORTATION':
-
-        return (
-          normalizedPlaceType ===
-          'TRANSPORTATION'
-        );
-
-
-      // =================================================
-      // SERVICIO PÚBLICO
-      // =================================================
-
-      case 'PUBLIC_SERVICE':
-
-        return (
-          normalizedPlaceType ===
-          'PUBLIC_SERVICE'
-        );
-
-      // =================================================
-      // FLM / NOC
-      // =================================================
-
-      case 'TELECOMMUNICATION_SITE':
-
-        return (
-          normalizedPlaceType ===
-          'TELECOMMUNICATION_SITE'
-        );
-
-
-      default:
-
-        return false;
     }
+
+
+    const index =
+      Math.abs(hash) %
+      this.flmNocColorPalette.length;
+
+
+    const color =
+      this.flmNocColorPalette[
+      index
+      ];
+
+
+    colorMap.set(
+      normalizedValue,
+      color
+    );
+
+
+    return color;
+  }
+
+  // =====================================================
+  // COLOR DEL MARCADOR FLM / NOC
+  // =====================================================
+
+  private getFlmNocMarkerColor(
+    place: PlaceMapResponse
+  ): string {
+
+    const flm =
+      place.flmNoc;
+
+
+    if (!flm) {
+
+      return this.getPlaceColor(
+        'TELECOMMUNICATION_SITE'
+      );
+
+    }
+
+
+    // ===================================================
+    // FILTRO POR TIPO DE ESTACIÓN
+    // ===================================================
+
+    if (this.selectedTipoEstacion) {
+
+      return this.getStableColor(
+        flm.tipoEstacion,
+        this.tipoEstacionColors
+      );
+
+    }
+
+
+    // ===================================================
+    // FILTRO POR ZONAL
+    // ===================================================
+
+    if (this.selectedZonal) {
+
+      return this.getStableColor(
+        flm.zonal,
+        this.zonalColors
+      );
+
+    }
+
+
+    // ===================================================
+    // FILTRO POR TECNOLOGÍA
+    // ===================================================
+
+    if (this.selectedTecnologia) {
+
+      return this.getStableColor(
+        flm.tecnologia,
+        this.tecnologiaColors
+      );
+
+    }
+
+
+    // ===================================================
+    // MAPA GENERAL
+    // Color según TIPO DE ESTACIÓN
+    // ===================================================
+
+    return this.getStableColor(
+      flm.tipoEstacion,
+      this.tipoEstacionColors
+    );
+  }
+
+
+  // =====================================================
+  // MAPAS DE COLORES ESTABLES
+  // =====================================================
+
+  private readonly tipoEstacionColors =
+    new Map<string, string>();
+
+  private readonly zonalColors =
+    new Map<string, string>();
+
+  private readonly tecnologiaColors =
+    new Map<string, string>();
+
+
+  // =====================================================
+  // COLORES PARA LA LEYENDA DEL PANEL DE FILTROS
+  // =====================================================
+  //
+  // Estos métodos son públicos porque el HTML los utiliza
+  // directamente para mostrar el mismo color que tienen
+  // los marcadores del mapa.
+  // =====================================================
+
+  getTipoEstacionColor(
+    tipo: string | undefined | null
+  ): string {
+
+    return this.getStableColor(
+      tipo,
+      this.tipoEstacionColors
+    );
+  }
+
+
+  getZonalColor(
+    zonal: string | undefined | null
+  ): string {
+
+    return this.getStableColor(
+      zonal,
+      this.zonalColors
+    );
+  }
+
+
+  getTecnologiaColor(
+    tecnologia: string | undefined | null
+  ): string {
+
+    return this.getStableColor(
+      tecnologia,
+      this.tecnologiaColors
+    );
   }
 
 
@@ -1181,6 +1921,79 @@ export class MapComponent
     );
   }
 
+  // =====================================================
+  // FILTRO TIPO DE ESTACIÓN
+  // =====================================================
+
+  selectTipoEstacion(
+    value: string
+  ): void {
+
+    this.selectedTipoEstacion =
+      value?.trim() || null;
+
+    this.applyCategoryFilters();
+
+    this.cdr.detectChanges();
+  }
+
+
+  // =====================================================
+  // FILTRO ZONAL
+  // =====================================================
+
+  selectZonal(
+    value: string
+  ): void {
+
+    this.selectedZonal =
+      value?.trim() || null;
+
+    this.applyCategoryFilters();
+
+    this.cdr.detectChanges();
+  }
+
+
+  // =====================================================
+  // FILTRO TECNOLOGÍA
+  // =====================================================
+
+  selectTecnologia(
+    value: string
+  ): void {
+
+    this.selectedTecnologia =
+      value?.trim() || null;
+
+    this.applyCategoryFilters();
+
+    this.cdr.detectChanges();
+  }
+
+
+  // =====================================================
+  // LIMPIAR FILTROS FLM / NOC
+  // =====================================================
+
+  clearFlmNocFilters(): void {
+
+    this.selectedTipoEstacion =
+      null;
+
+    this.selectedZonal =
+      null;
+
+    this.selectedTecnologia =
+      null;
+
+    this.applyCategoryFilters();
+
+    // Garantiza que los selects y la leyenda
+    // reflejen inmediatamente el estado limpio.
+    this.cdr.detectChanges();
+  }
+
 
   // =====================================================
   // SABER SI ESTÁ SELECCIONADA
@@ -1223,6 +2036,8 @@ export class MapComponent
     marker.placeType =
       place.type;
 
+    marker.flmNocData =
+      place;
 
     // =================================================
     // POPUP
@@ -1423,56 +2238,7 @@ export class MapComponent
     type: string
   ): string {
 
-    switch (
-    type?.toUpperCase()
-    ) {
-
-      case 'HEALTHCARE':
-        return 'Salud';
-
-      case 'PHARMACY':
-        return 'Farmacia';
-
-      case 'RESTAURANT':
-        return 'Restaurante';
-
-      case 'BANK':
-        return 'Banco';
-
-      case 'SCHOOL':
-      case 'UNIVERSITY':
-        return 'Educación';
-
-      case 'HOTEL':
-        return 'Hotel';
-
-      case 'SUPERMARKET':
-        return 'Supermercado';
-
-      case 'SHOPPING_CENTER':
-        return 'Centro comercial';
-
-      case 'SPORTS':
-        return 'Deportes';
-
-      case 'RELIGIOUS':
-        return 'Religioso';
-
-      case 'CULTURAL':
-        return 'Cultura';
-
-      case 'PUBLIC_SERVICE':
-        return 'Servicio público';
-
-      case 'TRANSPORTATION':
-        return 'Transporte';
-
-      case 'TELECOMMUNICATION_SITE':
-        return 'Sitio de telecomunicaciones';
-
-      default:
-        return 'Lugar';
-    }
+    return 'FLM / NOC';
   }
 
 
@@ -1700,7 +2466,7 @@ export class MapComponent
         : '';
 
     const flmNoc =
-      place.flmNocData;
+      place.flmNoc;
 
     const flmNocDetails =
       place.source?.toUpperCase() === 'FLM_NOC' &&

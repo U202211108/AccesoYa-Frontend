@@ -1,487 +1,710 @@
 <section class="map-page">
 
-    <div class="map-header">
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
 
-        <div>
+    <header class="map-header">
 
-            <span class="eyebrow">
-                ACCESOYA
-            </span>
+        <div class="map-header-content">
 
-            <h1>
-                Lugares accesibles
-            </h1>
+            <div class="map-header-main">
 
-            <p>
-                Explora establecimientos y servicios
-                registrados en nuestra plataforma.
-            </p>
+                <div class="map-header-icon">
+                    <span class="material-symbols-outlined">
+                        cell_tower
+                    </span>
+                </div>
+
+                <div>
+
+                    <span class="eyebrow">
+                        ACCESOYA · FLM / NOC
+                    </span>
+
+                    <h1>
+                        Mapa de infraestructura
+                    </h1>
+
+                    <p>
+                        Explora y localiza los sitios FLM / NOC
+                        registrados en la plataforma.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- ESTADO -->
+            <!-- ================================================= -->
+
+            <div class="map-status-card">
+
+                <div class="status-indicator">
+                    <span></span>
+                </div>
+
+                <div class="status-content">
+
+                    <strong>
+                        Infraestructura FLM / NOC
+                    </strong>
+
+                    <span>
+                        Información disponible
+                    </span>
+
+                </div>
+
+                <span class="material-symbols-outlined status-icon">
+                    verified
+                </span>
+
+            </div>
 
         </div>
 
-    </div>
+    </header>
 
 
-    <div class="map-wrapper">
+    <!-- ================================================= -->
+    <!-- CONTENEDOR MAPA + FILTROS -->
+    <!-- ================================================= -->
+
+    <div class="map-layout">
 
         <!-- ================================================= -->
-        <!-- BUSCADOR DE LUGARES -->
+        <!-- MAPA -->
         <!-- ================================================= -->
 
-        <div class="map-search">
+        <div class="map-wrapper">
 
-            <div class="map-search-input">
+            <!-- ================================================= -->
+            <!-- BUSCADOR -->
+            <!-- ================================================= -->
 
-                <span class="material-symbols-outlined">
-                    search
-                </span>
+            <div class="map-search">
 
-                <input type="text" [value]="searchTerm" (input)="onSearchInput($event)"
-                    placeholder="Buscar establecimiento, lugar o dirección..." autocomplete="off"
-                    aria-label="Buscar lugares" />
-
-                @if (searchTerm) {
-
-                <button type="button" class="map-search-clear" (click)="clearSearch()" aria-label="Limpiar búsqueda">
+                <div class="map-search-input">
 
                     <span class="material-symbols-outlined">
-                        close
+                        search
                     </span>
 
-                </button>
+                    <input type="text" [value]="searchTerm" (input)="onSearchInput($event)"
+                        placeholder="Buscar sitio FLM / NOC..." autocomplete="off"
+                        aria-label="Buscar sitios FLM / NOC" />
 
-                }
+                    @if (searchTerm) {
 
-            </div>
-
-
-            @if (searchTerm && searchResults.length > 0) {
-
-            <div class="map-search-results">
-
-                @for (
-                place of searchResults;
-                track place.id
-                ) {
-
-                <button type="button" class="map-search-result" (click)="focusPlace(place)">
-
-                    <div class="search-result-icon">
+                    <button type="button" class="map-search-clear" (click)="clearSearch()"
+                        aria-label="Limpiar búsqueda">
 
                         <span class="material-symbols-outlined">
-                            location_on
+                            close
                         </span>
 
-                    </div>
+                    </button>
 
-                    <div class="search-result-content">
+                    }
 
-                        <strong>
-                            {{ place.name }}
-                        </strong>
+                </div>
 
-                        @if (place.type) {
+
+                <!-- ================================================= -->
+                <!-- RESULTADOS -->
+                <!-- ================================================= -->
+
+                @if (
+                searchTerm &&
+                searchResults.length > 0
+                ) {
+
+                <div class="map-search-results">
+
+                    <div class="search-results-header">
 
                         <span>
-                            {{ place.type }}
+                            Resultados encontrados
                         </span>
 
-                        }
-
-                        @if (place.address) {
-
-                        <small>
-                            {{ place.address }}
-                        </small>
-
-                        }
+                        <span class="search-results-count">
+                            {{ searchResults.length }}
+                        </span>
 
                     </div>
 
-                    <span class="material-symbols-outlined search-result-arrow">
-                        arrow_forward
-                    </span>
 
-                </button>
+                    @for (
+                    place of searchResults;
+                    track place.id
+                    ) {
+
+                    <button type="button" class="map-search-result" (click)="focusPlace(place)">
+
+                        <div class="search-result-icon">
+
+                            <span class="material-symbols-outlined">
+                                cell_tower
+                            </span>
+
+                        </div>
+
+
+                        <div class="search-result-content">
+
+                            <strong>
+                                {{ place.name }}
+                            </strong>
+
+
+                            <span class="search-result-type">
+
+                                <span class="result-dot"></span>
+
+                                FLM / NOC
+
+                            </span>
+
+
+                            @if (place.address) {
+
+                            <small>
+
+                                <span class="material-symbols-outlined">
+                                    location_on
+                                </span>
+
+                                {{ place.address }}
+
+                            </small>
+
+                            }
+
+                        </div>
+
+
+                        <span class="material-symbols-outlined search-result-arrow">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                    }
+
+                </div>
+
+                }
+
+
+                <!-- ================================================= -->
+                <!-- SIN RESULTADOS -->
+                <!-- ================================================= -->
+
+                @if (
+                searchTerm &&
+                searchResults.length === 0
+                ) {
+
+                <div class="map-search-no-results">
+
+                    <div class="no-results-icon">
+
+                        <span class="material-symbols-outlined">
+                            search_off
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            No encontramos sitios
+                        </strong>
+
+                        <span>
+                            Intenta con otro nombre o término de búsqueda.
+                        </span>
+
+                    </div>
+
+                </div>
 
                 }
 
             </div>
 
-            }
+
+            <!-- ================================================= -->
+            <!-- MAPA LEAFLET -->
+            <!-- ================================================= -->
+
+            <div id="accessoya-map" class="accessoya-map">
+            </div>
 
 
-            @if (searchTerm && searchResults.length === 0) {
+            <!-- ================================================= -->
+            <!-- INFORMACIÓN SOBRE EL MAPA -->
+            <!-- ================================================= -->
 
-            <div class="map-search-no-results">
+            <div class="map-floating-info">
 
-                <span class="material-symbols-outlined">
-                    search_off
-                </span>
+                <div class="floating-info-item">
 
-                <span>
-                    No encontramos lugares con esa búsqueda.
-                </span>
+                    <div class="floating-info-icon">
+
+                        <span class="material-symbols-outlined">
+                            cell_tower
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Tipo de infraestructura
+                        </span>
+
+                        <strong>
+                            FLM / NOC
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="floating-info-divider"></div>
+
+
+                <div class="floating-info-item">
+
+                    <div class="floating-info-icon">
+
+                        <span class="material-symbols-outlined">
+                            public
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Cobertura
+                        </span>
+
+                        <strong>
+                            Perú
+                        </strong>
+
+                    </div>
+
+                </div>
 
             </div>
 
-            }
-
-        </div>
-
-        <div id="accessoya-map" class="accessoya-map">
         </div>
 
 
-
-        <!-- ====================================== -->
-        <!-- LEYENDA -->
-        <!-- ====================================== -->
-
         <!-- ================================================= -->
-        <!-- BOTÓN FILTROS MÓVIL -->
+        <!-- PANEL DE FILTROS FLM / NOC -->
         <!-- ================================================= -->
 
-        <button type="button" class="mobile-filter-button" [class.active]="isFilterPanelOpen"
-            (click)="toggleFilterPanel()" aria-label="Abrir filtros de categorías">
+        <aside class="map-legend" [class.mobile-open]="isFilterPanelOpen">
 
-            <span class="filter-button-icon">
-
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-
-                    <path d="M4 6h16M7 12h10M10 18h4" />
-                </svg>
-
-            </span>
-
-            <span>
-                Filtros
-            </span>
-
-            @if (selectedCategories.size > 0) {
-
-            <span class="filter-count">
-                {{ selectedCategories.size }}
-            </span>
-
-            }
-
-        </button>
-
-        <!-- ================================================= -->
-        <!-- FILTROS DE CATEGORÍAS -->
-        <!-- ================================================= -->
-
-        <div class="map-legend" [class.mobile-open]="isFilterPanelOpen">
+            <!-- ================================================= -->
+            <!-- HEADER FIJO DEL PANEL -->
+            <!-- ================================================= -->
 
             <div class="legend-header">
 
-                <div>
-                    <span class="legend-eyebrow">
-                        FILTRAR MAPA
-                    </span>
+                <div class="legend-heading">
 
-                    <div class="legend-title">
-                        Categorías
+                    <div class="legend-icon">
+                        <span class="material-symbols-outlined">tune</span>
+                    </div>
+
+                    <div class="legend-heading-copy">
+                        <span class="legend-eyebrow">FILTRAR MAPA</span>
+                        <div class="legend-title">Infraestructura FLM / NOC</div>
+                        <p class="legend-description">
+                            Filtra los sitios por sus características de infraestructura.
+                        </p>
+                    </div>
+
+                </div>
+
+                <button type="button" class="clear-filters" (click)="clearFlmNocFilters()"
+                    [disabled]="!selectedTipoEstacion && !selectedZonal && !selectedTecnologia"
+                    aria-label="Limpiar filtros">
+                    <span class="material-symbols-outlined">restart_alt</span>
+                    <span>Limpiar</span>
+                </button>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- CONTENIDO DESPLAZABLE DE FILTROS -->
+            <!-- ================================================= -->
+
+            <div class="legend-filter-scroll">
+
+                <!-- ================================================= -->
+                <!-- TIPO DE ESTACIÓN -->
+                <!-- ================================================= -->
+
+                <section class="filter-group" [class.is-collapsed]="!isTipoEstacionOpen">
+
+                    <button type="button" class="filter-section-toggle"
+                        (click)="isTipoEstacionOpen = !isTipoEstacionOpen" [attr.aria-expanded]="isTipoEstacionOpen"
+                        aria-controls="tipo-estacion-options">
+                        <span class="filter-label">
+                            <span class="filter-label-icon">
+                                <span class="material-symbols-outlined">cell_tower</span>
+                            </span>
+                            <span class="filter-label-copy">
+                                <strong>Tipo de estación</strong>
+                                <small>{{ tipoEstaciones.length }} opciones</small>
+                            </span>
+                        </span>
+                        <span class="filter-section-chevron material-symbols-outlined">
+                            expand_more
+                        </span>
+                    </button>
+
+                    @if (isTipoEstacionOpen) {
+                    <div id="tipo-estacion-options" class="filter-visual-options">
+
+                        <button type="button" class="filter-color-option filter-all-option"
+                            [class.selected]="!selectedTipoEstacion" (click)="selectTipoEstacion('')">
+                            <span class="filter-color-dot all-color"></span>
+                            <span class="filter-option-text">Todos los tipos</span>
+                            <span class="filter-option-count">{{ tipoEstacionAllCount }}</span>
+                            @if (!selectedTipoEstacion) {
+                            <span class="filter-check material-symbols-outlined">check</span>
+                            }
+                        </button>
+
+                        @for (
+                        tipo of (showAllTipoEstacion
+                        ? tipoEstaciones
+                        : tipoEstaciones.slice(0, maxVisibleFilterOptions));
+                        track tipo
+                        ) {
+                        <button type="button" class="filter-color-option"
+                            [class.selected]="selectedTipoEstacion === tipo" (click)="selectTipoEstacion(tipo)"
+                            [attr.title]="tipo">
+                            <span class="filter-color-dot" [style.background-color]="getTipoEstacionColor(tipo)"></span>
+                            <span class="filter-option-text">{{ tipo }}</span>
+                            <span class="filter-option-count">{{ tipoEstacionCounts.get(tipo) ?? 0 }}</span>
+                            @if (selectedTipoEstacion === tipo) {
+                            <span class="filter-check material-symbols-outlined">check</span>
+                            }
+                        </button>
+                        }
+
+                        @if (tipoEstaciones.length > maxVisibleFilterOptions) {
+                        <button type="button" class="show-more-filters"
+                            (click)="showAllTipoEstacion = !showAllTipoEstacion">
+                            <span class="material-symbols-outlined">
+                                {{ showAllTipoEstacion ? 'expand_less' : 'add' }}
+                            </span>
+                            <span>
+                                {{ showAllTipoEstacion ? 'Mostrar menos' : 'Mostrar más' }}
+                            </span>
+                            @if (!showAllTipoEstacion) {
+                            <small>{{ tipoEstaciones.length - maxVisibleFilterOptions }} más</small>
+                            }
+                        </button>
+                        }
+
+                    </div>
+                    }
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- ZONAL -->
+                <!-- ================================================= -->
+
+                <section class="filter-group" [class.is-collapsed]="!isZonalOpen">
+
+                    <button type="button" class="filter-section-toggle" (click)="isZonalOpen = !isZonalOpen"
+                        [attr.aria-expanded]="isZonalOpen" aria-controls="zonal-options">
+                        <span class="filter-label">
+                            <span class="filter-label-icon">
+                                <span class="material-symbols-outlined">map</span>
+                            </span>
+                            <span class="filter-label-copy">
+                                <strong>Zonal</strong>
+                                <small>{{ zonales.length }} opciones</small>
+                            </span>
+                        </span>
+                        <span class="filter-section-chevron material-symbols-outlined">
+                            expand_more
+                        </span>
+                    </button>
+
+                    @if (isZonalOpen) {
+                    <div id="zonal-options" class="filter-visual-options">
+
+                        <button type="button" class="filter-color-option filter-all-option"
+                            [class.selected]="!selectedZonal" (click)="selectZonal('')">
+                            <span class="filter-color-dot all-color"></span>
+                            <span class="filter-option-text">Todos los zonales</span>
+                            <span class="filter-option-count">{{ zonalAllCount }}</span>
+                            @if (!selectedZonal) {
+                            <span class="filter-check material-symbols-outlined">check</span>
+                            }
+                        </button>
+
+                        @for (
+                        zonal of (showAllZonal
+                        ? zonales
+                        : zonales.slice(0, maxVisibleFilterOptions));
+                        track zonal
+                        ) {
+                        <button type="button" class="filter-color-option" [class.selected]="selectedZonal === zonal"
+                            (click)="selectZonal(zonal)" [attr.title]="zonal">
+                            <span class="filter-color-dot" [style.background-color]="getZonalColor(zonal)"></span>
+                            <span class="filter-option-text">{{ zonal }}</span>
+                            <span class="filter-option-count">{{ zonalCounts.get(zonal) ?? 0 }}</span>
+                            @if (selectedZonal === zonal) {
+                            <span class="filter-check material-symbols-outlined">check</span>
+                            }
+                        </button>
+                        }
+
+                        @if (zonales.length > maxVisibleFilterOptions) {
+                        <button type="button" class="show-more-filters" (click)="showAllZonal = !showAllZonal">
+                            <span class="material-symbols-outlined">
+                                {{ showAllZonal ? 'expand_less' : 'add' }}
+                            </span>
+                            <span>
+                                {{ showAllZonal ? 'Mostrar menos' : 'Mostrar más' }}
+                            </span>
+                            @if (!showAllZonal) {
+                            <small>{{ zonales.length - maxVisibleFilterOptions }} más</small>
+                            }
+                        </button>
+                        }
+
+                    </div>
+                    }
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- TECNOLOGÍA -->
+                <!-- ================================================= -->
+
+                <section class="filter-group" [class.is-collapsed]="!isTecnologiaOpen">
+
+                    <button type="button" class="filter-section-toggle" (click)="isTecnologiaOpen = !isTecnologiaOpen"
+                        [attr.aria-expanded]="isTecnologiaOpen" aria-controls="tecnologia-options">
+                        <span class="filter-label">
+                            <span class="filter-label-icon">
+                                <span class="material-symbols-outlined">settings_input_antenna</span>
+                            </span>
+                            <span class="filter-label-copy">
+                                <strong>Tecnología</strong>
+                                <small>{{ tecnologias.length }} opciones</small>
+                            </span>
+                        </span>
+                        <span class="filter-section-chevron material-symbols-outlined">
+                            expand_more
+                        </span>
+                    </button>
+
+                    @if (isTecnologiaOpen) {
+                    <div id="tecnologia-options" class="filter-visual-options">
+
+                        <button type="button" class="filter-color-option filter-all-option"
+                            [class.selected]="!selectedTecnologia" (click)="selectTecnologia('')">
+                            <span class="filter-color-dot all-color"></span>
+                            <span class="filter-option-text">Todas las tecnologías</span>
+                            <span class="filter-option-count">{{ tecnologiaAllCount }}</span>
+                            @if (!selectedTecnologia) {
+                            <span class="filter-check material-symbols-outlined">check</span>
+                            }
+                        </button>
+
+                        @for (
+                        tecnologia of (showAllTecnologia
+                        ? tecnologias
+                        : tecnologias.slice(0, maxVisibleFilterOptions));
+                        track tecnologia
+                        ) {
+                        <button type="button" class="filter-color-option"
+                            [class.selected]="selectedTecnologia === tecnologia" (click)="selectTecnologia(tecnologia)"
+                            [attr.title]="tecnologia">
+                            <span class="filter-color-dot"
+                                [style.background-color]="getTecnologiaColor(tecnologia)"></span>
+                            <span class="filter-option-text">{{ tecnologia }}</span>
+                            <span class="filter-option-count">{{ tecnologiaCounts.get(tecnologia) ?? 0 }}</span>
+                            @if (selectedTecnologia === tecnologia) {
+                            <span class="filter-check material-symbols-outlined">check</span>
+                            }
+                        </button>
+                        }
+
+                        @if (tecnologias.length > maxVisibleFilterOptions) {
+                        <button type="button" class="show-more-filters"
+                            (click)="showAllTecnologia = !showAllTecnologia">
+                            <span class="material-symbols-outlined">
+                                {{ showAllTecnologia ? 'expand_less' : 'add' }}
+                            </span>
+                            <span>
+                                {{ showAllTecnologia ? 'Mostrar menos' : 'Mostrar más' }}
+                            </span>
+                            @if (!showAllTecnologia) {
+                            <small>{{ tecnologias.length - maxVisibleFilterOptions }} más</small>
+                            }
+                        </button>
+                        }
+
+                    </div>
+                    }
+                </section>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FOOTER FIJO: RESULTADO + FILTROS ACTIVOS -->
+            <!-- ================================================= -->
+
+            <div class="legend-footer">
+
+                <div class="filter-summary">
+
+                    <div class="filter-summary-main">
+                        <div class="filter-summary-icon">
+                            <span class="material-symbols-outlined">location_on</span>
+                        </div>
+
+                        <div class="filter-summary-content">
+                            <strong>{{ visibleFlmNocCount }} sitios encontrados</strong>
+                            <span>
+                                @if (
+                                !selectedTipoEstacion &&
+                                !selectedZonal &&
+                                !selectedTecnologia
+                                ) {
+                                Mostrando toda la infraestructura FLM / NOC.
+                                } @else {
+                                Mostrando los sitios que coinciden con los filtros.
+                                }
+                            </span>
+                        </div>
+                    </div>
+
+                    @if (selectedTipoEstacion || selectedZonal || selectedTecnologia) {
+                    <div class="active-filter-list">
+
+                        @if (selectedTipoEstacion) {
+                        <button type="button" class="active-filter-chip" (click)="selectTipoEstacion('')"
+                            [attr.title]="'Quitar ' + selectedTipoEstacion">
+                            <span class="active-filter-dot"
+                                [style.background-color]="getTipoEstacionColor(selectedTipoEstacion)"></span>
+                            <span>{{ selectedTipoEstacion }}</span>
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                        }
+
+                        @if (selectedZonal) {
+                        <button type="button" class="active-filter-chip" (click)="selectZonal('')"
+                            [attr.title]="'Quitar ' + selectedZonal">
+                            <span class="active-filter-dot"
+                                [style.background-color]="getZonalColor(selectedZonal)"></span>
+                            <span>{{ selectedZonal }}</span>
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                        }
+
+                        @if (selectedTecnologia) {
+                        <button type="button" class="active-filter-chip" (click)="selectTecnologia('')"
+                            [attr.title]="'Quitar ' + selectedTecnologia">
+                            <span class="active-filter-dot"
+                                [style.background-color]="getTecnologiaColor(selectedTecnologia)"></span>
+                            <span>{{ selectedTecnologia }}</span>
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                        }
+
+                    </div>
+                    }
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- INFORMACIÓN -->
+                <!-- ================================================= -->
+
+                <div class="legend-info">
+                    <div class="legend-info-icon">
+                        <span class="material-symbols-outlined">info</span>
+                    </div>
+                    <div class="legend-info-content">
+                        <strong>Lectura del mapa</strong>
+                        <span>
+                            Los colores de las opciones coinciden con los marcadores utilizados en el mapa.
+                        </span>
                     </div>
                 </div>
 
-                <button type="button" class="clear-filters" (click)="clearCategoryFilters()"
-                    [class.active]="selectedCategories.size === 0">
-                    Todas
-                </button>
-
             </div>
 
-
-            <div class="legend-grid">
-
-
-                <!-- SALUD -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('HEALTHCARE')"
-                    (click)="toggleCategory('HEALTHCARE')">
-
-                    <span class="legend-dot healthcare"></span>
-
-                    <span class="legend-label">
-                        Salud
-                    </span>
-
-                    @if (isCategorySelected('HEALTHCARE')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- FARMACIA -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('PHARMACY')"
-                    (click)="toggleCategory('PHARMACY')">
-
-                    <span class="legend-dot pharmacy"></span>
-
-                    <span class="legend-label">
-                        Farmacia
-                    </span>
-
-                    @if (isCategorySelected('PHARMACY')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- RESTAURANTE -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('RESTAURANT')"
-                    (click)="toggleCategory('RESTAURANT')">
-
-                    <span class="legend-dot restaurant"></span>
-
-                    <span class="legend-label">
-                        Restaurantes
-                    </span>
-
-                    @if (isCategorySelected('RESTAURANT')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- BANCO -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('BANK')"
-                    (click)="toggleCategory('BANK')">
-
-                    <span class="legend-dot bank"></span>
-
-                    <span class="legend-label">
-                        Bancos
-                    </span>
-
-                    @if (isCategorySelected('BANK')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- EDUCACIÓN -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('SCHOOL')"
-                    (click)="toggleCategory('SCHOOL')">
-
-                    <span class="legend-dot education"></span>
-
-                    <span class="legend-label">
-                        Educación
-                    </span>
-
-                    @if (isCategorySelected('SCHOOL')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- HOTEL -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('HOTEL')"
-                    (click)="toggleCategory('HOTEL')">
-
-                    <span class="legend-dot hotel"></span>
-
-                    <span class="legend-label">
-                        Hoteles
-                    </span>
-
-                    @if (isCategorySelected('HOTEL')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- SUPERMERCADO -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('SUPERMARKET')"
-                    (click)="toggleCategory('SUPERMARKET')">
-
-                    <span class="legend-dot supermarket"></span>
-
-                    <span class="legend-label">
-                        Supermercados
-                    </span>
-
-                    @if (isCategorySelected('SUPERMARKET')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- CENTRO COMERCIAL -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('SHOPPING_CENTER')"
-                    (click)="toggleCategory('SHOPPING_CENTER')">
-
-                    <span class="legend-dot shopping"></span>
-
-                    <span class="legend-label">
-                        Centros comerciales
-                    </span>
-
-                    @if (isCategorySelected('SHOPPING_CENTER')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- DEPORTES -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('SPORTS')"
-                    (click)="toggleCategory('SPORTS')">
-
-                    <span class="legend-dot sports"></span>
-
-                    <span class="legend-label">
-                        Deportes
-                    </span>
-
-                    @if (isCategorySelected('SPORTS')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- RELIGIOSO -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('RELIGIOUS')"
-                    (click)="toggleCategory('RELIGIOUS')">
-
-                    <span class="legend-dot religious"></span>
-
-                    <span class="legend-label">
-                        Religiosos
-                    </span>
-
-                    @if (isCategorySelected('RELIGIOUS')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- CULTURA -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('CULTURAL')"
-                    (click)="toggleCategory('CULTURAL')">
-
-                    <span class="legend-dot cultural"></span>
-
-                    <span class="legend-label">
-                        Cultura
-                    </span>
-
-                    @if (isCategorySelected('CULTURAL')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- TRANSPORTE -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('TRANSPORTATION')"
-                    (click)="toggleCategory('TRANSPORTATION')">
-
-                    <span class="legend-dot transportation"></span>
-
-                    <span class="legend-label">
-                        Transporte
-                    </span>
-
-                    @if (isCategorySelected('TRANSPORTATION')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-
-                <!-- SERVICIO PÚBLICO -->
-
-                <button type="button" class="legend-item" [class.selected]="isCategorySelected('PUBLIC_SERVICE')"
-                    (click)="toggleCategory('PUBLIC_SERVICE')">
-
-                    <span class="legend-dot public-service"></span>
-
-                    <span class="legend-label">
-                        Servicios públicos
-                    </span>
-
-                    @if (isCategorySelected('PUBLIC_SERVICE')) {
-                    <span class="legend-check">
-                        ✓
-                    </span>
-                    }
-
-                </button>
-
-                <!-- FLM / NOC -->
-
-                <button type="button" class="legend-item"
-                    [class.selected]="isCategorySelected('TELECOMMUNICATION_SITE')"
-                    (click)="toggleCategory('TELECOMMUNICATION_SITE')">
-
-                    <span class="legend-dot flm-noc"></span>
-
-                    <span class="legend-label">
-                        FLM / NOC
-                    </span>
-
-                    @if (isCategorySelected('TELECOMMUNICATION_SITE')) {
-
-                    <span class="legend-check">
-                        ✓
-                    </span>
-
-                    }
-
-                </button>
-
-            </div>
-
-        </div>
+        </aside>
 
     </div>
+
+
+    <!-- ================================================= -->
+    <!-- BOTÓN FILTROS MÓVIL -->
+    <!-- ================================================= -->
+
+    <button type="button" class="mobile-filter-button" [class.active]="isFilterPanelOpen" (click)="toggleFilterPanel()"
+        aria-label="Abrir filtros">
+
+        <span class="filter-button-icon">
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                <path d="M4 6h16M7 12h10M10 18h4" />
+
+            </svg>
+
+        </span>
+
+
+        <span>
+            Filtros
+        </span>
+
+
+        @if (
+        selectedTipoEstacion ||
+        selectedZonal ||
+        selectedTecnologia
+        ) {
+
+        <span class="filter-count">
+
+            {{
+            (selectedTipoEstacion ? 1 : 0) +
+            (selectedZonal ? 1 : 0) +
+            (selectedTecnologia ? 1 : 0)
+            }}
+
+        </span>
+
+        }
+
+    </button>
 
 </section>

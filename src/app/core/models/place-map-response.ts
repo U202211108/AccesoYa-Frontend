@@ -32,5 +32,5 @@ export interface PlaceMapResponse {
 
     establishmentType?: string;
 
-    flmNocData?: FlmNocData;
+    flmNoc?: FlmNocData;
 }

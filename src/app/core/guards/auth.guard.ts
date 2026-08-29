@@ -21,10 +21,6 @@ export const authGuard: CanActivateFn = () => {
         inject(Router);
 
 
-    // =====================================================
-    // VERIFICAR AUTENTICACIÓN
-    // =====================================================
-
     if (
         authService.isAuthenticated()
     ) {
@@ -32,10 +28,6 @@ export const authGuard: CanActivateFn = () => {
         return true;
     }
 
-
-    // =====================================================
-    // NO AUTENTICADO
-    // =====================================================
 
     return router.createUrlTree([
         '/login'

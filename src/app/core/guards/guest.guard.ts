@@ -21,20 +21,17 @@ export const guestGuard: CanActivateFn = () => {
         inject(Router);
 
 
+    const authenticated =
+        authService.isAuthenticated();
+
+
     console.log(
         'GUEST GUARD - autenticado:',
-        authService.isAuthenticated()
-    );
-
-    console.log(
-        'GUEST GUARD - token:',
-        authService.getToken()
+        authenticated
     );
 
 
-    if (
-        authService.isAuthenticated()
-    ) {
+    if (authenticated) {
 
         return router.createUrlTree([
             '/dashboard'

@@ -6,24 +6,23 @@ import {
 export const authInterceptor: HttpInterceptorFn =
     (req, next) => {
 
+
         // =====================================================
         // ENDPOINTS PÚBLICOS DE AUTENTICACIÓN
         // =====================================================
 
         const isPublicAuthEndpoint =
             req.url.endsWith('/api/auth/login') ||
-            req.url.endsWith('/api/auth/register') ||
-            req.url.endsWith('/api/auth/refresh');
+            req.url.endsWith('/api/auth/register');
 
 
         // -----------------------------------------------------
-        // No enviar JWT a endpoints públicos
+        // Login y registro NO necesitan JWT
         // -----------------------------------------------------
 
         if (isPublicAuthEndpoint) {
 
             return next(req);
-
         }
 
 
@@ -32,17 +31,18 @@ export const authInterceptor: HttpInterceptorFn =
         // =====================================================
 
         const token =
-            localStorage.getItem('access_token');
+            sessionStorage.getItem(
+                'access_token'
+            );
 
 
         // -----------------------------------------------------
-        // Si no existe token, continuar normalmente
+        // Si no existe token
         // -----------------------------------------------------
 
         if (!token) {
 
             return next(req);
-
         }
 
 
