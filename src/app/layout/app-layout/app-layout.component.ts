@@ -201,10 +201,8 @@ export class AppLayoutComponent
                 return 'Administrador';
 
             default:
-                return 'Sin rol';
-
+                return 'Usuario';
         }
-
     }
 
 

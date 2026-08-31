@@ -1,883 +1,112 @@
 <div class="dashboard">
 
     <!-- ================================================= -->
-    <!-- ENCABEZADO -->
+    <!-- BIENVENIDA -->
     <!-- ================================================= -->
 
     <section class="welcome-section">
 
-        <div>
+        <div class="welcome-content">
 
             <span class="welcome-label">
-                PANEL DE CONTROL OPERATIVO
+                ACCESOYA
             </span>
 
             <h1>
-                Hola, {{ firstName }} 👋
+                Hola, {{ firstName }}
             </h1>
 
             <p>
-                Gestión y monitoreo de sitios de telecomunicaciones
-                y operaciones FLM/NOC.
+                {{ dashboardDescription }}
             </p>
 
         </div>
 
-
-        <div class="dashboard-status">
-
-            <span class="status-dot"></span>
-
-            <span>
-                {{
-                loading
-                ? 'Cargando información'
-                : error
-                ? 'Error de conexión'
-                : 'Sistema operativo'
-                }}
-            </span>
-
+        <div class="role-badge">
+            {{ dashboardTitle }}
         </div>
 
     </section>
 
 
     <!-- ================================================= -->
-    <!-- ESTADO DE CARGA -->
+    <!-- CARGANDO -->
     <!-- ================================================= -->
 
-    @if (loading) {
+    <section *ngIf="isLoading()" class="state-card">
 
-    <section class="dashboard-section">
+        <span class="material-symbols-outlined loading-icon">
+            progress_activity
+        </span>
 
-        <div class="chart-card">
+        <div>
 
-            <div class="section-header">
+            <strong>
+                Cargando información
+            </strong>
 
-                <div>
-
-                    <span class="section-eyebrow">
-                        FLM / NOC
-                    </span>
-
-                    <h2>
-                        Cargando información
-                    </h2>
-
-                    <p>
-                        Consultando los datos operativos
-                        disponibles.
-                    </p>
-
-                </div>
-
-            </div>
+            <p>
+                Estamos preparando tu dashboard.
+            </p>
 
         </div>
 
     </section>
-
-    }
 
 
     <!-- ================================================= -->
     <!-- ERROR -->
     <!-- ================================================= -->
 
-    @if (error) {
+    <section *ngIf="hasError()" class="state-card error">
 
-    <section class="dashboard-section">
+        <span class="material-symbols-outlined">
+            error
+        </span>
 
-        <div class="chart-card">
+        <div>
 
-            <div class="section-header">
+            <strong>
+                No se pudo cargar el dashboard
+            </strong>
 
-                <div>
-
-                    <span class="section-eyebrow">
-                        FLM / NOC
-                    </span>
-
-                    <h2>
-                        No se pudo cargar el dashboard
-                    </h2>
-
-                    <p>
-                        No fue posible obtener la información
-                        operativa desde el servidor.
-                    </p>
-
-                </div>
-
-
-                <button type="button" class="tool-card" (click)="retry()">
-
-                    <span class="material-symbols-outlined">
-                        refresh
-                    </span>
-
-                    Reintentar
-
-                </button>
-
-            </div>
+            <p>
+                Ocurrió un problema al obtener la información.
+            </p>
 
         </div>
 
-    </section>
+        <button type="button" class="retry-button" (click)="retry()">
 
-    }
+            <span class="material-symbols-outlined">
+                refresh
+            </span>
+
+            Reintentar
+
+        </button>
+
+    </section>
 
 
     <!-- ================================================= -->
-    <!-- DASHBOARD -->
+    <!-- CONTENIDO -->
     <!-- ================================================= -->
 
-    @if (dashboard) {
+    <ng-container *ngIf="dashboard && !isLoading() && !hasError()">
 
 
-    <!-- =============================================== -->
-    <!-- KPIs -->
-    <!-- =============================================== -->
+        <!-- ================================================= -->
+        <!-- KPIs -->
+        <!-- ================================================= -->
 
-    <section class="kpi-grid">
+        <section class="stats-grid">
 
+            <!-- SITIOS -->
 
-        <!-- =========================================== -->
-        <!-- SITIOS REGISTRADOS -->
-        <!-- =========================================== -->
+            <article class="stat-card">
 
-        <div class="kpi-card">
-
-            <div class="kpi-icon blue">
-
-                <span class="material-symbols-outlined">
-                    cell_tower
-                </span>
-
-            </div>
-
-
-            <div class="kpi-content">
-
-                <span class="kpi-label">
-                    SITIOS REGISTRADOS
-                </span>
-
-                <strong>
-                    {{ dashboard.totalSites | number }}
-                </strong>
-
-                <span class="kpi-description">
-                    Sitios FLM/NOC
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================================== -->
-        <!-- MONITOREO CSI -->
-        <!-- =========================================== -->
-
-        <div class="kpi-card">
-
-            <div class="kpi-icon green">
-
-                <span class="material-symbols-outlined">
-                    monitoring
-                </span>
-
-            </div>
-
-
-            <div class="kpi-content">
-
-                <span class="kpi-label">
-                    MONITOREO CSI
-                </span>
-
-                <strong>
-
-                    @for (
-                    item of dashboard.csiMonitoring;
-                    track item.value
-                    ) {
-
-                    @if (
-                    item.value?.toUpperCase() === 'SI'
-                    ) {
-
-                    {{ item.count | number }}
-
-                    }
-
-                    }
-
-                </strong>
-
-                <span class="kpi-description">
-                    Sitios con monitoreo CSI
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================================== -->
-        <!-- COBERTURA DE REACCIÓN -->
-        <!-- =========================================== -->
-
-        <div class="kpi-card">
-
-            <div class="kpi-icon orange">
-
-                <span class="material-symbols-outlined">
-                    shield
-                </span>
-
-            </div>
-
-
-            <div class="kpi-content">
-
-                <span class="kpi-label">
-                    COBERTURA DE REACCIÓN
-                </span>
-
-                <strong>
-
-                    @for (
-                    item of dashboard.reactionCoverage;
-                    track item.value
-                    ) {
-
-                    @if (
-                    item.value?.toUpperCase() === 'SI'
-                    ) {
-
-                    {{ item.count | number }}
-
-                    }
-
-                    }
-
-                </strong>
-
-                <span class="kpi-description">
-                    Sitios con cobertura
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================================== -->
-        <!-- PATRULLAJE -->
-        <!-- =========================================== -->
-
-        <div class="kpi-card">
-
-            <div class="kpi-icon purple">
-
-                <span class="material-symbols-outlined">
-                    local_police
-                </span>
-
-            </div>
-
-
-            <div class="kpi-content">
-
-                <span class="kpi-label">
-                    PATRULLAJE
-                </span>
-
-                <strong>
-
-                    @for (
-                    item of dashboard.patrol;
-                    track item.value
-                    ) {
-
-                    @if (
-                    item.value?.toUpperCase() === 'SI'
-                    ) {
-
-                    {{ item.count | number }}
-
-                    }
-
-                    }
-
-                </strong>
-
-                <span class="kpi-description">
-                    Sitios con patrullaje
-                </span>
-
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-    <!-- =============================================== -->
-    <!-- OPERACIÓN DE SEGURIDAD -->
-    <!-- =============================================== -->
-
-    <section class="dashboard-section">
-
-        <div class="section-header">
-
-            <div>
-
-                <span class="section-eyebrow">
-                    FLM / NOC
-                </span>
-
-                <h2>
-                    Operación de seguridad
-                </h2>
-
-                <p>
-                    Información operativa registrada
-                    en los sitios.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="operations-grid">
-
-
-            <!-- ======================================= -->
-            <!-- COBERTURA DE REACCIÓN -->
-            <!-- ======================================= -->
-
-            <div class="operation-card">
-
-                <div class="operation-header">
-
-                    <div class="operation-icon blue">
-
-                        <span class="material-symbols-outlined">
-                            shield
-                        </span>
-
-                    </div>
-
-
-                    <div>
-
-                        <strong>
-                            Cobertura de reacción
-                        </strong>
-
-                        <span>
-                            Sitios con cobertura
-                        </span>
-
-                    </div>
-
-
-                    <strong class="operation-value">
-
-                        @for (
-                        item of dashboard.reactionCoverage;
-                        track item.value
-                        ) {
-
-                        @if (
-                        item.value?.toUpperCase() === 'SI'
-                        ) {
-
-                        {{ item.count | number }}
-
-                        }
-
-                        }
-
-                    </strong>
-
-                </div>
-
-
-                <div class="progress-bar">
-
-                    @for (
-                    item of dashboard.reactionCoverage;
-                    track item.value
-                    ) {
-
-                    @if (
-                    item.value?.toUpperCase() === 'SI'
-                    ) {
-
-                    <div class="progress-fill blue-fill" [style.width.%]="
-                                        getPercentage(item.count)
-                                    ">
-                    </div>
-
-                    }
-
-                    }
-
-                </div>
-
-            </div>
-
-
-            <!-- ======================================= -->
-            <!-- MONITOREO CSI -->
-            <!-- ======================================= -->
-
-            <div class="operation-card">
-
-                <div class="operation-header">
-
-                    <div class="operation-icon green">
-
-                        <span class="material-symbols-outlined">
-                            monitoring
-                        </span>
-
-                    </div>
-
-
-                    <div>
-
-                        <strong>
-                            Monitoreo CSI
-                        </strong>
-
-                        <span>
-                            Sitios con monitoreo
-                        </span>
-
-                    </div>
-
-
-                    <strong class="operation-value">
-
-                        @for (
-                        item of dashboard.csiMonitoring;
-                        track item.value
-                        ) {
-
-                        @if (
-                        item.value?.toUpperCase() === 'SI'
-                        ) {
-
-                        {{ item.count | number }}
-
-                        }
-
-                        }
-
-                    </strong>
-
-                </div>
-
-
-                <div class="progress-bar">
-
-                    @for (
-                    item of dashboard.csiMonitoring;
-                    track item.value
-                    ) {
-
-                    @if (
-                    item.value?.toUpperCase() === 'SI'
-                    ) {
-
-                    <div class="progress-fill green-fill" [style.width.%]="
-                                        getPercentage(item.count)
-                                    ">
-                    </div>
-
-                    }
-
-                    }
-
-                </div>
-
-            </div>
-
-
-            <!-- ======================================= -->
-            <!-- RONDA DINÁMICA -->
-            <!-- ======================================= -->
-
-            <div class="operation-card">
-
-                <div class="operation-header">
-
-                    <div class="operation-icon cyan">
-
-                        <span class="material-symbols-outlined">
-                            route
-                        </span>
-
-                    </div>
-
-
-                    <div>
-
-                        <strong>
-                            Ronda dinámica
-                        </strong>
-
-                        <span>
-                            Sitios con ronda dinámica
-                        </span>
-
-                    </div>
-
-
-                    <strong class="operation-value">
-
-                        @for (
-                        item of dashboard.dynamicRound;
-                        track item.value
-                        ) {
-
-                        @if (
-                        item.value?.toUpperCase() === 'SI'
-                        ) {
-
-                        {{ item.count | number }}
-
-                        }
-
-                        }
-
-                    </strong>
-
-                </div>
-
-
-                <div class="progress-bar">
-
-                    @for (
-                    item of dashboard.dynamicRound;
-                    track item.value
-                    ) {
-
-                    @if (
-                    item.value?.toUpperCase() === 'SI'
-                    ) {
-
-                    <div class="progress-fill cyan-fill" [style.width.%]="
-                                        getPercentage(item.count)
-                                    ">
-                    </div>
-
-                    }
-
-                    }
-
-                </div>
-
-            </div>
-
-
-            <!-- ======================================= -->
-            <!-- VIGILANCIA -->
-            <!-- ======================================= -->
-
-            <div class="operation-card">
-
-                <div class="operation-header">
-
-                    <div class="operation-icon red">
-
-                        <span class="material-symbols-outlined">
-                            visibility
-                        </span>
-
-                    </div>
-
-
-                    <div>
-
-                        <strong>
-                            Vigilancia
-                        </strong>
-
-                        <span>
-                            Sitios con vigilancia
-                        </span>
-
-                    </div>
-
-
-                    <strong class="operation-value">
-
-                        @for (
-                        item of dashboard.surveillance;
-                        track item.value
-                        ) {
-
-                        @if (
-                        item.value?.toUpperCase() === 'SI'
-                        ) {
-
-                        {{ item.count | number }}
-
-                        }
-
-                        }
-
-                    </strong>
-
-                </div>
-
-
-                <div class="progress-bar">
-
-                    @for (
-                    item of dashboard.surveillance;
-                    track item.value
-                    ) {
-
-                    @if (
-                    item.value?.toUpperCase() === 'SI'
-                    ) {
-
-                    <div class="progress-fill red-fill" [style.width.%]="
-                                        getPercentage(item.count)
-                                    ">
-                    </div>
-
-                    }
-
-                    }
-
-                </div>
-
-            </div>
-
-
-            <!-- ======================================= -->
-            <!-- GUARDIANÍA -->
-            <!-- ======================================= -->
-
-            <div class="operation-card">
-
-                <div class="operation-header">
-
-                    <div class="operation-icon purple">
-
-                        <span class="material-symbols-outlined">
-                            lock
-                        </span>
-
-                    </div>
-
-
-                    <div>
-
-                        <strong>
-                            Guardianía
-                        </strong>
-
-                        <span>
-                            Sitios con guardianía
-                        </span>
-
-                    </div>
-
-
-                    <strong class="operation-value">
-
-                        @for (
-                        item of dashboard.guard;
-                        track item.value
-                        ) {
-
-                        @if (
-                        item.value?.toUpperCase() === 'SI'
-                        ) {
-
-                        {{ item.count | number }}
-
-                        }
-
-                        }
-
-                    </strong>
-
-                </div>
-
-
-                <div class="progress-bar">
-
-                    @for (
-                    item of dashboard.guard;
-                    track item.value
-                    ) {
-
-                    @if (
-                    item.value?.toUpperCase() === 'SI'
-                    ) {
-
-                    <div class="progress-fill purple-fill" [style.width.%]="
-                                        getPercentage(item.count)
-                                    ">
-                    </div>
-
-                    }
-
-                    }
-
-                </div>
-
-            </div>
-
-
-            <!-- ======================================= -->
-            <!-- PATRULLAJE -->
-            <!-- ======================================= -->
-
-            <div class="operation-card">
-
-                <div class="operation-header">
-
-                    <div class="operation-icon orange">
-
-                        <span class="material-symbols-outlined">
-                            local_police
-                        </span>
-
-                    </div>
-
-
-                    <div>
-
-                        <strong>
-                            Patrullaje
-                        </strong>
-
-                        <span>
-                            Sitios con patrullaje
-                        </span>
-
-                    </div>
-
-
-                    <strong class="operation-value">
-
-                        @for (
-                        item of dashboard.patrol;
-                        track item.value
-                        ) {
-
-                        @if (
-                        item.value?.toUpperCase() === 'SI'
-                        ) {
-
-                        {{ item.count | number }}
-
-                        }
-
-                        }
-
-                    </strong>
-
-                </div>
-
-
-                <div class="progress-bar">
-
-                    @for (
-                    item of dashboard.patrol;
-                    track item.value
-                    ) {
-
-                    @if (
-                    item.value?.toUpperCase() === 'SI'
-                    ) {
-
-                    <div class="progress-fill orange-fill" [style.width.%]="
-                                        getPercentage(item.count)
-                                    ">
-                    </div>
-
-                    }
-
-                    }
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-    <!-- =============================================== -->
-    <!-- DISTRIBUCIÓN -->
-    <!-- =============================================== -->
-
-    <section class="dashboard-section">
-
-        <div class="section-header">
-
-            <div>
-
-                <span class="section-eyebrow">
-                    INVENTARIO
-                </span>
-
-                <h2>
-                    Distribución de sitios
-                </h2>
-
-                <p>
-                    Distribución geográfica y
-                    características de los sitios.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="distribution-grid">
-
-
-            <!-- ========================================= -->
-            <!-- ZONALES -->
-            <!-- ========================================= -->
-
-            <div class="chart-card">
-
-                <div class="chart-header">
-
-                    <div>
-
-                        <h3>
-                            Sitios por zonal
-                        </h3>
-
-                        <span>
-                            Distribución de sitios por zona
-                            operativa.
-                        </span>
-
-                    </div>
-
+                <div class="stat-icon blue">
 
                     <span class="material-symbols-outlined">
                         location_on
@@ -885,355 +114,61 @@
 
                 </div>
 
+                <div class="stat-content">
 
-                <div class="bars-list">
-
-                    @if (zonales.length === 0) {
-
-                    <span class="kpi-description">
-                        No hay datos de zonales disponibles.
+                    <span class="stat-label">
+                        SITIOS REGISTRADOS
                     </span>
 
-                    }
+                    <strong>
+                        {{ dashboard.totalSites | number }}
+                    </strong>
 
-
-                    @for (
-                    zonal of zonales;
-                    track zonal.value
-                    ) {
-
-                    <div class="bar-item">
-
-                        <div class="bar-label">
-
-                            <span>
-                                {{ zonal.value }}
-                            </span>
-
-                            <strong>
-                                {{ zonal.count | number }}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="bar-track">
-
-                            <div class="bar-fill" [style.width.%]="
-                                            getPercentage(
-                                                zonal.count
-                                            )
-                                        ">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    }
+                    <span class="stat-description">
+                        Total de sitios
+                    </span>
 
                 </div>
 
-            </div>
+            </article>
 
 
-            <!-- ========================================= -->
-            <!-- TIPO DE ESTACIÓN -->
-            <!-- ========================================= -->
+            <!-- DEPARTAMENTOS -->
 
-            <div class="chart-card">
+            <article class="stat-card">
 
-                <div class="chart-header">
-
-                    <div>
-
-                        <h3>
-                            Tipo de estación
-                        </h3>
-
-                        <span>
-                            Distribución de tipos registrados.
-                        </span>
-
-                    </div>
-
+                <div class="stat-icon blue">
 
                     <span class="material-symbols-outlined">
-                        cell_tower
+                        location_city
                     </span>
 
                 </div>
 
+                <div class="stat-content">
 
-                <div class="bars-list">
-
-                    @if (stationTypes.length === 0) {
-
-                    <span class="kpi-description">
-                        No hay datos de tipos de estación
-                        disponibles.
+                    <span class="stat-label">
+                        DEPARTAMENTOS
                     </span>
 
-                    }
+                    <strong>
+                        {{ departments.length }}
+                    </strong>
 
-
-                    @for (
-                    station of stationTypes;
-                    track station.value
-                    ) {
-
-                    <div class="bar-item">
-
-                        <div class="bar-label">
-
-                            <span>
-                                {{ station.value }}
-                            </span>
-
-                            <strong>
-                                {{ station.count | number }}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="bar-track">
-
-                            <div class="bar-fill station-fill" [style.width.%]="
-                                            getPercentage(
-                                                station.count
-                                            )
-                                        ">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    }
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-    <!-- =============================================== -->
-    <!-- INFORMACIÓN ADICIONAL -->
-    <!-- =============================================== -->
-
-    <section class="dashboard-section">
-
-        <div class="section-header">
-
-            <div>
-
-                <span class="section-eyebrow">
-                    INFORMACIÓN OPERATIVA
-                </span>
-
-                <h2>
-                    Distribuciones adicionales
-                </h2>
-
-                <p>
-                    Información disponible en la base
-                    FLM/NOC.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="distribution-grid">
-
-
-            <!-- ========================================= -->
-            <!-- TECNOLOGÍA -->
-            <!-- ========================================= -->
-
-            <div class="chart-card">
-
-                <div class="chart-header">
-
-                    <div>
-
-                        <h3>
-                            Tecnología
-                        </h3>
-
-                        <span>
-                            Tecnologías registradas en los sitios.
-                        </span>
-
-                    </div>
-
-
-                    <span class="material-symbols-outlined">
-                        settings_input_antenna
+                    <span class="stat-description">
+                        Cobertura territorial
                     </span>
 
                 </div>
 
-
-                <div class="bars-list">
-
-                    @for (
-                    technology of dashboard.byTechnology;
-                    track technology.value
-                    ) {
-
-                    <div class="bar-item">
-
-                        <div class="bar-label">
-
-                            <span>
-                                {{ technology.value }}
-                            </span>
-
-                            <strong>
-                                {{ technology.count | number }}
-                            </strong>
-
-                        </div>
+            </article>
 
 
-                        <div class="bar-track">
+            <!-- PROVINCIAS -->
 
-                            <div class="bar-fill" [style.width.%]="
-                                            getPercentage(
-                                                technology.count
-                                            )
-                                        ">
-                            </div>
+            <article class="stat-card">
 
-                        </div>
-
-                    </div>
-
-                    }
-
-                </div>
-
-            </div>
-
-
-            <!-- ========================================= -->
-            <!-- PROPIETARIO DE TORRE -->
-            <!-- ========================================= -->
-
-            <div class="chart-card">
-
-                <div class="chart-header">
-
-                    <div>
-
-                        <h3>
-                            Propietario de torre
-                        </h3>
-
-                        <span>
-                            Distribución registrada.
-                        </span>
-
-                    </div>
-
-
-                    <span class="material-symbols-outlined">
-                        domain
-                    </span>
-
-                </div>
-
-
-                <div class="bars-list">
-
-                    @for (
-                    owner of dashboard.byTowerOwner;
-                    track owner.value
-                    ) {
-
-                    <div class="bar-item">
-
-                        <div class="bar-label">
-
-                            <span>
-                                {{ owner.value }}
-                            </span>
-
-                            <strong>
-                                {{ owner.count | number }}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="bar-track">
-
-                            <div class="bar-fill station-fill" [style.width.%]="
-                                            getPercentage(
-                                                owner.count
-                                            )
-                                        ">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    }
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-    <!-- =============================================== -->
-    <!-- ACCIONES OPERATIVAS -->
-    <!-- =============================================== -->
-
-    <section class="dashboard-section">
-
-        <div class="section-header">
-
-            <div>
-
-                <span class="section-eyebrow">
-                    HERRAMIENTAS
-                </span>
-
-                <h2>
-                    Acciones operativas
-                </h2>
-
-                <p>
-                    Accede rápidamente a las principales
-                    herramientas de gestión.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="tools-grid">
-
-
-            <!-- MAPA -->
-
-            <a routerLink="/places/map" class="tool-card">
-
-                <div class="tool-icon blue">
+                <div class="stat-icon green">
 
                     <span class="material-symbols-outlined">
                         map
@@ -1241,189 +176,1529 @@
 
                 </div>
 
+                <div class="stat-content">
 
-                <div class="tool-content">
+                    <span class="stat-label">
+                        PROVINCIAS
+                    </span>
 
-                    <h3>
-                        Mapa operativo
-                    </h3>
+                    <strong>
+                        {{ provinces.length }}
+                    </strong>
+
+                    <span class="stat-description">
+                        Distribución provincial
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- DISTRITOS -->
+
+            <article *ngIf="isConsultor()" class="stat-card">
+
+                <div class="stat-icon orange">
+
+                    <span class="material-symbols-outlined">
+                        pin_drop
+                    </span>
+
+                </div>
+
+                <div class="stat-content">
+
+                    <span class="stat-label">
+                        DISTRITOS
+                    </span>
+
+                    <strong>
+                        {{ districts.length }}
+                    </strong>
+
+                    <span class="stat-description">
+                        Cobertura distrital
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- ZONALES -->
+
+            <article *ngIf="canViewOperational()" class="stat-card">
+
+                <div class="stat-icon orange">
+
+                    <span class="material-symbols-outlined">
+                        hub
+                    </span>
+
+                </div>
+
+                <div class="stat-content">
+
+                    <span class="stat-label">
+                        ZONALES
+                    </span>
+
+                    <strong>
+                        {{ zonales.length }}
+                    </strong>
+
+                    <span class="stat-description">
+                        Distribución operativa
+                    </span>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- CONSULTOR -->
+        <!-- ================================================= -->
+
+        <section *ngIf="isConsultor()" class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        ANÁLISIS GEOGRÁFICO
+                    </span>
+
+                    <h2>
+                        Distribución de sitios
+                    </h2>
 
                     <p>
-                        Consulta la ubicación geográfica
-                        de los sitios telecom.
+                        Consulta la distribución territorial
+                        de los sitios registrados en AccesoYa.
                     </p>
 
                 </div>
 
+                <div class="section-header-icon">
 
-                <span class="material-symbols-outlined tool-arrow">
+                    <span class="material-symbols-outlined">
+                        analytics
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="distribution-grid">
+
+
+                <!-- DEPARTAMENTOS -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon blue">
+
+                                <span class="material-symbols-outlined">
+                                    location_city
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Por departamento
+                                </h3>
+
+                                <span>
+                                    {{ departments.length }} departamentos
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <span class="distribution-total">
+                            {{ getOperationCount(departments) | number }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="
+                                let item of getVisibleItems(departments);
+                                let i = index
+                            " class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value blue-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(departments)" type="button" class="view-all-button"
+                        (click)="openDistribution('departments')">
+
+                        <span>
+                            Ver los {{ departments.length }} departamentos
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+
+                <!-- PROVINCIAS -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon green">
+
+                                <span class="material-symbols-outlined">
+                                    map
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Por provincia
+                                </h3>
+
+                                <span>
+                                    {{ provinces.length }} provincias
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <span class="distribution-total">
+                            {{ getOperationCount(provinces) | number }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="
+                                let item of getVisibleItems(provinces);
+                                let i = index
+                            " class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value green-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(provinces)" type="button" class="view-all-button"
+                        (click)="openDistribution('provinces')">
+
+                        <span>
+                            Ver las {{ provinces.length }} provincias
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+
+                <!-- DISTRITOS -->
+
+                <article class="distribution-card distribution-card-wide">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon orange">
+
+                                <span class="material-symbols-outlined">
+                                    pin_drop
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Por distrito
+                                </h3>
+
+                                <span>
+                                    {{ districts.length }} distritos
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <span class="distribution-total">
+                            {{ getOperationCount(districts) | number }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="
+                                let item of getVisibleItems(districts);
+                                let i = index
+                            " class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value orange-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(districts)" type="button" class="view-all-button"
+                        (click)="openDistribution('districts')">
+
+                        <span>
+                            Ver los {{ districts.length }} distritos
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- OPERACIÓN FLM/NOC -->
+        <!-- ================================================= -->
+
+        <section *ngIf="canViewOperational()" class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        OPERACIÓN FLM/NOC
+                    </span>
+
+                    <h2>
+                        Distribución operativa
+                    </h2>
+
+                    <p>
+                        Información operativa disponible
+                        según el rol del usuario.
+                    </p>
+
+                </div>
+
+                <div class="section-header-icon">
+
+                    <span class="material-symbols-outlined">
+                        engineering
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="distribution-grid">
+
+
+                <!-- ZONALES -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon blue">
+
+                                <span class="material-symbols-outlined">
+                                    hub
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Sitios por zonal
+                                </h3>
+
+                                <span>
+                                    {{ zonales.length }} zonales
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="let item of getVisibleItems(zonales); let i = index" class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value blue-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(zonales)" type="button" class="view-all-button"
+                        (click)="openDistribution('zonales')">
+
+                        <span>
+                            Ver los {{ zonales.length }} zonales
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+
+                <!-- COBERTURA -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon green">
+
+                                <span class="material-symbols-outlined">
+                                    shield
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Cobertura de reacción
+                                </h3>
+
+                                <span>
+                                    {{ reactionCoverage.length }} categorías
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="let item of getVisibleItems(reactionCoverage); let i = index"
+                            class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value green-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(reactionCoverage)" type="button" class="view-all-button"
+                        (click)="openDistribution('reactionCoverage')">
+
+                        <span>
+                            Ver las {{ reactionCoverage.length }} categorías
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+
+                <!-- PATRULLAJE -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon orange">
+
+                                <span class="material-symbols-outlined">
+                                    directions_car
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Patrullaje
+                                </h3>
+
+                                <span>
+                                    {{ patrol.length }} categorías
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="let item of getVisibleItems(patrol); let i = index" class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value orange-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(patrol)" type="button" class="view-all-button"
+                        (click)="openDistribution('patrol')">
+
+                        <span>
+                            Ver todas las categorías
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+
+                <!-- GUARDIANÍA -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon purple">
+
+                                <span class="material-symbols-outlined">
+                                    security
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Guardianía
+                                </h3>
+
+                                <span>
+                                    {{ guard.length }} categorías
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="let item of getVisibleItems(guard); let i = index" class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value purple-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(guard)" type="button" class="view-all-button"
+                        (click)="openDistribution('guard')">
+
+                        <span>
+                            Ver todas las categorías
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+
+                <!-- VIGILANCIA -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon red">
+
+                                <span class="material-symbols-outlined">
+                                    visibility
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Vigilancia
+                                </h3>
+
+                                <span>
+                                    {{ surveillance.length }} categorías
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="let item of getVisibleItems(surveillance); let i = index" class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value red-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(surveillance)" type="button" class="view-all-button"
+                        (click)="openDistribution('surveillance')">
+
+                        <span>
+                            Ver todas las categorías
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+
+                <!-- RONDA DINÁMICA -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon cyan">
+
+                                <span class="material-symbols-outlined">
+                                    route
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Ronda dinámica
+                                </h3>
+
+                                <span>
+                                    {{ dynamicRound.length }} categorías
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="let item of getVisibleItems(dynamicRound); let i = index" class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value cyan-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(dynamicRound)" type="button" class="view-all-button"
+                        (click)="openDistribution('dynamicRound')">
+
+                        <span>
+                            Ver todas las categorías
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+
+                <!-- CSI -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon red">
+
+                                <span class="material-symbols-outlined">
+                                    monitor_heart
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Monitoreo CSI
+                                </h3>
+
+                                <span>
+                                    {{ csiMonitoring.length }} categorías
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="let item of getVisibleItems(csiMonitoring); let i = index"
+                            class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value red-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(csiMonitoring)" type="button" class="view-all-button"
+                        (click)="openDistribution('csiMonitoring')">
+
+                        <span>
+                            Ver todas las categorías
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- SUPERVISOR / ADMIN - TORRES -->
+        <!-- ================================================= -->
+
+        <section *ngIf="canViewTowerInformation()" class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        SUPERVISIÓN
+                    </span>
+
+                    <h2>
+                        Información de torres
+                    </h2>
+
+                    <p>
+                        Distribución de sitios según propietario
+                        y clasificación de torre.
+                    </p>
+
+                </div>
+
+                <div class="section-header-icon">
+
+                    <span class="material-symbols-outlined">
+                        cell_tower
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="distribution-grid">
+
+
+                <!-- PROPIETARIO -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon blue">
+
+                                <span class="material-symbols-outlined">
+                                    domain
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Propietario de torre
+                                </h3>
+
+                                <span>
+                                    {{ towerOwners.length }} categorías
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="let item of getVisibleItems(towerOwners); let i = index" class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value blue-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(towerOwners)" type="button" class="view-all-button"
+                        (click)="openDistribution('towerOwners')">
+
+                        <span>
+                            Ver todos los propietarios
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+
+                <!-- CLASIFICACIÓN -->
+
+                <article class="distribution-card">
+
+                    <div class="distribution-header">
+
+                        <div class="distribution-title">
+
+                            <div class="distribution-icon purple">
+
+                                <span class="material-symbols-outlined">
+                                    category
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Clasificación del propietario
+                                </h3>
+
+                                <span>
+                                    {{ towerOwnerClassifications.length }} categorías
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-list">
+
+                        <div *ngFor="let item of getVisibleItems(towerOwnerClassifications); let i = index"
+                            class="distribution-row">
+
+                            <div class="ranking">
+                                {{ i + 1 }}
+                            </div>
+
+                            <div class="distribution-main">
+
+                                <div class="distribution-info">
+
+                                    <span>
+                                        {{ item.value }}
+                                    </span>
+
+                                    <strong>
+                                        {{ item.count | number }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress">
+
+                                    <div class="progress-value purple-progress"
+                                        [style.width.%]="getPercentage(item.count)">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button *ngIf="hasMoreItems(towerOwnerClassifications)" type="button" class="view-all-button"
+                        (click)="openDistribution('towerOwnerClassifications')">
+
+                        <span>
+                            Ver todas las clasificaciones
+                        </span>
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- ADMIN -->
+        <!-- ================================================= -->
+
+        <section *ngIf="isAdmin()" class="admin-access-section">
+
+            <div class="admin-content">
+
+                <span class="section-label">
+                    ADMINISTRACIÓN
+                </span>
+
+                <h2>
+                    Gestión de usuarios
+                </h2>
+
+                <p>
+                    Administra usuarios, roles y estados
+                    de las cuentas de AccesoYa.
+                </p>
+
+            </div>
+
+            <a routerLink="/admin/users" class="admin-button">
+
+                <span class="material-symbols-outlined">
+                    manage_accounts
+                </span>
+
+                Gestionar usuarios
+
+                <span class="material-symbols-outlined">
                     arrow_forward
                 </span>
 
             </a>
 
+        </section>
 
-            <!-- PLANOS -->
 
-            <!-- PLANOS -->
+        <!-- ================================================= -->
+        <!-- ESTADO DE BASE -->
+        <!-- ================================================= -->
 
-            <a routerLink="/plans" class="tool-card">
+        <section class="database-status">
 
-                <div class="tool-icon purple">
+            <div class="database-icon">
 
-                    <span class="material-symbols-outlined">
-                        architecture
-                    </span>
+                <span class="material-symbols-outlined">
+                    database
+                </span>
+
+            </div>
+
+            <div class="database-content">
+
+                <strong>
+                    Base FLM/NOC
+                </strong>
+
+                <span>
+                    {{ dashboard.totalSites | number }}
+                    sitios registrados
+                </span>
+
+            </div>
+
+            <div class="database-indicator">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    Datos disponibles
+                </span>
+
+            </div>
+
+        </section>
+
+    </ng-container>
+
+
+    <!-- ================================================= -->
+    <!-- MODAL GENERAL DE DISTRIBUCIÓN -->
+    <!-- ================================================= -->
+
+    <div *ngIf="isDistributionModalOpen" class="modal-backdrop" (click)="onBackdropClick($event)">
+
+        <section class="distribution-modal" role="dialog" aria-modal="true"
+            [attr.aria-labelledby]="'distribution-modal-title'">
+
+
+            <!-- HEADER -->
+
+            <header class="modal-header">
+
+                <div class="modal-title-area">
+
+                    <div class="modal-icon" [ngClass]="modalColorClass">
+
+                        <span class="material-symbols-outlined">
+                            {{ modalIcon }}
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <span class="modal-eyebrow">
+                            DISTRIBUCIÓN
+                        </span>
+
+                        <h2 id="distribution-modal-title">
+                            {{ modalTitle }}
+                        </h2>
+
+                        <p>
+                            {{ modalDescription }}
+                        </p>
+
+                    </div>
 
                 </div>
 
 
-                <div class="tool-content">
+                <button type="button" class="modal-close" aria-label="Cerrar" (click)="closeDistribution()">
 
-                    <h3>
-                        Gestión de planos
-                    </h3>
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+
+                </button>
+
+            </header>
+
+
+            <!-- BUSCADOR -->
+
+            <div class="modal-toolbar">
+
+                <div class="search-box">
+
+                    <span class="material-symbols-outlined">
+                        search
+                    </span>
+
+                    <input type="text" [value]="distributionSearch" (input)="onDistributionSearch($event)"
+                        [placeholder]="modalSearchPlaceholder" autocomplete="off">
+
+                    <button *ngIf="distributionSearch" type="button" class="clear-search" aria-label="Limpiar búsqueda"
+                        (click)="clearDistributionSearch()">
+
+                        <span class="material-symbols-outlined">
+                            close
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <div class="modal-counter">
+
+                    <strong>
+                        {{ filteredDistributionItems.length }}
+                    </strong>
+
+                    <span>
+                        de {{ modalItems.length }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- LISTA -->
+
+            <div class="modal-list">
+
+                <div *ngFor="
+                        let item of filteredDistributionItems;
+                        let i = index
+                    " class="modal-row">
+
+                    <div class="modal-ranking">
+                        {{ i + 1 }}
+                    </div>
+
+                    <div class="modal-row-content">
+
+                        <div class="modal-row-top">
+
+                            <span class="modal-item-name">
+                                {{ item.value }}
+                            </span>
+
+                            <strong>
+                                {{ item.count | number }}
+                            </strong>
+
+                        </div>
+
+                        <div class="modal-progress">
+
+                            <div class="modal-progress-value" [ngClass]="modalColorClass"
+                                [style.width.%]="getPercentage(item.count)">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SIN RESULTADOS -->
+
+                <div *ngIf="filteredDistributionItems.length === 0" class="modal-empty">
+
+                    <span class="material-symbols-outlined">
+                        search_off
+                    </span>
+
+                    <strong>
+                        No se encontraron resultados
+                    </strong>
 
                     <p>
-                        Importa, consulta y administra
-                        planos asociados a los sitios.
+                        Prueba con otro término de búsqueda.
                     </p>
 
                 </div>
 
+            </div>
 
-                <span class="material-symbols-outlined tool-arrow">
-                    arrow_forward
+
+            <!-- FOOTER -->
+
+            <footer class="modal-footer">
+
+                <span>
+                    {{ modalItems.length }} registros disponibles
                 </span>
 
-            </a>
+                <button type="button" class="modal-footer-button" (click)="closeDistribution()">
 
+                    Cerrar
 
-            <!-- REPORTES -->
+                </button>
 
-            <button type="button" class="tool-card" (click)="comingSoon('Generación de reportes PDF')">
+            </footer>
 
-                <div class="tool-icon red">
+        </section>
 
-                    <span class="material-symbols-outlined">
-                        picture_as_pdf
-                    </span>
-
-                </div>
-
-
-                <div class="tool-content">
-
-                    <h3>
-                        Reportes PDF
-                    </h3>
-
-                    <p>
-                        Genera reportes operativos de
-                        los sitios seleccionados.
-                    </p>
-
-                    <span class="tool-status">
-                        Próximamente
-                    </span>
-
-                </div>
-
-
-                <span class="material-symbols-outlined tool-arrow">
-                    arrow_forward
-                </span>
-
-            </button>
-
-
-            <!-- IMPORTACIÓN -->
-
-            <button type="button" class="tool-card" (click)="comingSoon('Importación de base FLM/NOC')">
-
-                <div class="tool-icon green">
-
-                    <span class="material-symbols-outlined">
-                        upload_file
-                    </span>
-
-                </div>
-
-
-                <div class="tool-content">
-
-                    <h3>
-                        Importar base FLM/NOC
-                    </h3>
-
-                    <p>
-                        Actualiza la información de sitios
-                        mediante archivos Excel.
-                    </p>
-
-                    <span class="tool-status">
-                        Próximamente
-                    </span>
-
-                </div>
-
-
-                <span class="material-symbols-outlined tool-arrow">
-                    arrow_forward
-                </span>
-
-            </button>
-
-
-        </div>
-
-    </section>
-
-
-    <!-- =============================================== -->
-    <!-- ESTADO DE LA BASE -->
-    <!-- =============================================== -->
-
-    <section class="database-status">
-
-        <div class="database-icon">
-
-            <span class="material-symbols-outlined">
-                database
-            </span>
-
-        </div>
-
-
-        <div class="database-content">
-
-            <strong>
-                Base FLM/NOC
-            </strong>
-
-            <span>
-                {{
-                dashboard.totalSites | number
-                }}
-                sitios registrados
-            </span>
-
-        </div>
-
-
-        <div class="database-indicator">
-
-            <span class="status-dot"></span>
-
-            <span>
-                Datos disponibles
-            </span>
-
-        </div>
-
-    </section>
-
-
-    }
+    </div>
 
 </div>

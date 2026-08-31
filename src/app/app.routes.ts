@@ -127,9 +127,6 @@ export const routes: Routes = [
             // =================================================
             // MAPA
             // TODOS LOS ROLES
-            //
-            // IMPORTANTE:
-            // El backend debe filtrar FLM/NOC para CONSULTOR.
             // =================================================
 
             {
@@ -160,9 +157,6 @@ export const routes: Routes = [
             // =================================================
             // DETALLE DE SITIO
             // TODOS LOS ROLES
-            //
-            // El backend devuelve información diferente
-            // dependiendo del rol.
             // =================================================
 
             {
@@ -242,6 +236,23 @@ export const routes: Routes = [
 
 
             // =================================================
+            // NOTIFICACIONES
+            // TODOS LOS ROLES
+            // =================================================
+
+            {
+                path: 'notifications',
+
+                loadComponent: () =>
+                    import(
+                        './features/notifications/notifications.component'
+                    ).then(
+                        m => m.NotificationsComponent
+                    )
+            },
+
+
+            // =================================================
             // PLANOS
             // OPERADOR + SUPERVISOR + ADMIN
             // =================================================
@@ -266,6 +277,33 @@ export const routes: Routes = [
                         './features/plans/plan-management/plan-management.component'
                     ).then(
                         m => m.PlanManagementComponent
+                    )
+            },
+
+
+            // =================================================
+            // GESTIÓN DE USUARIOS
+            // SOLO ADMIN
+            // =================================================
+
+            {
+                path: 'admin/users',
+
+                canActivate: [
+                    roleGuard
+                ],
+
+                data: {
+                    roles: [
+                        'ADMIN'
+                    ] as UserRole[]
+                },
+
+                loadComponent: () =>
+                    import(
+                        './features/admin/users/admin-users.component'
+                    ).then(
+                        m => m.AdminUsersComponent
                     )
             }
 

@@ -156,6 +156,31 @@
                 </a>
                 }
 
+                <!-- ================================================= -->
+                <!-- GESTIÓN DE USUARIOS -->
+                <!-- SOLO ADMIN -->
+                <!-- ================================================= -->
+
+                @if (currentRole === 'ADMIN') {
+
+                <a routerLink="/admin/users" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        manage_accounts
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Gestión de usuarios
+                    </span>
+
+                    }
+
+                </a>
+
+                }
+
 
                 <!-- ================================================= -->
                 <!-- PERFIL -->

@@ -1,7 +1,10 @@
 export interface DashboardDistribution {
+
     value: string;
+
     count: number;
 }
+
 
 export interface DashboardResponse {
 
@@ -14,10 +17,6 @@ export interface DashboardResponse {
     byProvince: DashboardDistribution[];
 
     byDistrict: DashboardDistribution[];
-
-    byStationType: DashboardDistribution[];
-
-    byTechnology: DashboardDistribution[];
 
     byTowerOwner: DashboardDistribution[];
 

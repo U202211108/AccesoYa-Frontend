@@ -1,0 +1,611 @@
+<section class="notifications-page">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="page-header">
+
+        <div class="header-content">
+
+            <div class="header-icon">
+
+                <span class="material-symbols-outlined">
+                    notifications
+                </span>
+
+                @if (unreadCount > 0) {
+
+                <span class="header-badge">
+                    {{ unreadCount > 99 ? '99+' : unreadCount }}
+                </span>
+
+                }
+
+            </div>
+
+
+            <div class="header-text">
+
+                <span class="eyebrow">
+                    CENTRO DE NOTIFICACIONES
+                </span>
+
+                <h1>
+                    Notificaciones
+                </h1>
+
+                <p>
+                    Revisa las novedades y cambios importantes de la aplicación.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            @if (unreadCount > 0) {
+
+            <button type="button" class="mark-all-button" [disabled]="markingAllAsRead || markingAsReadId !== null"
+                (click)="markAllAsRead()">
+
+                <span class="material-symbols-outlined">
+                    done_all
+                </span>
+
+                @if (markingAllAsRead) {
+
+                <span>
+                    Marcando...
+                </span>
+
+                } @else {
+
+                <span>
+                    Marcar todas como leídas
+                </span>
+
+                }
+
+            </button>
+
+            }
+
+
+            <button type="button" class="refresh-button" [disabled]="loading || markingAllAsRead" (click)="refresh()">
+
+                <span class="material-symbols-outlined" [class.spinning]="loading">
+
+                    refresh
+
+                </span>
+
+                @if (loading) {
+
+                Actualizando...
+
+                } @else {
+
+                Actualizar
+
+                }
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENSAJES
+         ===================================================== -->
+
+    @if (errorMessage) {
+
+    <div class="message error">
+
+        <span class="material-symbols-outlined">
+            error
+        </span>
+
+        <span>
+            {{ errorMessage }}
+        </span>
+
+    </div>
+
+    }
+
+
+    @if (successMessage) {
+
+    <div class="message success">
+
+        <span class="material-symbols-outlined">
+            check_circle
+        </span>
+
+        <span>
+            {{ successMessage }}
+        </span>
+
+    </div>
+
+    }
+
+
+    <!-- =====================================================
+         RESUMEN
+         ===================================================== -->
+
+    <section class="summary-grid">
+
+        <article class="summary-card">
+
+            <div class="summary-icon">
+
+                <span class="material-symbols-outlined">
+                    notifications
+                </span>
+
+            </div>
+
+            <div class="summary-data">
+
+                <span class="summary-label">
+                    Total
+                </span>
+
+                <strong>
+                    {{ notifications.length }}
+                </strong>
+
+                <span class="summary-description">
+                    Notificaciones
+                </span>
+
+            </div>
+
+        </article>
+
+
+        <article class="summary-card unread">
+
+            <div class="summary-icon">
+
+                <span class="material-symbols-outlined">
+                    mark_email_unread
+                </span>
+
+            </div>
+
+            <div class="summary-data">
+
+                <span class="summary-label">
+                    Sin leer
+                </span>
+
+                <strong>
+                    {{ unreadCount }}
+                </strong>
+
+                <span class="summary-description">
+                    Pendientes de revisión
+                </span>
+
+            </div>
+
+        </article>
+
+
+        <article class="summary-card">
+
+            <div class="summary-icon">
+
+                <span class="material-symbols-outlined">
+                    mark_email_read
+                </span>
+
+            </div>
+
+            <div class="summary-data">
+
+                <span class="summary-label">
+                    Leídas
+                </span>
+
+                <strong>
+                    {{ notifications.length - unreadCount }}
+                </strong>
+
+                <span class="summary-description">
+                    Revisadas
+                </span>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         PANEL
+         ===================================================== -->
+
+    <section class="notifications-panel">
+
+        <div class="panel-toolbar">
+
+            <div class="panel-title">
+
+                <div class="panel-title-icon">
+
+                    <span class="material-symbols-outlined">
+                        history
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Actividad reciente
+                    </h2>
+
+                    <span>
+                        {{ filteredNotifications.length }}
+
+                        {{
+                        filteredNotifications.length === 1
+                        ? 'notificación'
+                        : 'notificaciones'
+                        }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="filters">
+
+                <button type="button" [class.active]="activeFilter === 'ALL'" (click)="setFilter('ALL')">
+
+                    <span>
+                        Todas
+                    </span>
+
+                    <span class="filter-total">
+                        {{ notifications.length }}
+                    </span>
+
+                </button>
+
+
+                <button type="button" [class.active]="activeFilter === 'UNREAD'" (click)="setFilter('UNREAD')">
+
+                    <span>
+                        No leídas
+                    </span>
+
+                    @if (unreadCount > 0) {
+
+                    <span class="filter-count">
+                        {{ unreadCount }}
+                    </span>
+
+                    }
+
+                </button>
+
+
+                <button type="button" [class.active]="activeFilter === 'READ'" (click)="setFilter('READ')">
+
+                    <span>
+                        Leídas
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             LOADING
+             ===================================================== -->
+
+        @if (loading) {
+
+        <div class="loading-state">
+
+            <div class="loading-icon">
+
+                <span class="material-symbols-outlined">
+                    notifications
+                </span>
+
+            </div>
+
+            <div class="loading-content">
+
+                <div class="loading-lines">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+                <div class="loading-lines">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+                <p>
+                    Cargando notificaciones...
+                </p>
+
+            </div>
+
+        </div>
+
+        }
+
+
+        <!-- =====================================================
+             EMPTY
+             ===================================================== -->
+
+        @else if (filteredNotifications.length === 0) {
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+
+                <span class="material-symbols-outlined">
+                    notifications_off
+                </span>
+
+            </div>
+
+            <h3>
+
+                @if (activeFilter === 'UNREAD') {
+
+                Todo está al día
+
+                } @else if (activeFilter === 'READ') {
+
+                No hay notificaciones leídas
+
+                } @else {
+
+                No hay notificaciones
+
+                }
+
+            </h3>
+
+            <p>
+
+                @if (activeFilter === 'UNREAD') {
+
+                No tienes notificaciones pendientes por leer.
+
+                } @else if (activeFilter === 'READ') {
+
+                Todavía no tienes notificaciones que hayas revisado.
+
+                } @else {
+
+                Cuando ocurra algo importante, aparecerá aquí.
+
+                }
+
+            </p>
+
+        </div>
+
+        }
+
+
+        <!-- =====================================================
+             LISTA
+             ===================================================== -->
+
+        @else {
+
+        <div class="notification-list">
+
+            @for (
+            notification of filteredNotifications;
+            track notification.id
+            ) {
+
+            <article class="notification-item" [class.unread]="!notification.read"
+                [class.processing]="markingAsReadId === notification.id" [class.read]="notification.read"
+                [class.disabled]="
+                    markingAsReadId !== null ||
+                    markingAllAsRead
+                " (click)="markAsRead(notification)">
+
+
+                <!-- ICONO -->
+
+                <div class="notification-icon" [ngClass]="
+                        getNotificationTypeClass(
+                            notification.type
+                        )
+                    ">
+
+                    @if (
+                    markingAsReadId === notification.id
+                    ) {
+
+                    <span class="material-symbols-outlined loading-spinner">
+                        progress_activity
+                    </span>
+
+                    } @else {
+
+                    <span class="material-symbols-outlined">
+
+                        {{
+                        getNotificationIcon(
+                        notification.type
+                        )
+                        }}
+
+                    </span>
+
+                    }
+
+                </div>
+
+
+                <!-- CONTENIDO -->
+
+                <div class="notification-content">
+
+                    <div class="notification-top">
+
+                        <span class="notification-type">
+
+                            {{
+                            getNotificationTypeLabel(
+                            notification.type
+                            )
+                            }}
+
+                        </span>
+
+
+                        @if (!notification.read) {
+
+                        <span class="unread-label">
+
+                            <span></span>
+
+                            Nueva
+
+                        </span>
+
+                        } @else {
+
+                        <span class="read-label">
+
+                            <span class="material-symbols-outlined">
+                                check
+                            </span>
+
+                            Leída
+
+                        </span>
+
+                        }
+
+                    </div>
+
+
+                    <h3>
+                        {{ notification.title }}
+                    </h3>
+
+
+                    <p>
+                        {{ notification.message }}
+                    </p>
+
+
+                    <div class="notification-footer">
+
+                        <span class="notification-date">
+
+                            <span class="material-symbols-outlined">
+                                schedule
+                            </span>
+
+                            {{ formatDate(notification.createdAt) }}
+
+                        </span>
+
+
+                        @if (!notification.read) {
+
+                        <span class="read-action">
+
+                            @if (
+                            markingAsReadId === notification.id
+                            ) {
+
+                            <span class="material-symbols-outlined">
+                                progress_activity
+                            </span>
+
+                            Procesando...
+
+                            } @else {
+
+                            <span class="material-symbols-outlined">
+                                done
+                            </span>
+
+                            Marcar como leída
+
+                            }
+
+                        </span>
+
+                        } @else {
+
+                        <span class="read-status">
+
+                            <span class="material-symbols-outlined">
+                                check_circle
+                            </span>
+
+                            Leída
+
+                        </span>
+
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- FLECHA -->
+
+                @if (!notification.read) {
+
+                <div class="notification-arrow">
+
+                    <span class="material-symbols-outlined">
+                        chevron_right
+                    </span>
+
+                </div>
+
+                }
+
+            </article>
+
+            }
+
+        </div>
+
+        }
+
+    </section>
+
+</section>

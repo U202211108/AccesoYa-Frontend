@@ -1,9 +1,23 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {
+    Injectable,
+    inject
+} from '@angular/core';
 
-import { Observable } from 'rxjs';
+import {
+    HttpClient
+} from '@angular/common/http';
 
-import { DashboardResponse } from '../models/dashboard-response';
+import {
+    Observable
+} from 'rxjs';
+
+import {
+    timeout
+} from 'rxjs/operators';
+
+import {
+    DashboardResponse
+} from '../models/dashboard-response';
 
 
 @Injectable({
@@ -11,19 +25,37 @@ import { DashboardResponse } from '../models/dashboard-response';
 })
 export class DashboardService {
 
+
+    private readonly http =
+        inject(HttpClient);
+
+
     private readonly apiUrl =
         'http://localhost:8080/api/dashboard';
 
 
-    constructor(
-        private readonly http: HttpClient
-    ) { }
+    // =====================================================
+    // OBTENER DASHBOARD
+    // =====================================================
 
+    getDashboard():
+        Observable<DashboardResponse> {
 
-    getDashboard(): Observable<DashboardResponse> {
-
-        return this.http.get<DashboardResponse>(
+        console.log(
+            'GET:',
             this.apiUrl
         );
+
+
+        return this.http
+            .get<DashboardResponse>(
+                this.apiUrl
+            )
+            .pipe(
+
+                timeout(15000)
+
+            );
     }
+
 }

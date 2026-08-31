@@ -1,42 +1,87 @@
 <section class="admin-users-page">
 
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <header class="page-header">
 
-        <div>
+        <div class="header-content">
 
-            <span class="eyebrow">
-                ADMINISTRACIÓN
-            </span>
+            <div class="header-icon">
 
-            <h1>
-                Gestión de usuarios
-            </h1>
+                <span class="material-symbols-outlined">
+                    manage_accounts
+                </span>
 
-            <p>
-                Controla los roles y estados de acceso.
-            </p>
+            </div>
+
+            <div>
+
+                <span class="eyebrow">
+                    ADMINISTRACIÓN
+                </span>
+
+                <h1>
+                    Gestión de usuarios
+                </h1>
+
+                <p>
+                    Administra roles, permisos y estados de acceso
+                    de los usuarios de la plataforma.
+                </p>
+
+            </div>
 
         </div>
 
 
         <button type="button" class="refresh-button" (click)="loadUsers()" [disabled]="loading">
 
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined" [class.spinning]="loading">
+
                 refresh
+
             </span>
 
-            Actualizar
+            <span>
+
+                {{ loading ? 'Actualizando...' : 'Actualizar' }}
+
+            </span>
 
         </button>
 
     </header>
 
 
+    <!-- =====================================================
+         MENSAJES
+         ===================================================== -->
+
     @if (errorMessage) {
 
     <div class="message error">
 
-        {{ errorMessage }}
+        <div class="message-icon">
+
+            <span class="material-symbols-outlined">
+                error
+            </span>
+
+        </div>
+
+        <div class="message-content">
+
+            <strong>
+                Ocurrió un problema
+            </strong>
+
+            <span>
+                {{ errorMessage }}
+            </span>
+
+        </div>
 
     </div>
 
@@ -47,61 +92,380 @@
 
     <div class="message success">
 
-        {{ successMessage }}
+        <div class="message-icon">
+
+            <span class="material-symbols-outlined">
+                check_circle
+            </span>
+
+        </div>
+
+        <div class="message-content">
+
+            <strong>
+                Operación completada
+            </strong>
+
+            <span>
+                {{ successMessage }}
+            </span>
+
+        </div>
 
     </div>
 
     }
 
 
-    <div class="toolbar">
+    <!-- =====================================================
+         ESTADÍSTICAS
+         ===================================================== -->
 
-        <div class="search-box">
+    <section class="stats-grid">
 
-            <span class="material-symbols-outlined">
-                search
-            </span>
+        <!-- TOTAL -->
 
-            <input type="search" [(ngModel)]="search" placeholder="Buscar usuario, correo o rol">
+        <article class="stat-card total">
+
+            <div class="stat-icon">
+
+                <span class="material-symbols-outlined">
+                    group
+                </span>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span class="stat-label">
+                    Total de usuarios
+                </span>
+
+                @if (loading) {
+
+                <span class="stat-skeleton"></span>
+
+                } @else {
+
+                <strong class="stat-value">
+                    {{ users.length }}
+                </strong>
+
+                }
+
+            </div>
+
+        </article>
+
+
+        <!-- ACTIVOS -->
+
+        <article class="stat-card active">
+
+            <div class="stat-icon">
+
+                <span class="material-symbols-outlined">
+                    person_check
+                </span>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span class="stat-label">
+                    Usuarios activos
+                </span>
+
+                @if (loading) {
+
+                <span class="stat-skeleton"></span>
+
+                } @else {
+
+                <strong class="stat-value">
+                    {{ activeUsersCount }}
+                </strong>
+
+                }
+
+            </div>
+
+            <span class="stat-decoration"></span>
+
+        </article>
+
+
+        <!-- INACTIVOS -->
+
+        <article class="stat-card inactive">
+
+            <div class="stat-icon">
+
+                <span class="material-symbols-outlined">
+                    person_off
+                </span>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span class="stat-label">
+                    Usuarios inactivos
+                </span>
+
+                @if (loading) {
+
+                <span class="stat-skeleton"></span>
+
+                } @else {
+
+                <strong class="stat-value">
+                    {{ inactiveUsersCount }}
+                </strong>
+
+                }
+
+            </div>
+
+        </article>
+
+
+        <!-- ADMINISTRADORES -->
+
+        <article class="stat-card admin">
+
+            <div class="stat-icon">
+
+                <span class="material-symbols-outlined">
+                    admin_panel_settings
+                </span>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span class="stat-label">
+                    Administradores
+                </span>
+
+                @if (loading) {
+
+                <span class="stat-skeleton"></span>
+
+                } @else {
+
+                <strong class="stat-value">
+                    {{ adminUsersCount }}
+                </strong>
+
+                }
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         TOOLBAR
+         ===================================================== -->
+
+    <section class="toolbar">
+
+        <div class="toolbar-left">
+
+            <div class="search-box">
+
+                <span class="material-symbols-outlined">
+                    search
+                </span>
+
+                <input type="search" [(ngModel)]="search" placeholder="Buscar por nombre, correo o rol"
+                    autocomplete="off">
+
+                @if (search) {
+
+                <button type="button" class="clear-search" (click)="search = ''" aria-label="Limpiar búsqueda">
+
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+
+                </button>
+
+                }
+
+            </div>
 
         </div>
 
 
-        <span class="count">
+        <div class="toolbar-right">
 
-            {{ filteredUsers.length }}
-            usuarios
+            <div class="results-indicator">
 
-        </span>
+                <span class="material-symbols-outlined">
+                    group
+                </span>
 
-    </div>
+                <strong>
+                    {{ filteredUsers.length }}
+                </strong>
 
+                <span>
+                    {{ filteredUsers.length === 1 ? 'usuario' : 'usuarios' }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
 
     <section class="table-card">
 
+        <div class="table-card-header">
+
+            <div>
+
+                <h2>
+                    Usuarios registrados
+                </h2>
+
+                <p>
+                    Gestiona el acceso y los roles de cada usuario.
+                </p>
+
+            </div>
+
+            <div class="table-status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    Sistema operativo
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             LOADING
+             ================================================= -->
+
         @if (loading) {
 
-        <div class="empty-state">
+        <div class="loading-container">
 
-            <h2>
-                Cargando usuarios...
-            </h2>
+            <div class="loading-header">
+
+                <div class="loading-spinner">
+
+                    <span class="material-symbols-outlined">
+                        progress_activity
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Cargando usuarios
+                    </strong>
+
+                    <span>
+                        Estamos obteniendo la información actualizada...
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="skeleton-table">
+
+                @for (row of [1, 2, 3, 4, 5]; track row) {
+
+                <div class="skeleton-row">
+
+                    <span class="skeleton-avatar"></span>
+
+                    <span class="skeleton-line name"></span>
+
+                    <span class="skeleton-line email"></span>
+
+                    <span class="skeleton-select"></span>
+
+                    <span class="skeleton-status"></span>
+
+                    <span class="skeleton-button"></span>
+
+                </div>
+
+                }
+
+            </div>
 
         </div>
 
         }
+
+
+        <!-- =================================================
+             SIN RESULTADOS
+             ================================================= -->
 
         @else if (filteredUsers.length === 0) {
 
         <div class="empty-state">
 
+            <div class="empty-icon">
+
+                <span class="material-symbols-outlined">
+                    person_search
+                </span>
+
+            </div>
+
             <h2>
                 No se encontraron usuarios
             </h2>
 
+            <p>
+                No hay usuarios que coincidan con
+                <strong>"{{ search }}"</strong>.
+            </p>
+
+            @if (search) {
+
+            <button type="button" class="empty-action" (click)="search = ''">
+
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+
+                Limpiar búsqueda
+
+            </button>
+
+            }
+
         </div>
 
         }
+
+
+        <!-- =================================================
+             TABLA CON DATOS
+             ================================================= -->
 
         @else {
 
@@ -118,7 +482,7 @@
                         </th>
 
                         <th>
-                            Correo
+                            Correo electrónico
                         </th>
 
                         <th>
@@ -129,7 +493,7 @@
                             Estado
                         </th>
 
-                        <th>
+                        <th class="action-column">
                             Acción
                         </th>
 
@@ -145,87 +509,172 @@
                     track user.id
                     ) {
 
-                    <tr>
+                    <tr [class.current-user-row]="isCurrentUser(user)" [class.saving-row]="savingId === user.id">
+
+                        <!-- USUARIO -->
 
                         <td>
 
-                            <strong>
-                                {{ user.firstName }}
-                                {{ user.lastName }}
-                            </strong>
+                            <div class="user-cell">
+
+                                <div class="user-avatar">
+
+                                    {{ getInitials(user) }}
+
+                                </div>
+
+                                <div class="user-info">
+
+                                    <div class="user-name">
+
+                                        <strong>
+
+                                            {{ user.firstName }}
+                                            {{ user.lastName }}
+
+                                        </strong>
+
+                                        @if (isCurrentUser(user)) {
+
+                                        <span class="current-badge">
+
+                                            Tú
+
+                                        </span>
+
+                                        }
+
+                                    </div>
+
+                                    <span class="user-id">
+
+                                        ID:
+                                        {{ user.id }}
+
+                                    </span>
+
+                                </div>
+
+                            </div>
 
                         </td>
 
 
+                        <!-- CORREO -->
+
                         <td>
-                            {{ user.email }}
+
+                            <div class="email-cell">
+
+                                <span class="material-symbols-outlined">
+                                    mail
+                                </span>
+
+                                <span>
+                                    {{ user.email }}
+                                </span>
+
+                            </div>
+
                         </td>
 
 
+                        <!-- ROL -->
+
                         <td>
 
-                            <select [ngModel]="user.role" (ngModelChange)="
-                                            changeRole(
-                                                user,
-                                                $event
-                                            )
-                                        " [disabled]="
+                            <div class="role-cell">
+
+                                <select [ngModel]="getSelectedRole(user)" (ngModelChange)="changeRole(user, $event)"
+                                    [disabled]="
+        isCurrentUser(user) ||
+        savingId === user.id
+    ">
+                                    <option value="CONSULTOR">
+                                        Consultor
+                                    </option>
+
+                                    <option value="OPERADOR_FLNOC">
+                                        Operador FLM/NOC
+                                    </option>
+
+                                    <option value="SUPERVISOR">
+                                        Supervisor
+                                    </option>
+
+                                    <option value="ADMIN">
+                                        Administrador
+                                    </option>
+                                </select>
+
+                                @if (savingId === user.id) {
+
+                                <span class="inline-spinner">
+
+                                    <span class="material-symbols-outlined">
+                                        progress_activity
+                                    </span>
+
+                                </span>
+
+                                }
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- ESTADO -->
+
+                        <td>
+
+                            <span class="status-badge" [class.active]="user.status === 'ACTIVE'"
+                                [class.inactive]="user.status !== 'ACTIVE'">
+
+                                <span class="status-badge-dot"></span>
+
+                                {{ getStatusLabel(user.status) }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACCIÓN -->
+
+                        <td class="action-column">
+
+                            <button type="button" class="status-action" [class.activate]="user.status !== 'ACTIVE'"
+                                [class.deactivate]="user.status === 'ACTIVE'" [disabled]="
                                             isCurrentUser(user) ||
                                             savingId === user.id
-                                        ">
+                                        " (click)="changeStatus(user)">
 
-                                <option value="CONSULTOR">
+                                @if (savingId === user.id) {
 
-                                    Consultor
+                                <span class="material-symbols-outlined spinning">
+                                    progress_activity
+                                </span>
 
-                                </option>
+                                Procesando...
 
-                                <option value="OPERADOR_FLNOC">
+                                } @else if (user.status === 'ACTIVE') {
 
-                                    Operador FLM/NOC
+                                <span class="material-symbols-outlined">
+                                    person_off
+                                </span>
 
-                                </option>
+                                Desactivar
 
-                                <option value="SUPERVISOR">
+                                } @else {
 
-                                    Supervisor
+                                <span class="material-symbols-outlined">
+                                    person_check
+                                </span>
 
-                                </option>
+                                Activar
 
-                                <option value="ADMIN">
-
-                                    Administrador
-
-                                </option>
-
-                            </select>
-
-                        </td>
-
-
-                        <td>
-
-                            {{ getStatusLabel(
-                            user.status
-                            ) }}
-
-                        </td>
-
-
-                        <td>
-
-                            <button type="button" [disabled]="
-                                            isCurrentUser(user) ||
-                                            savingId === user.id
-                                        " (click)="
-                                            changeStatus(user)
-                                        ">
-
-                                {{
-                                user.status === 'ACTIVE'
-                                ? 'Desactivar'
-                                : 'Activar'
-                                }}
+                                }
 
                             </button>
 
@@ -244,5 +693,257 @@
         }
 
     </section>
+
+
+    <!-- =====================================================
+         MODAL DE CONFIRMACIÓN
+         ===================================================== -->
+
+    @if (confirmationVisible && pendingUser) {
+
+    <div class="modal-backdrop" (click)="cancelConfirmation()">
+
+        <div class="confirmation-modal" (click)="$event.stopPropagation()">
+
+            <div class="confirmation-icon" [class.warning]="confirmationType === 'ROLE'" [class.danger]="
+                        confirmationType === 'STATUS' &&
+                        pendingStatus === 'INACTIVE'
+                    " [class.success]="
+                        confirmationType === 'STATUS' &&
+                        pendingStatus === 'ACTIVE'
+                    ">
+
+                <span class="material-symbols-outlined">
+
+                    @if (confirmationType === 'ROLE') {
+
+                    manage_accounts
+
+                    } @else if (pendingStatus === 'ACTIVE') {
+
+                    person_check
+
+                    } @else {
+
+                    person_off
+
+                    }
+
+                </span>
+
+            </div>
+
+
+            <div class="confirmation-content">
+
+                <span class="confirmation-eyebrow">
+
+                    @if (confirmationType === 'ROLE') {
+
+                    CAMBIO DE ROL
+
+                    } @else {
+
+                    CAMBIO DE ESTADO
+
+                    }
+
+                </span>
+
+
+                <h2>
+
+                    @if (confirmationType === 'ROLE') {
+
+                    ¿Cambiar el rol del usuario?
+
+                    } @else if (pendingStatus === 'ACTIVE') {
+
+                    ¿Activar este usuario?
+
+                    } @else {
+
+                    ¿Desactivar este usuario?
+
+                    }
+
+                </h2>
+
+
+                <p>
+
+                    Estás a punto de modificar la configuración
+                    de acceso de:
+
+                </p>
+
+
+                <div class="confirmation-user">
+
+                    <div class="confirmation-avatar">
+
+                        {{ getInitials(pendingUser) }}
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+
+                            {{ pendingUser.firstName }}
+                            {{ pendingUser.lastName }}
+
+                        </strong>
+
+                        <span>
+                            {{ pendingUser.email }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                @if (confirmationType === 'ROLE') {
+
+                <div class="change-preview">
+
+                    <div class="change-item">
+
+                        <span class="change-label">
+                            Rol actual
+                        </span>
+
+                        <span class="role-preview old">
+                            {{ getRoleLabel(pendingUser.role) }}
+                        </span>
+
+                    </div>
+
+                    <span class="material-symbols-outlined change-arrow">
+                        arrow_forward
+                    </span>
+
+                    <div class="change-item">
+
+                        <span class="change-label">
+                            Nuevo rol
+                        </span>
+
+                        <span class="role-preview new">
+                            {{ getRoleLabel(pendingRole!) }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="confirmation-warning">
+
+                    <span class="material-symbols-outlined">
+                        info
+                    </span>
+
+                    <span>
+                        Los permisos del usuario cambiarán según
+                        el nuevo rol seleccionado.
+                    </span>
+
+                </div>
+
+                } @else {
+
+                <div class="status-change-preview">
+
+                    <span class="material-symbols-outlined">
+
+                        @if (pendingStatus === 'ACTIVE') {
+                        verified_user
+                        } @else {
+                        block
+                        }
+
+                    </span>
+
+                    <div>
+
+                        <strong>
+
+                            @if (pendingStatus === 'ACTIVE') {
+                            Acceso al sistema
+                            } @else {
+                            Acceso al sistema
+                            }
+
+                        </strong>
+
+                        <span>
+
+                            @if (pendingStatus === 'ACTIVE') {
+                            El usuario podrá volver a iniciar sesión.
+                            } @else {
+                            El usuario ya no podrá acceder al sistema.
+                            }
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+
+            <div class="confirmation-actions">
+
+                <button type="button" class="cancel-button" (click)="cancelConfirmation()">
+
+                    Cancelar
+
+                </button>
+
+
+                <button type="button" class="confirm-button" [class.danger]="
+                            confirmationType === 'STATUS' &&
+                            pendingStatus === 'INACTIVE'
+                        " (click)="confirmAction()">
+
+                    <span class="material-symbols-outlined">
+
+                        @if (confirmationType === 'ROLE') {
+                        check
+                        } @else if (pendingStatus === 'ACTIVE') {
+                        person_check
+                        } @else {
+                        person_off
+                        }
+
+                    </span>
+
+                    @if (confirmationType === 'ROLE') {
+
+                    Confirmar cambio
+
+                    } @else if (pendingStatus === 'ACTIVE') {
+
+                    Activar usuario
+
+                    } @else {
+
+                    Desactivar usuario
+
+                    }
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    }
 
 </section>
