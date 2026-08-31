@@ -188,20 +188,20 @@ export class AppLayoutComponent
 
         switch (this.currentRole) {
 
-            case 'USER':
-                return 'Usuario';
+            case 'CONSULTOR':
+                return 'Consultor';
 
-            case 'ESTABLISHMENT':
-                return 'Establecimiento';
+            case 'OPERADOR_FLNOC':
+                return 'Operador FLM/NOC';
 
-            case 'MODERATOR':
-                return 'Moderador';
+            case 'SUPERVISOR':
+                return 'Supervisor';
 
             case 'ADMIN':
                 return 'Administrador';
 
             default:
-                return 'Usuario';
+                return 'Sin rol';
 
         }
 
@@ -417,42 +417,21 @@ export class AppLayoutComponent
         notification: Notification
     ): void {
 
-        /*
-         * Por ahora las notificaciones siguen utilizando
-         * los tipos existentes del backend.
-         *
-         * Cuando migremos el bounded context de
-         * notificaciones al dominio FLM/NOC, esta lógica
-         * será reemplazada por los nuevos tipos.
-         */
-
         switch (notification.type) {
 
-            case 'ESTABLISHMENT_REQUEST_CREATED':
-
-            case 'ESTABLISHMENT_APPROVED':
-
-            case 'ESTABLISHMENT_REJECTED':
+            case 'SITE_CREATED':
+            case 'SITE_UPDATED':
+            case 'SITE_STATUS_CHANGED':
+            case 'FLM_NOC_UPDATED':
+            case 'PLAN_DOCUMENT_UPLOADED':
+            case 'PLAN_DOCUMENT_UPDATED':
 
                 console.log(
-                    'Notificación heredada de establecimiento:',
+                    'Notificación operacional:',
                     notification
                 );
 
                 break;
-
-
-            case 'ACCESSIBILITY_UPDATED':
-
-            case 'ESTABLISHMENT_UPDATED':
-
-                console.log(
-                    'Notificación heredada:',
-                    notification
-                );
-
-                break;
-
 
             case 'SYSTEM':
 
@@ -463,7 +442,6 @@ export class AppLayoutComponent
 
                 break;
 
-
             default:
 
                 console.warn(
@@ -472,9 +450,7 @@ export class AppLayoutComponent
                 );
 
                 break;
-
         }
-
     }
 
 

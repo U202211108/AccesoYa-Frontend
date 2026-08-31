@@ -9,6 +9,10 @@ import {
 } from '@angular/common';
 
 import {
+    UserRole
+} from '../../core/models/auth-user';
+
+import {
     RouterLink
 } from '@angular/router';
 
@@ -49,7 +53,7 @@ export class DashboardComponent
 
     firstName = 'Usuario';
 
-    role = 'USER';
+    role: UserRole | null = null;
 
 
     // =====================================================
@@ -100,28 +104,20 @@ export class DashboardComponent
         const userData =
             sessionStorage.getItem('user');
 
-
         if (!userData) {
-
             return;
         }
 
-
         try {
 
-            const user =
-                JSON.parse(userData);
-
+            const user = JSON.parse(userData);
 
             this.firstName =
                 user.firstName ??
                 'Usuario';
 
-
             this.role =
-                user.role ??
-                'USER';
-
+                user.role ?? null;
 
         } catch (error) {
 
@@ -129,7 +125,6 @@ export class DashboardComponent
                 'Error leyendo usuario:',
                 error
             );
-
         }
     }
 

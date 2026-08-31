@@ -66,7 +66,10 @@
                 }
 
 
-                <!-- INICIO -->
+                <!-- ================================================= -->
+                <!-- DASHBOARD -->
+                <!-- TODOS LOS ROLES -->
+                <!-- ================================================= -->
 
                 <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
                     class="navigation-item">
@@ -86,7 +89,10 @@
                 </a>
 
 
-                <!-- SITIOS -->
+                <!-- ================================================= -->
+                <!-- SITIOS FLM / NOC -->
+                <!-- TODOS LOS ROLES -->
+                <!-- ================================================= -->
 
                 <a routerLink="/places/map" routerLinkActive="active" class="navigation-item">
 
@@ -122,7 +128,39 @@
                 }
 
 
+                <!-- ================================================= -->
+                <!-- PLANOS -->
+                <!-- OPERADOR_FLNOC + SUPERVISOR + ADMIN -->
+                <!-- ================================================= -->
+
+                @if (
+                currentRole === 'OPERADOR_FLNOC' ||
+                currentRole === 'SUPERVISOR' ||
+                currentRole === 'ADMIN'
+                ) {
+
+                <a routerLink="/plans" routerLinkActive="active" class="navigation-item">
+
+                    <span class="material-symbols-outlined">
+                        architecture
+                    </span>
+
+                    @if (sidebarOpen) {
+
+                    <span>
+                        Gestión de planos
+                    </span>
+
+                    }
+
+                </a>
+                }
+
+
+                <!-- ================================================= -->
                 <!-- PERFIL -->
+                <!-- TODOS LOS ROLES -->
+                <!-- ================================================= -->
 
                 <a routerLink="/profile" routerLinkActive="active" class="navigation-item">
 
@@ -141,7 +179,10 @@
                 </a>
 
 
+                <!-- ================================================= -->
                 <!-- CONFIGURACIÓN -->
+                <!-- TODOS LOS ROLES -->
+                <!-- ================================================= -->
 
                 <a routerLink="/settings" routerLinkActive="active" class="navigation-item">
 
@@ -160,17 +201,6 @@
                 </a>
 
             </div>
-
-
-            <!-- ================================================= -->
-            <!-- FUTURAS FUNCIONALIDADES -->
-            <!-- ================================================= -->
-
-            <!--
-            Las opciones de Planos, Importación y Reportes
-            se agregarán aquí cuando sus rutas y componentes
-            estén implementados.
-            -->
 
 
             <!-- ================================================= -->
@@ -257,7 +287,9 @@
         <header class="topbar">
 
 
+            <!-- ================================================= -->
             <!-- MENÚ MOBILE -->
+            <!-- ================================================= -->
 
             <button type="button" class="mobile-menu-button" (click)="toggleSidebar()" aria-label="Abrir menú">
 
@@ -313,7 +345,9 @@
             <div class="notification-panel">
 
 
+                <!-- ================================================= -->
                 <!-- HEADER -->
+                <!-- ================================================= -->
 
                 <div class="notification-panel-header">
 
@@ -353,12 +387,16 @@
                 </div>
 
 
+                <!-- ================================================= -->
                 <!-- LISTA -->
+                <!-- ================================================= -->
 
                 <div class="notification-list">
 
 
+                    <!-- ================================================= -->
                     <!-- SIN NOTIFICACIONES -->
+                    <!-- ================================================= -->
 
                     @if (notifications.length === 0) {
 
@@ -373,7 +411,7 @@
                         </strong>
 
                         <p>
-                            Aquí aparecerán las novedades de tu cuenta.
+                            Aquí aparecerán las novedades de tu operación.
                         </p>
 
                     </div>
@@ -381,7 +419,9 @@
                     }
 
 
+                    <!-- ================================================= -->
                     <!-- NOTIFICACIONES -->
+                    <!-- ================================================= -->
 
                     @if (notifications.length > 0) {
 
@@ -394,47 +434,62 @@
                         (click)="openNotification(notification)">
 
 
+                        <!-- ================================================= -->
                         <!-- ICONO -->
+                        <!-- ================================================= -->
 
                         <div class="notification-icon" [class.approved]="
-                                notification.type ===
-                                'ESTABLISHMENT_APPROVED'
-                            " [class.rejected]="
-                                notification.type ===
-                                'ESTABLISHMENT_REJECTED'
-                            " [class.info]="
-                                notification.type ===
-                                'ESTABLISHMENT_REQUEST_CREATED' ||
-                                notification.type ===
-                                'SYSTEM'
-                            ">
+        notification.type === 'SITE_CREATED'
+    " [class.info]="
+        notification.type === 'SITE_UPDATED' ||
+        notification.type === 'SITE_STATUS_CHANGED' ||
+        notification.type === 'FLM_NOC_UPDATED' ||
+        notification.type === 'PLAN_DOCUMENT_UPLOADED' ||
+        notification.type === 'PLAN_DOCUMENT_UPDATED' ||
+        notification.type === 'SYSTEM'
+    ">
 
                             <span class="material-symbols-outlined">
 
                                 @if (
-                                notification.type ===
-                                'ESTABLISHMENT_APPROVED'
+                                notification.type === 'SITE_CREATED'
                                 ) {
 
-                                check_circle
+                                add_location_alt
 
                                 } @else if (
-                                notification.type ===
-                                'ESTABLISHMENT_REJECTED'
+                                notification.type === 'SITE_UPDATED'
                                 ) {
 
-                                cancel
+                                edit_location_alt
 
                                 } @else if (
-                                notification.type ===
-                                'ESTABLISHMENT_REQUEST_CREATED'
+                                notification.type === 'SITE_STATUS_CHANGED'
                                 ) {
 
-                                business
+                                sync_alt
+
+                                } @else if (
+                                notification.type === 'FLM_NOC_UPDATED'
+                                ) {
+
+                                engineering
+
+                                } @else if (
+                                notification.type === 'PLAN_DOCUMENT_UPLOADED'
+                                ) {
+
+                                upload_file
+
+                                } @else if (
+                                notification.type === 'PLAN_DOCUMENT_UPDATED'
+                                ) {
+
+                                description
 
                                 } @else {
 
-                                notifications
+                                info
 
                                 }
 
@@ -443,7 +498,9 @@
                         </div>
 
 
+                        <!-- ================================================= -->
                         <!-- CONTENIDO -->
+                        <!-- ================================================= -->
 
                         <div class="notification-content">
 
@@ -465,7 +522,9 @@
                         </div>
 
 
+                        <!-- ================================================= -->
                         <!-- NO LEÍDA -->
+                        <!-- ================================================= -->
 
                         @if (!notification.read) {
 
@@ -482,7 +541,9 @@
                 </div>
 
 
+                <!-- ================================================= -->
                 <!-- FOOTER -->
+                <!-- ================================================= -->
 
                 @if (notifications.length > 0) {
 

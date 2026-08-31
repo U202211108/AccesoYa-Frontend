@@ -79,7 +79,7 @@ export class AuthService {
                             response.email,
 
                         role:
-                            response.role as UserRole
+                            response.role as UserRole,
                     };
 
 
@@ -133,7 +133,7 @@ export class AuthService {
                             response.email,
 
                         role:
-                            response.role as UserRole
+                            response.role as UserRole,
                     };
 
 
@@ -220,7 +220,9 @@ export class AuthService {
     getCurrentUser(): AuthUser | null {
 
         const userJson =
-            sessionStorage.getItem('user');
+            sessionStorage.getItem(
+                'user'
+            );
 
 
         if (!userJson) {
@@ -270,6 +272,7 @@ export class AuthService {
         try {
 
             // JWT = HEADER.PAYLOAD.SIGNATURE
+
             const payloadBase64 =
                 token.split('.')[1];
 
@@ -334,7 +337,7 @@ export class AuthService {
 
 
     // =====================================================
-    // ROL
+    // ROL ACTUAL
     // =====================================================
 
     getCurrentRole(): UserRole | null {
@@ -413,20 +416,20 @@ export class AuthService {
         this.getCurrentRole()
         ) {
 
-            case 'USER':
-                return 'Usuario';
+            case 'CONSULTOR':
+                return 'Consultor';
 
-            case 'ESTABLISHMENT':
-                return 'Establecimiento';
+            case 'OPERADOR_FLNOC':
+                return 'Operador FLM/NOC';
 
-            case 'MODERATOR':
-                return 'Moderador';
+            case 'SUPERVISOR':
+                return 'Supervisor';
 
             case 'ADMIN':
                 return 'Administrador';
 
             default:
-                return 'Usuario';
+                return 'Consultor';
         }
     }
 }

@@ -18,7 +18,9 @@ import {
 
 
 export const roleGuard: CanActivateFn = (
+
     route: ActivatedRouteSnapshot
+
 ) => {
 
     const authService =
@@ -28,13 +30,7 @@ export const roleGuard: CanActivateFn = (
         inject(Router);
 
 
-    // =====================================================
-    // VERIFICAR AUTENTICACIÓN
-    // =====================================================
-
-    if (
-        !authService.isAuthenticated()
-    ) {
+    if (!authService.isAuthenticated()) {
 
         return router.createUrlTree([
             '/login'
@@ -42,16 +38,10 @@ export const roleGuard: CanActivateFn = (
     }
 
 
-    // =====================================================
-    // ROLES PERMITIDOS
-    // =====================================================
-
     const allowedRoles =
-        route.data['roles'] as UserRole[] | undefined;
+        route.data['roles'] as
+        UserRole[] | undefined;
 
-
-    // Si no se especificaron roles,
-    // cualquier usuario autenticado puede acceder.
 
     if (
         !allowedRoles ||
@@ -61,10 +51,6 @@ export const roleGuard: CanActivateFn = (
         return true;
     }
 
-
-    // =====================================================
-    // ROL ACTUAL
-    // =====================================================
 
     const currentRole =
         authService.getCurrentRole();
@@ -78,10 +64,6 @@ export const roleGuard: CanActivateFn = (
     }
 
 
-    // =====================================================
-    // VALIDAR ROL
-    // =====================================================
-
     if (
         allowedRoles.includes(
             currentRole
@@ -91,10 +73,6 @@ export const roleGuard: CanActivateFn = (
         return true;
     }
 
-
-    // =====================================================
-    // SIN PERMISOS
-    // =====================================================
 
     return router.createUrlTree([
         '/dashboard'

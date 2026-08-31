@@ -1,0 +1,248 @@
+<section class="admin-users-page">
+
+    <header class="page-header">
+
+        <div>
+
+            <span class="eyebrow">
+                ADMINISTRACIÓN
+            </span>
+
+            <h1>
+                Gestión de usuarios
+            </h1>
+
+            <p>
+                Controla los roles y estados de acceso.
+            </p>
+
+        </div>
+
+
+        <button type="button" class="refresh-button" (click)="loadUsers()" [disabled]="loading">
+
+            <span class="material-symbols-outlined">
+                refresh
+            </span>
+
+            Actualizar
+
+        </button>
+
+    </header>
+
+
+    @if (errorMessage) {
+
+    <div class="message error">
+
+        {{ errorMessage }}
+
+    </div>
+
+    }
+
+
+    @if (successMessage) {
+
+    <div class="message success">
+
+        {{ successMessage }}
+
+    </div>
+
+    }
+
+
+    <div class="toolbar">
+
+        <div class="search-box">
+
+            <span class="material-symbols-outlined">
+                search
+            </span>
+
+            <input type="search" [(ngModel)]="search" placeholder="Buscar usuario, correo o rol">
+
+        </div>
+
+
+        <span class="count">
+
+            {{ filteredUsers.length }}
+            usuarios
+
+        </span>
+
+    </div>
+
+
+    <section class="table-card">
+
+        @if (loading) {
+
+        <div class="empty-state">
+
+            <h2>
+                Cargando usuarios...
+            </h2>
+
+        </div>
+
+        }
+
+        @else if (filteredUsers.length === 0) {
+
+        <div class="empty-state">
+
+            <h2>
+                No se encontraron usuarios
+            </h2>
+
+        </div>
+
+        }
+
+        @else {
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Usuario
+                        </th>
+
+                        <th>
+                            Correo
+                        </th>
+
+                        <th>
+                            Rol
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                        <th>
+                            Acción
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @for (
+                    user of filteredUsers;
+                    track user.id
+                    ) {
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                {{ user.firstName }}
+                                {{ user.lastName }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+                            {{ user.email }}
+                        </td>
+
+
+                        <td>
+
+                            <select [ngModel]="user.role" (ngModelChange)="
+                                            changeRole(
+                                                user,
+                                                $event
+                                            )
+                                        " [disabled]="
+                                            isCurrentUser(user) ||
+                                            savingId === user.id
+                                        ">
+
+                                <option value="CONSULTOR">
+
+                                    Consultor
+
+                                </option>
+
+                                <option value="OPERADOR_FLNOC">
+
+                                    Operador FLM/NOC
+
+                                </option>
+
+                                <option value="SUPERVISOR">
+
+                                    Supervisor
+
+                                </option>
+
+                                <option value="ADMIN">
+
+                                    Administrador
+
+                                </option>
+
+                            </select>
+
+                        </td>
+
+
+                        <td>
+
+                            {{ getStatusLabel(
+                            user.status
+                            ) }}
+
+                        </td>
+
+
+                        <td>
+
+                            <button type="button" [disabled]="
+                                            isCurrentUser(user) ||
+                                            savingId === user.id
+                                        " (click)="
+                                            changeStatus(user)
+                                        ">
+
+                                {{
+                                user.status === 'ACTIVE'
+                                ? 'Desactivar'
+                                : 'Activar'
+                                }}
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        }
+
+    </section>
+
+</section>

@@ -1,27 +1,25 @@
 export type NotificationType =
-    | 'ESTABLISHMENT_REQUEST_CREATED'
-    | 'ESTABLISHMENT_APPROVED'
-    | 'ESTABLISHMENT_REJECTED'
-    | 'ACCESSIBILITY_UPDATED'
-    | 'ESTABLISHMENT_UPDATED'
+    | 'SITE_CREATED'
+    | 'SITE_UPDATED'
+    | 'SITE_STATUS_CHANGED'
+    | 'FLM_NOC_UPDATED'
+    | 'PLAN_DOCUMENT_UPLOADED'
+    | 'PLAN_DOCUMENT_UPDATED'
     | 'SYSTEM';
-
 
 export interface Notification {
 
     id: string;
 
+    userId: string;
+
+    type: NotificationType;
+
     title: string;
 
     message: string;
 
-    type: NotificationType;
-
     read: boolean;
-
-    relatedEntityId?: string;
-
-    relatedEntityType?: string;
 
     createdAt: string;
 }

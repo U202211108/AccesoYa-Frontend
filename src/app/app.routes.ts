@@ -96,10 +96,24 @@ export const routes: Routes = [
 
             // =================================================
             // DASHBOARD
+            // TODOS LOS ROLES
             // =================================================
 
             {
                 path: 'dashboard',
+
+                canActivate: [
+                    roleGuard
+                ],
+
+                data: {
+                    roles: [
+                        'CONSULTOR',
+                        'OPERADOR_FLNOC',
+                        'SUPERVISOR',
+                        'ADMIN'
+                    ] as UserRole[]
+                },
 
                 loadComponent: () =>
                     import(
@@ -112,10 +126,27 @@ export const routes: Routes = [
 
             // =================================================
             // MAPA
+            // TODOS LOS ROLES
+            //
+            // IMPORTANTE:
+            // El backend debe filtrar FLM/NOC para CONSULTOR.
             // =================================================
 
             {
                 path: 'places/map',
+
+                canActivate: [
+                    roleGuard
+                ],
+
+                data: {
+                    roles: [
+                        'CONSULTOR',
+                        'OPERADOR_FLNOC',
+                        'SUPERVISOR',
+                        'ADMIN'
+                    ] as UserRole[]
+                },
 
                 loadComponent: () =>
                     import(
@@ -127,11 +158,28 @@ export const routes: Routes = [
 
 
             // =================================================
-            // DETALLE DE LUGAR
+            // DETALLE DE SITIO
+            // TODOS LOS ROLES
+            //
+            // El backend devuelve información diferente
+            // dependiendo del rol.
             // =================================================
 
             {
                 path: 'places/:id',
+
+                canActivate: [
+                    roleGuard
+                ],
+
+                data: {
+                    roles: [
+                        'CONSULTOR',
+                        'OPERADOR_FLNOC',
+                        'SUPERVISOR',
+                        'ADMIN'
+                    ] as UserRole[]
+                },
 
                 loadComponent: () =>
                     import(
@@ -144,7 +192,7 @@ export const routes: Routes = [
 
             // =================================================
             // FAVORITOS
-            // TODOS LOS USUARIOS
+            // TODOS LOS ROLES
             // =================================================
 
             {
@@ -160,8 +208,8 @@ export const routes: Routes = [
 
 
             // =================================================
-            // MI PERFIL
-            // TODOS LOS USUARIOS
+            // PERFIL
+            // TODOS LOS ROLES
             // =================================================
 
             {
@@ -178,7 +226,7 @@ export const routes: Routes = [
 
             // =================================================
             // CONFIGURACIÓN
-            // TODOS LOS USUARIOS
+            // TODOS LOS ROLES
             // =================================================
 
             {
@@ -192,24 +240,14 @@ export const routes: Routes = [
                     )
             },
 
+
+            // =================================================
+            // PLANOS
+            // OPERADOR + SUPERVISOR + ADMIN
+            // =================================================
+
             {
                 path: 'plans',
-                loadComponent: () =>
-                    import(
-                        './features/plans/plan-management/plan-management.component'
-                    ).then(
-                        m => m.PlanManagementComponent
-                    )
-            },
-
-
-            // =================================================
-            // MODERACIÓN
-            // MODERATOR + ADMIN
-            // =================================================
-
-            {
-                path: 'moderator/requests',
 
                 canActivate: [
                     roleGuard
@@ -217,16 +255,17 @@ export const routes: Routes = [
 
                 data: {
                     roles: [
-                        'MODERATOR' as UserRole,
-                        'ADMIN' as UserRole
-                    ]
+                        'OPERADOR_FLNOC',
+                        'SUPERVISOR',
+                        'ADMIN'
+                    ] as UserRole[]
                 },
 
                 loadComponent: () =>
                     import(
-                        './features/moderator/requests/moderator-requests.component'
+                        './features/plans/plan-management/plan-management.component'
                     ).then(
-                        m => m.ModeratorRequestsComponent
+                        m => m.PlanManagementComponent
                     )
             }
 
@@ -241,7 +280,7 @@ export const routes: Routes = [
     {
         path: '**',
 
-        redirectTo: 'login'
+        redirectTo: 'dashboard'
     }
 
 ];

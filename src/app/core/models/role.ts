@@ -1,3 +1,5 @@
 export type Role =
-    | 'USER'
+    | 'CONSULTOR'
+    | 'OPERADOR_FLNOC'
+    | 'SUPERVISOR'
     | 'ADMIN';
