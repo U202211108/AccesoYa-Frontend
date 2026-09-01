@@ -26,13 +26,26 @@ import {
 })
 export class AdminUserService {
 
+
+    // =====================================================
+    // HTTP
+    // =====================================================
+
     private readonly http =
         inject(HttpClient);
 
 
+    // =====================================================
+    // API
+    // =====================================================
+
     private readonly apiUrl =
         'http://localhost:8080/api/users';
 
+
+    // =====================================================
+    // OBTENER USUARIOS
+    // =====================================================
 
     getUsers():
         Observable<UserResponse[]> {
@@ -42,6 +55,10 @@ export class AdminUserService {
         );
     }
 
+
+    // =====================================================
+    // ACTUALIZAR ROL
+    // =====================================================
 
     updateRole(
         id: string,
@@ -56,9 +73,14 @@ export class AdminUserService {
             {
                 role
             }
+
         );
     }
 
+
+    // =====================================================
+    // ACTUALIZAR ESTADO
+    // =====================================================
 
     updateStatus(
         id: string,
@@ -73,6 +95,8 @@ export class AdminUserService {
             {
                 status
             }
+
         );
     }
+
 }

@@ -248,6 +248,45 @@ export class AuthService {
         }
     }
 
+    // =====================================================
+    // ACTUALIZAR USUARIO AUTENTICADO
+    // =====================================================
+
+    updateCurrentUser(
+        firstName: string,
+        lastName: string
+    ): void {
+
+        const user =
+            this.getCurrentUser();
+
+
+        if (!user) {
+
+            return;
+        }
+
+
+        const updatedUser: AuthUser = {
+
+            ...user,
+
+            firstName:
+                firstName.trim(),
+
+            lastName:
+                lastName.trim()
+
+        };
+
+
+        sessionStorage.setItem(
+            'user',
+            JSON.stringify(updatedUser)
+        );
+
+    }
+
 
     // =====================================================
     // AUTENTICACIÓN

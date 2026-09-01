@@ -327,20 +327,46 @@
 
             <div class="topbar-spacer"></div>
 
+            <!-- ================================================= -->
+            <!-- ALERTAS -->
+            <!-- ================================================= -->
+
+            <button type="button" class="topbar-action-button" aria-label="Alertas" (click)="openAlerts()">
+
+                <span class="material-symbols-outlined">
+                    warning_amber
+                </span>
+
+            </button>
+
+
+            <!-- ================================================= -->
+            <!-- AYUDA -->
+            <!-- ================================================= -->
+
+            <button type="button" class="topbar-action-button" aria-label="Ayuda" (click)="openHelp()">
+
+                <span class="material-symbols-outlined">
+                    help_outline
+                </span>
+
+            </button>
+
 
             <!-- ================================================= -->
             <!-- NOTIFICACIONES -->
             <!-- ================================================= -->
 
-            <button type="button" class="notification-button" aria-label="Notificaciones"
-                [attr.aria-expanded]="notificationPanelOpen" (click)="toggleNotifications()">
+            <button type="button" class="notification-button" [class.notifications-disabled]="!notificationsEnabled"
+                aria-label="Notificaciones" [attr.aria-expanded]="notificationPanelOpen"
+                (click)="toggleNotifications()">
 
                 <span class="material-symbols-outlined">
                     notifications
                 </span>
 
 
-                @if (unreadCount > 0) {
+                @if (notificationsEnabled && unreadCount > 0) {
 
                 <span class="notification-badge">
 
@@ -448,8 +474,6 @@
                     <!-- NOTIFICACIONES -->
                     <!-- ================================================= -->
 
-                    @if (notifications.length > 0) {
-
                     @for (
                     notification of notifications;
                     track notification.id
@@ -458,76 +482,24 @@
                     <button type="button" class="notification-item" [class.unread]="!notification.read"
                         (click)="openNotification(notification)">
 
-
-                        <!-- ================================================= -->
-                        <!-- ICONO -->
-                        <!-- ================================================= -->
-
-                        <div class="notification-icon" [class.approved]="
-        notification.type === 'SITE_CREATED'
-    " [class.info]="
-        notification.type === 'SITE_UPDATED' ||
-        notification.type === 'SITE_STATUS_CHANGED' ||
-        notification.type === 'FLM_NOC_UPDATED' ||
-        notification.type === 'PLAN_DOCUMENT_UPLOADED' ||
-        notification.type === 'PLAN_DOCUMENT_UPDATED' ||
-        notification.type === 'SYSTEM'
-    ">
+                        <div class="notification-icon" [ngClass]="getNotificationTypeClass(notification.type)">
 
                             <span class="material-symbols-outlined">
 
-                                @if (
-                                notification.type === 'SITE_CREATED'
-                                ) {
-
-                                add_location_alt
-
-                                } @else if (
-                                notification.type === 'SITE_UPDATED'
-                                ) {
-
-                                edit_location_alt
-
-                                } @else if (
-                                notification.type === 'SITE_STATUS_CHANGED'
-                                ) {
-
-                                sync_alt
-
-                                } @else if (
-                                notification.type === 'FLM_NOC_UPDATED'
-                                ) {
-
-                                engineering
-
-                                } @else if (
-                                notification.type === 'PLAN_DOCUMENT_UPLOADED'
-                                ) {
-
-                                upload_file
-
-                                } @else if (
-                                notification.type === 'PLAN_DOCUMENT_UPDATED'
-                                ) {
-
-                                description
-
-                                } @else {
-
-                                info
-
-                                }
+                                {{ getNotificationIcon(notification.type) }}
 
                             </span>
 
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- CONTENIDO -->
-                        <!-- ================================================= -->
-
                         <div class="notification-content">
+
+                            <div class="notification-type">
+
+                                {{ getNotificationTypeLabel(notification.type) }}
+
+                            </div>
 
                             <strong>
                                 {{ notification.title }}
@@ -547,10 +519,6 @@
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- NO LEÍDA -->
-                        <!-- ================================================= -->
-
                         @if (!notification.read) {
 
                         <span class="unread-dot"></span>
@@ -558,8 +526,6 @@
                         }
 
                     </button>
-
-                    }
 
                     }
 

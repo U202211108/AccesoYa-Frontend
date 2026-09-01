@@ -68,12 +68,64 @@ $sidebar-collapsed-width: 76px;
     .sidebar {
 
         width: $sidebar-collapsed-width;
+
     }
+
+
+    .sidebar-header {
+
+        justify-content: center;
+
+        padding: 0;
+
+    }
+
+
+    .sidebar-toggle {
+
+        display: none;
+
+    }
+
+
+    .brand {
+
+        justify-content: center;
+
+        width: 100%;
+
+    }
+
+
+    .brand-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+    }
+
 
     .main-content {
 
+        width: calc(100% - #{$sidebar-collapsed-width});
+
         margin-left: $sidebar-collapsed-width;
+
     }
+
+}
+
+.sidebar-collapsed {
+
+    .main-content {
+
+        width: calc(100% - #{$sidebar-collapsed-width});
+
+        margin-left: $sidebar-collapsed-width;
+
+    }
+
 }
 
 
@@ -186,6 +238,71 @@ $sidebar-collapsed-width: 76px;
     color: $primary;
 }
 
+// =====================================================
+// SIDEBAR COLAPSADO
+// =====================================================
+
+.sidebar-collapsed {
+
+    .sidebar-header {
+
+        justify-content: space-between;
+
+        padding: 0 10px;
+    }
+
+
+    .brand {
+
+        justify-content: center;
+    }
+
+
+    .sidebar-toggle {
+
+        display: flex;
+    }
+
+
+    .brand-name {
+
+        display: none;
+    }
+}
+
+// =====================================================
+// HEADER — SIDEBAR COLAPSADO
+// =====================================================
+
+.sidebar-collapsed {
+
+    .sidebar-header {
+
+        justify-content: center;
+
+        padding: 0;
+    }
+
+
+    .brand {
+
+        display: none;
+    }
+
+
+    .sidebar-toggle {
+
+        display: flex;
+
+        width: 42px;
+
+        height: 42px;
+
+        margin: 0;
+
+        color: $text-secondary;
+    }
+}
 
 // =====================================================
 // NAVEGACIÓN
@@ -299,9 +416,79 @@ $sidebar-collapsed-width: 76px;
 
 .navigation-spacer {
 
-    flex: 1;
+    flex: 20px 20px 18px;
+
+    min-height: 18px;
 }
 
+.notification-button.notifications-disabled {
+
+    color: #cbd5e1;
+
+    cursor: default;
+
+    background: transparent;
+
+    border-color: #e5e7eb;
+
+    box-shadow: none;
+}
+
+// =====================================================
+// ACCIONES DEL TOPBAR
+// =====================================================
+
+.topbar-action-button {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-right: 4px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: $text-secondary;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.topbar-action-button:hover {
+
+    background: #f1f5f9;
+
+    color: $primary;
+
+    transform: translateY(-1px);
+}
+
+
+.topbar-action-button:active {
+
+    transform: translateY(0);
+}
+
+
+.topbar-action-button .material-symbols-outlined {
+
+    font-size: 22px;
+}
 
 // =====================================================
 // LOGOUT
@@ -415,8 +602,12 @@ $sidebar-collapsed-width: 76px;
 
     flex-direction: column;
 
+    box-sizing: border-box;
+
     transition:
+        width 0.25s ease,
         margin-left 0.25s ease;
+
 }
 
 
@@ -1265,4 +1456,655 @@ $sidebar-collapsed-width: 76px;
 
         padding: 20px 14px;
     }
+}
+
+// =====================================================
+// NOTIFICACIÓN — CAMBIO DE ROL
+// =====================================================
+
+.notification-icon.role {
+
+    background: #f5f3ff;
+
+    color: #7c3aed;
+}
+
+
+// =====================================================
+// NOTIFICACIÓN — ESTADO DE CUENTA
+// =====================================================
+
+.notification-icon.status {
+
+    background: #fff7ed;
+
+    color: #ea580c;
+}
+
+
+// =====================================================
+// ANIMACIÓN PARA NUEVAS NOTIFICACIONES
+// =====================================================
+
+.notification-item.unread {
+
+    position: relative;
+}
+
+
+.notification-item.unread::before {
+
+    content: '';
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    width: 3px;
+
+    background: $primary;
+
+    border-radius: 0 3px 3px 0;
+}
+
+
+.notification-item.unread .notification-content strong {
+
+    font-weight: 800;
+}
+
+
+// =====================================================
+// BADGE
+// =====================================================
+
+.notification-badge {
+
+    animation:
+        notificationBadgePulse 2s ease-in-out infinite;
+}
+
+
+@keyframes notificationBadgePulse {
+
+    0%,
+    100% {
+
+        transform: scale(1);
+    }
+
+    50% {
+
+        transform: scale(1.08);
+    }
+}
+
+// =====================================================
+// ESPACIADOR
+// =====================================================
+
+.topbar-spacer {
+
+    flex: 1;
+}
+
+// =====================================================
+// BOTÓN NOTIFICACIONES
+// =====================================================
+
+.notification-button {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    color: #475569;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.notification-button:hover {
+
+    background: #f8fafc;
+
+    border-color: #cbd5e1;
+
+    color: #1e293b;
+
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+
+.notification-button .material-symbols-outlined {
+
+    font-size: 22px;
+}
+
+
+// =====================================================
+// BADGE
+// =====================================================
+
+.notification-badge {
+
+    position: absolute;
+
+    top: -5px;
+
+    right: -5px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 19px;
+
+    height: 19px;
+
+    padding: 0 5px;
+
+    box-sizing: border-box;
+
+    border: 2px solid #ffffff;
+
+    border-radius: 999px;
+
+    background: #ef4444;
+
+    color: #ffffff;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+// =====================================================
+// PANEL
+// =====================================================
+
+.notification-panel {
+
+    position: absolute;
+
+    top: calc(100% + 10px);
+
+    right: 24px;
+
+    z-index: 1000;
+
+    width: 390px;
+
+    max-width: calc(100vw - 32px);
+
+    overflow: hidden;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.15);
+}
+
+
+// =====================================================
+// HEADER DEL PANEL
+// =====================================================
+
+.notification-panel-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 17px 18px;
+
+    border-bottom: 1px solid #edf0f3;
+}
+
+
+.notification-panel-header h3 {
+
+    margin: 0 0 3px;
+
+    font-size: 15px;
+
+    font-weight: 750;
+
+    color: #111827;
+}
+
+
+.notification-panel-header span {
+
+    font-size: 11px;
+
+    color: #94a3b8;
+}
+
+
+.notification-panel-header .mark-all-button {
+
+    padding: 7px 9px;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #2563eb;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.notification-panel-header .mark-all-button:hover {
+
+    background: #eff6ff;
+}
+
+
+// =====================================================
+// LISTA
+// =====================================================
+
+.notification-panel .notification-list {
+
+    max-height: 430px;
+
+    overflow-y: auto;
+}
+
+
+// =====================================================
+// ITEM
+// =====================================================
+
+.notification-panel .notification-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    width: 100%;
+
+    padding: 13px 15px;
+
+    box-sizing: border-box;
+
+    border: 0;
+
+    border-bottom: 1px solid #f1f5f9;
+
+    background: #ffffff;
+
+    text-align: left;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease;
+}
+
+
+.notification-panel .notification-item:hover {
+
+    background: #f8fafc;
+}
+
+
+.notification-panel .notification-item.unread {
+
+    background: #fbfdff;
+}
+
+
+.notification-panel .notification-item.unread:hover {
+
+    background: #f5f9ff;
+}
+
+
+// =====================================================
+// ICONO
+// =====================================================
+
+.notification-panel .notification-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+}
+
+
+.notification-panel .notification-icon .material-symbols-outlined {
+
+    font-size: 19px;
+}
+
+
+.notification-panel .notification-icon.site-created {
+
+    background: #ecfdf5;
+
+    color: #059669;
+}
+
+
+.notification-panel .notification-icon.site-updated {
+
+    background: #eff6ff;
+
+    color: #2563eb;
+}
+
+
+.notification-panel .notification-icon.status-changed {
+
+    background: #fff7ed;
+
+    color: #ea580c;
+}
+
+
+.notification-panel .notification-icon.flm-noc {
+
+    background: #f5f3ff;
+
+    color: #7c3aed;
+}
+
+
+.notification-panel .notification-icon.document {
+
+    background: #f0fdfa;
+
+    color: #0f766e;
+}
+
+
+.notification-panel .notification-icon.system {
+
+    background: #f1f5f9;
+
+    color: #475569;
+}
+
+
+// =====================================================
+// CONTENIDO
+// =====================================================
+
+.notification-panel .notification-content {
+
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+.notification-panel .notification-type {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+
+    color: #64748b;
+}
+
+
+.notification-panel .notification-content strong {
+
+    display: block;
+
+    overflow: hidden;
+
+    font-size: 12px;
+
+    line-height: 1.35;
+
+    font-weight: 700;
+
+    color: #1e293b;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.notification-panel .notification-content p {
+
+    display: -webkit-box;
+
+    margin: 3px 0 4px;
+
+    overflow: hidden;
+
+    font-size: 11px;
+
+    line-height: 1.45;
+
+    color: #64748b;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 2;
+}
+
+
+.notification-panel .notification-date {
+
+    font-size: 9px;
+
+    color: #94a3b8;
+}
+
+
+// =====================================================
+// PUNTO NO LEÍDO
+// =====================================================
+
+.unread-dot {
+
+    width: 7px;
+    height: 7px;
+
+    flex-shrink: 0;
+
+    margin-top: 6px;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+}
+
+
+// =====================================================
+// SIN NOTIFICACIONES
+// =====================================================
+
+.notification-empty {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 190px;
+
+    padding: 25px;
+
+    text-align: center;
+}
+
+
+.notification-empty .material-symbols-outlined {
+
+    margin-bottom: 10px;
+
+    font-size: 32px;
+
+    color: #cbd5e1;
+}
+
+
+.notification-empty strong {
+
+    margin-bottom: 5px;
+
+    font-size: 13px;
+
+    color: #475569;
+}
+
+
+.notification-empty p {
+
+    max-width: 260px;
+
+    margin: 0;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    color: #94a3b8;
+}
+
+
+// =====================================================
+// FOOTER
+// =====================================================
+
+.notification-panel-footer {
+
+    padding: 10px;
+
+    border-top: 1px solid #edf0f3;
+
+    background: #ffffff;
+}
+
+
+.view-all-button {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    width: 100%;
+
+    min-height: 36px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: #f8fafc;
+
+    color: #334155;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.view-all-button:hover {
+
+    background: #eff6ff;
+
+    color: #2563eb;
+}
+
+
+.view-all-button .material-symbols-outlined {
+
+    font-size: 16px;
 }

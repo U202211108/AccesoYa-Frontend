@@ -1,0 +1,584 @@
+$text: #1e293b;
+$text-secondary: #64748b;
+$text-muted: #94a3b8;
+
+$border: #e2e8f0;
+
+$primary: #2563eb;
+
+
+.help-page {
+
+    width: 100%;
+
+    max-width: 950px;
+
+    margin: 0 auto;
+}
+
+
+// =====================================================
+// CABECERA
+// =====================================================
+
+.page-header {
+
+    margin-bottom: 24px;
+}
+
+
+.page-label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: $text-muted;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.09em;
+}
+
+
+.page-header h1 {
+
+    margin: 0 0 6px;
+
+    color: $text;
+
+    font-size: 30px;
+
+    font-weight: 800;
+}
+
+
+.page-header p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+// =====================================================
+// BUSCADOR
+// =====================================================
+
+.help-search-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    height: 52px;
+
+    margin-bottom: 16px;
+
+    padding: 0 15px;
+
+    box-sizing: border-box;
+
+    border: 1px solid $border;
+
+    border-radius: 12px;
+
+    background: white;
+
+    box-shadow:
+        0 5px 18px rgba(15, 23, 42, 0.04);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.help-search-card:focus-within {
+
+    border-color: #93c5fd;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+
+.search-icon {
+
+    color: $text-muted;
+
+    display: flex;
+}
+
+
+.search-icon .material-symbols-outlined {
+
+    font-size: 21px;
+}
+
+
+.help-search-card input {
+
+    flex: 1;
+
+    width: 100%;
+
+    border: 0;
+
+    outline: 0;
+
+    background: transparent;
+
+    color: $text;
+
+    font-family: inherit;
+
+    font-size: 13px;
+}
+
+
+.help-search-card input::placeholder {
+
+    color: $text-muted;
+}
+
+
+.clear-search {
+
+    width: 30px;
+
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: $text-muted;
+
+    cursor: pointer;
+}
+
+
+.clear-search:hover {
+
+    background: #f1f5f9;
+
+    color: $text;
+}
+
+
+.clear-search .material-symbols-outlined {
+
+    font-size: 18px;
+}
+
+
+// =====================================================
+// TEMAS
+// =====================================================
+
+.help-topics {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+}
+
+
+.topic-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-height: 78px;
+
+    padding: 14px;
+
+    box-sizing: border-box;
+
+    border: 1px solid $border;
+
+    border-radius: 12px;
+
+    background: white;
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.topic-card:hover {
+
+    border-color: #bfdbfe;
+
+    transform: translateY(-1px);
+}
+
+
+.topic-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+}
+
+
+.topic-icon.blue {
+
+    background: #eff6ff;
+
+    color: #2563eb;
+}
+
+
+.topic-icon.orange {
+
+    background: #fff7ed;
+
+    color: #ea580c;
+}
+
+
+.topic-icon.green {
+
+    background: #ecfdf5;
+
+    color: #16a34a;
+}
+
+
+.topic-icon .material-symbols-outlined {
+
+    font-size: 19px;
+}
+
+
+.topic-card strong {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: $text;
+
+    font-size: 12px;
+}
+
+
+.topic-card span {
+
+    display: block;
+
+    color: $text-secondary;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+// =====================================================
+// FAQ
+// =====================================================
+
+.faq-card {
+
+    overflow: hidden;
+
+    border: 1px solid $border;
+
+    border-radius: 16px;
+
+    background: white;
+
+    box-shadow:
+        0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+
+.faq-header {
+
+    padding: 21px 24px;
+
+    border-bottom: 1px solid $border;
+}
+
+
+.faq-header h2 {
+
+    margin: 0 0 4px;
+
+    color: $text;
+
+    font-size: 17px;
+
+    font-weight: 800;
+}
+
+
+.faq-header p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 11px;
+}
+
+
+// =====================================================
+// PREGUNTA
+// =====================================================
+
+.faq-item {
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+
+.faq-item:last-child {
+
+    border-bottom: 0;
+}
+
+
+.faq-item.open {
+
+    background: #fbfdff;
+}
+
+
+.faq-question {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 17px 24px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: $text;
+
+    font-family: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+
+.faq-question:hover {
+
+    background: #fafcff;
+}
+
+
+.faq-question-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 5px;
+}
+
+
+.faq-category {
+
+    padding: 3px 7px;
+
+    border-radius: 999px;
+
+    background: #eff6ff;
+
+    color: $primary;
+
+    font-size: 8px !important;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+}
+
+
+.faq-question strong {
+
+    color: $text;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.faq-question>.material-symbols-outlined {
+
+    flex-shrink: 0;
+
+    color: $text-muted;
+
+    font-size: 20px;
+}
+
+
+// =====================================================
+// RESPUESTA
+// =====================================================
+
+.faq-answer {
+
+    padding: 0 55px 19px 24px;
+
+    color: $text-secondary;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+// =====================================================
+// VACÍO
+// =====================================================
+
+.empty-help {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 45px 20px;
+
+    text-align: center;
+}
+
+
+.empty-help-icon {
+
+    width: 50px;
+
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 5px;
+
+    border-radius: 50%;
+
+    background: #f1f5f9;
+
+    color: $text-muted;
+}
+
+
+.empty-help-icon .material-symbols-outlined {
+
+    font-size: 25px;
+}
+
+
+.empty-help strong {
+
+    color: $text;
+
+    font-size: 13px;
+}
+
+
+.empty-help span {
+
+    color: $text-secondary;
+
+    font-size: 11px;
+}
+
+
+// =====================================================
+// RESPONSIVE
+// =====================================================
+
+@media (max-width: 700px) {
+
+    .help-topics {
+
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .faq-header,
+    .faq-question {
+
+        padding-left: 17px;
+
+        padding-right: 17px;
+    }
+
+
+    .faq-answer {
+
+        padding-left: 17px;
+
+        padding-right: 17px;
+    }
+
+}

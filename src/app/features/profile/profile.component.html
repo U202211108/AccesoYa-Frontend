@@ -1,5 +1,9 @@
 <div class="profile-page">
 
+    <!-- ================================================= -->
+    <!-- CABECERA -->
+    <!-- ================================================= -->
+
     <div class="page-header">
 
         <span class="page-label">
@@ -11,16 +15,30 @@
         </h1>
 
         <p>
-            Consulta la información de tu cuenta
+            Consulta y actualiza la información de tu cuenta
             en AccesoYa.
         </p>
 
     </div>
 
 
+    <!-- ================================================= -->
+    <!-- PERFIL -->
+    <!-- ================================================= -->
+
     <div class="profile-card">
 
+
+        <!-- ================================================= -->
+        <!-- COVER -->
+        <!-- ================================================= -->
+
         <div class="profile-cover">
+
+            <div class="cover-decoration cover-decoration-one"></div>
+
+            <div class="cover-decoration cover-decoration-two"></div>
+
 
             <div class="profile-avatar">
 
@@ -33,72 +51,193 @@
         </div>
 
 
+        <!-- ================================================= -->
+        <!-- CUERPO -->
+        <!-- ================================================= -->
+
         <div class="profile-body">
 
-            <div class="profile-name">
 
-                <h2>
-                    {{ firstName }} {{ lastName }}
-                </h2>
+            <!-- ================================================= -->
+            <!-- IDENTIDAD -->
+            <!-- ================================================= -->
 
-                <span>
-                    {{ getRoleLabel() }}
-                </span>
+            <div class="profile-header-content">
+
+                <div class="profile-name">
+
+                    <h2>
+                        {{ firstName }} {{ lastName }}
+                    </h2>
+
+                    <div class="profile-meta">
+
+                        <span class="role-badge">
+
+                            <span class="material-symbols-outlined">
+                                verified_user
+                            </span>
+
+                            {{ getRoleLabel() }}
+
+                        </span>
+
+
+                        <span class="status-badge">
+
+                            <span class="status-dot"></span>
+
+                            Cuenta activa
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- ACCIONES -->
+                <!-- ================================================= -->
+
+                @if (!editMode) {
+
+                <button type="button" class="edit-profile-button" (click)="startEditing()">
+
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+
+                    Editar perfil
+
+                </button>
+
+                }
 
             </div>
 
 
+            <!-- ================================================= -->
+            <!-- MENSAJE -->
+            <!-- ================================================= -->
+
+            @if (successMessage) {
+
+            <div class="profile-message success">
+
+                <span class="material-symbols-outlined">
+                    check_circle
+                </span>
+
+                {{ successMessage }}
+
+            </div>
+
+            }
+
+
+            <!-- ================================================= -->
+            <!-- INFORMACIÓN -->
+            <!-- ================================================= -->
+
             <div class="profile-information">
+
+
+                <!-- ================================================= -->
+                <!-- NOMBRES -->
+                <!-- ================================================= -->
 
                 <div class="information-item">
 
-                    <span class="material-symbols-outlined">
-                        person
-                    </span>
+                    <div class="information-icon">
 
-                    <div>
+                        <span class="material-symbols-outlined">
+                            person
+                        </span>
+
+                    </div>
+
+
+                    <div class="information-content">
 
                         <label>
                             Nombres
                         </label>
 
+
+                        @if (editMode) {
+
+                        <input type="text" [(ngModel)]="editFirstName" placeholder="Ingresa tus nombres" maxlength="80">
+
+                        } @else {
+
                         <strong>
                             {{ firstName }}
                         </strong>
+
+                        }
 
                     </div>
 
                 </div>
 
 
+                <!-- ================================================= -->
+                <!-- APELLIDOS -->
+                <!-- ================================================= -->
+
                 <div class="information-item">
 
-                    <span class="material-symbols-outlined">
-                        badge
-                    </span>
+                    <div class="information-icon">
 
-                    <div>
+                        <span class="material-symbols-outlined">
+                            badge
+                        </span>
+
+                    </div>
+
+
+                    <div class="information-content">
 
                         <label>
                             Apellidos
                         </label>
 
+
+                        @if (editMode) {
+
+                        <input type="text" [(ngModel)]="editLastName" placeholder="Ingresa tus apellidos"
+                            maxlength="80">
+
+                        } @else {
+
                         <strong>
                             {{ lastName }}
                         </strong>
+
+                        }
 
                     </div>
 
                 </div>
 
 
-                <div class="information-item">
+                <!-- ================================================= -->
+                <!-- CORREO -->
+                <!-- ================================================= -->
 
-                    <span class="material-symbols-outlined">
-                        email
-                    </span>
+                <div class="information-item readonly">
 
-                    <div>
+                    <div class="information-icon">
+
+                        <span class="material-symbols-outlined">
+                            email
+                        </span>
+
+                    </div>
+
+
+                    <div class="information-content">
 
                         <label>
                             Correo electrónico
@@ -108,18 +247,31 @@
                             {{ email }}
                         </strong>
 
+                        <span class="field-note">
+                            El correo electrónico no puede modificarse desde aquí.
+                        </span>
+
                     </div>
 
                 </div>
 
 
-                <div class="information-item">
+                <!-- ================================================= -->
+                <!-- ROL -->
+                <!-- ================================================= -->
 
-                    <span class="material-symbols-outlined">
-                        verified_user
-                    </span>
+                <div class="information-item readonly">
 
-                    <div>
+                    <div class="information-icon">
+
+                        <span class="material-symbols-outlined">
+                            verified_user
+                        </span>
+
+                    </div>
+
+
+                    <div class="information-content">
 
                         <label>
                             Tipo de cuenta
@@ -129,11 +281,93 @@
                             {{ getRoleLabel() }}
                         </strong>
 
+                        <span class="field-note">
+                            El tipo de cuenta es administrado por el sistema.
+                        </span>
+
                     </div>
 
                 </div>
 
             </div>
+
+
+            <!-- ================================================= -->
+            <!-- ACCIONES DE EDICIÓN -->
+            <!-- ================================================= -->
+
+            @if (editMode) {
+
+            <div class="profile-edit-actions">
+
+                <button type="button" class="cancel-button" (click)="cancelEditing()">
+
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+
+                    Cancelar
+
+                </button>
+
+
+                <button type="button" class="save-button" [disabled]="saving" (click)="saveProfile()">
+
+                    @if (saving) {
+
+                    <span class="material-symbols-outlined loading-icon">
+                        progress_activity
+                    </span>
+
+                    Guardando...
+
+                    } @else {
+
+                    <span class="material-symbols-outlined">
+                        save
+                    </span>
+
+                    Guardar cambios
+
+                    }
+
+                </button>
+
+            </div>
+
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- INFORMACIÓN DE LA CUENTA -->
+    <!-- ================================================= -->
+
+    <div class="account-info-card">
+
+        <div class="account-info-icon">
+
+            <span class="material-symbols-outlined">
+                info
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                Información de tu cuenta
+            </strong>
+
+            <p>
+                Puedes actualizar tus nombres y apellidos.
+                El correo electrónico y el tipo de cuenta son
+                administrados por AccesoYa.
+            </p>
 
         </div>
 

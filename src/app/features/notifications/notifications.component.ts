@@ -434,43 +434,16 @@ export class NotificationsComponent
 
         switch (type) {
 
-            case 'SITE_CREATED':
+            case 'USER_ROLE_CHANGED':
+                return 'manage_accounts';
 
-                return 'add_location_alt';
-
-
-            case 'SITE_UPDATED':
-
-                return 'edit_location';
-
-
-            case 'SITE_STATUS_CHANGED':
-
-                return 'swap_horiz';
-
-
-            case 'FLM_NOC_UPDATED':
-
-                return 'engineering';
-
-
-            case 'PLAN_DOCUMENT_UPLOADED':
-
-                return 'upload_file';
-
-
-            case 'PLAN_DOCUMENT_UPDATED':
-
-                return 'description';
-
+            case 'USER_STATUS_CHANGED':
+                return 'admin_panel_settings';
 
             case 'SYSTEM':
-
                 return 'settings';
 
-
             default:
-
                 return 'notifications';
         }
     }
@@ -486,43 +459,16 @@ export class NotificationsComponent
 
         switch (type) {
 
-            case 'SITE_CREATED':
+            case 'USER_ROLE_CHANGED':
+                return 'Cambio de rol';
 
-                return 'Nuevo sitio';
-
-
-            case 'SITE_UPDATED':
-
-                return 'Sitio actualizado';
-
-
-            case 'SITE_STATUS_CHANGED':
-
-                return 'Cambio de estado';
-
-
-            case 'FLM_NOC_UPDATED':
-
-                return 'FLM / NOC';
-
-
-            case 'PLAN_DOCUMENT_UPLOADED':
-
-                return 'Documento cargado';
-
-
-            case 'PLAN_DOCUMENT_UPDATED':
-
-                return 'Documento actualizado';
-
+            case 'USER_STATUS_CHANGED':
+                return 'Estado de cuenta';
 
             case 'SYSTEM':
-
                 return 'Sistema';
 
-
             default:
-
                 return 'Notificación';
         }
     }
@@ -538,43 +484,14 @@ export class NotificationsComponent
 
         switch (type) {
 
-            case 'SITE_CREATED':
+            case 'USER_ROLE_CHANGED':
+                return 'role-changed';
 
-                return 'site-created';
-
-
-            case 'SITE_UPDATED':
-
-                return 'site-updated';
-
-
-            case 'SITE_STATUS_CHANGED':
-
+            case 'USER_STATUS_CHANGED':
                 return 'status-changed';
 
-
-            case 'FLM_NOC_UPDATED':
-
-                return 'flm-noc';
-
-
-            case 'PLAN_DOCUMENT_UPLOADED':
-
-                return 'document';
-
-
-            case 'PLAN_DOCUMENT_UPDATED':
-
-                return 'document';
-
-
             case 'SYSTEM':
-
-                return 'system';
-
-
             default:
-
                 return 'system';
         }
     }

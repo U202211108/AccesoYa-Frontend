@@ -1,0 +1,246 @@
+<div class="help-page">
+
+    <!-- ================================================= -->
+    <!-- CABECERA -->
+    <!-- ================================================= -->
+
+    <div class="page-header">
+
+        <span class="page-label">
+            CENTRO DE AYUDA
+        </span>
+
+        <h1>
+            ¿Cómo podemos ayudarte?
+        </h1>
+
+        <p>
+            Encuentra respuestas rápidas sobre el uso
+            de AccesoYa.
+        </p>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- BUSCADOR -->
+    <!-- ================================================= -->
+
+    <div class="help-search-card">
+
+        <div class="search-icon">
+
+            <span class="material-symbols-outlined">
+                search
+            </span>
+
+        </div>
+
+
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar una pregunta o tema..."
+            aria-label="Buscar ayuda">
+
+
+        @if (searchTerm) {
+
+        <button type="button" class="clear-search" (click)="clearSearch()">
+
+            <span class="material-symbols-outlined">
+                close
+            </span>
+
+        </button>
+
+        }
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- ACCESOS RÁPIDOS -->
+    <!-- ================================================= -->
+
+    <div class="help-topics">
+
+        <div class="topic-card">
+
+            <div class="topic-icon blue">
+
+                <span class="material-symbols-outlined">
+                    map
+                </span>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Mapa
+                </strong>
+
+                <span>
+                    Consulta lugares y su información.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-card">
+
+            <div class="topic-icon orange">
+
+                <span class="material-symbols-outlined">
+                    notifications
+                </span>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Notificaciones
+                </strong>
+
+                <span>
+                    Conoce cómo funcionan los avisos.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-card">
+
+            <div class="topic-icon green">
+
+                <span class="material-symbols-outlined">
+                    person
+                </span>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Mi cuenta
+                </strong>
+
+                <span>
+                    Administra la información de tu perfil.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- PREGUNTAS -->
+    <!-- ================================================= -->
+
+    <div class="faq-card">
+
+        <div class="faq-header">
+
+            <div>
+
+                <h2>
+                    Preguntas frecuentes
+                </h2>
+
+                <p>
+                    Respuestas a las consultas más comunes.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="faq-list">
+
+            @for (
+            item of filteredHelpItems;
+            track item.id
+            ) {
+
+            <div class="faq-item" [class.open]="openedQuestion === item.id">
+
+
+                <button type="button" class="faq-question" (click)="toggleQuestion(item.id)">
+
+                    <div class="faq-question-content">
+
+                        <span class="faq-category">
+                            {{ item.category }}
+                        </span>
+
+                        <strong>
+                            {{ item.question }}
+                        </strong>
+
+                    </div>
+
+
+                    <span class="material-symbols-outlined">
+
+                        {{
+                        openedQuestion === item.id
+                        ? 'expand_less'
+                        : 'expand_more'
+                        }}
+
+                    </span>
+
+                </button>
+
+
+                @if (openedQuestion === item.id) {
+
+                <div class="faq-answer">
+
+                    {{ item.answer }}
+
+                </div>
+
+                }
+
+            </div>
+
+            }
+
+
+            @if (filteredHelpItems.length === 0) {
+
+            <div class="empty-help">
+
+                <div class="empty-help-icon">
+
+                    <span class="material-symbols-outlined">
+                        search_off
+                    </span>
+
+                </div>
+
+                <strong>
+                    No encontramos resultados
+                </strong>
+
+                <span>
+                    Intenta utilizar otros términos de búsqueda.
+                </span>
+
+            </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>

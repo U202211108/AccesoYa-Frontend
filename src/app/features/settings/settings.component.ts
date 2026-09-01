@@ -8,7 +8,17 @@ import {
 } from '@angular/common';
 
 
+interface AppSettings {
+
+    notificationsEnabled: boolean;
+
+    emailNotifications: boolean;
+
+}
+
+
 @Component({
+
     selector: 'app-settings',
 
     standalone: true,
@@ -22,45 +32,79 @@ import {
 
     styleUrl:
         './settings.component.scss'
+
 })
 export class SettingsComponent
     implements OnInit {
 
 
+    // =====================================================
+    // CONFIGURACIÓN
+    // =====================================================
+
     notificationsEnabled = true;
 
     emailNotifications = true;
 
-    mapAccessibility = true;
 
+    // =====================================================
+    // MENSAJE
+    // =====================================================
+
+    showSavedMessage = false;
+
+    private savedMessageTimeout:
+        ReturnType<typeof setTimeout> | null = null;
+
+
+    // =====================================================
+    // INIT
+    // =====================================================
 
     ngOnInit(): void {
 
-        const settings =
+        this.loadSettings();
+
+    }
+
+
+    // =====================================================
+    // CARGAR CONFIGURACIÓN
+    // =====================================================
+
+    private loadSettings(): void {
+
+        const storedSettings =
             localStorage.getItem(
                 'app_settings'
             );
 
-        if (!settings) {
+
+        if (!storedSettings) {
+
             return;
+
         }
+
 
         try {
 
-            const data =
-                JSON.parse(settings);
+            const settings:
+                Partial<AppSettings> =
+                JSON.parse(
+                    storedSettings
+                );
+
 
             this.notificationsEnabled =
-                data.notificationsEnabled ??
-                true;
+                settings.notificationsEnabled
+                ?? true;
+
 
             this.emailNotifications =
-                data.emailNotifications ??
-                true;
+                settings.emailNotifications
+                ?? true;
 
-            this.mapAccessibility =
-                data.mapAccessibility ??
-                true;
 
         } catch (error) {
 
@@ -68,51 +112,107 @@ export class SettingsComponent
                 'Error leyendo configuración:',
                 error
             );
+
         }
+
     }
 
 
-    saveSettings(): void {
+    // =====================================================
+    // GUARDAR CONFIGURACIÓN
+    // =====================================================
+
+    private saveSettings(): void {
+
+        const settings:
+            AppSettings = {
+
+            notificationsEnabled:
+                this.notificationsEnabled,
+
+            emailNotifications:
+                this.emailNotifications
+
+        };
+
 
         localStorage.setItem(
+
             'app_settings',
-            JSON.stringify({
-                notificationsEnabled:
-                    this.notificationsEnabled,
 
-                emailNotifications:
-                    this.emailNotifications,
+            JSON.stringify(
+                settings
+            )
 
-                mapAccessibility:
-                    this.mapAccessibility
-            })
         );
+
+
+        this.showSavedConfirmation();
+
     }
 
+
+    // =====================================================
+    // NOTIFICACIONES DE LA APLICACIÓN
+    // =====================================================
 
     toggleNotifications(): void {
 
         this.notificationsEnabled =
             !this.notificationsEnabled;
 
+
         this.saveSettings();
+
     }
 
+
+    // =====================================================
+    // NOTIFICACIONES POR CORREO
+    // =====================================================
 
     toggleEmailNotifications(): void {
 
         this.emailNotifications =
             !this.emailNotifications;
 
+
         this.saveSettings();
+
     }
 
 
-    toggleMapAccessibility(): void {
+    // =====================================================
+    // CONFIRMACIÓN
+    // =====================================================
 
-        this.mapAccessibility =
-            !this.mapAccessibility;
+    private showSavedConfirmation(): void {
 
-        this.saveSettings();
+        this.showSavedMessage = true;
+
+
+        if (
+            this.savedMessageTimeout
+        ) {
+
+            clearTimeout(
+                this.savedMessageTimeout
+            );
+
+        }
+
+
+        this.savedMessageTimeout =
+            setTimeout(() => {
+
+                this.showSavedMessage =
+                    false;
+
+                this.savedMessageTimeout =
+                    null;
+
+            }, 2200);
+
     }
+
 }

@@ -1,17 +1,15 @@
 export type NotificationType =
-    | 'SITE_CREATED'
-    | 'SITE_UPDATED'
-    | 'SITE_STATUS_CHANGED'
-    | 'FLM_NOC_UPDATED'
-    | 'PLAN_DOCUMENT_UPLOADED'
-    | 'PLAN_DOCUMENT_UPDATED'
+
+    | 'USER_ROLE_CHANGED'
+
+    | 'USER_STATUS_CHANGED'
+
     | 'SYSTEM';
+
 
 export interface Notification {
 
     id: string;
-
-    userId: string;
 
     type: NotificationType;
 
@@ -20,6 +18,10 @@ export interface Notification {
     message: string;
 
     read: boolean;
+
+    relatedEntityId?: string;
+
+    relatedEntityType?: string;
 
     createdAt: string;
 }

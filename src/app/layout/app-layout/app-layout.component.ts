@@ -1,7 +1,8 @@
 import {
-    Component,
-    OnInit,
     ChangeDetectorRef,
+    Component,
+    DestroyRef,
+    OnInit,
     inject
 } from '@angular/core';
 
@@ -17,6 +18,18 @@ import {
 } from '@angular/router';
 
 import {
+    takeUntilDestroyed
+} from '@angular/core/rxjs-interop';
+
+import {
+    timer
+} from 'rxjs';
+
+import {
+    switchMap
+} from 'rxjs/operators';
+
+import {
     UserRole
 } from '../../core/models/auth-user';
 
@@ -29,7 +42,8 @@ import {
 } from '../../core/services/notification.service';
 
 import {
-    Notification
+    Notification,
+    NotificationType
 } from '../../core/models/notification';
 
 
@@ -60,7 +74,8 @@ export class AppLayoutComponent
     // USUARIO
     // =====================================================
 
-    currentRole: UserRole | null = null;
+    currentRole:
+        UserRole | null = null;
 
 
     // =====================================================
@@ -79,6 +94,9 @@ export class AppLayoutComponent
     private readonly changeDetector =
         inject(ChangeDetectorRef);
 
+    private readonly destroyRef =
+        inject(DestroyRef);
+
 
     // =====================================================
     // SIDEBAR
@@ -91,15 +109,25 @@ export class AppLayoutComponent
     // NOTIFICACIONES
     // =====================================================
 
-    notifications: Notification[] = [];
+    notifications:
+        Notification[] = [];
+
 
     unreadCount = 0;
 
-    notificationPanelOpen = false;
+
+    notificationPanelOpen =
+        false;
+
+
+    loadingNotifications =
+        false;
+
+    notificationsEnabled = true;
 
 
     // =====================================================
-    // INICIALIZACIÓN
+    // INIT
     // =====================================================
 
     ngOnInit(): void {
@@ -107,12 +135,63 @@ export class AppLayoutComponent
         this.currentRole =
             this.authService.getCurrentRole();
 
-        console.log(
-            'Rol actual en AppLayout:',
-            this.currentRole
-        );
+        this.loadNotificationPreference();
+
+
+        if (this.notificationsEnabled) {
+
+            this.loadNotifications();
+
+        } else {
+
+            this.notifications = [];
+
+            this.unreadCount = 0;
+
+        }
 
         this.loadNotifications();
+
+        this.startNotificationPolling();
+    }
+
+    // =====================================================
+    // ESTADO DE NOTIFICACIONES
+    // =====================================================
+
+    private loadNotificationPreference(): void {
+
+        const settings =
+            localStorage.getItem('app_settings');
+
+
+        if (!settings) {
+
+            this.notificationsEnabled = true;
+
+            return;
+        }
+
+
+        try {
+
+            const data =
+                JSON.parse(settings);
+
+
+            this.notificationsEnabled =
+                data.notificationsEnabled ?? true;
+
+
+        } catch (error) {
+
+            console.error(
+                'Error leyendo preferencia de notificaciones:',
+                error
+            );
+
+            this.notificationsEnabled = true;
+        }
 
     }
 
@@ -130,7 +209,6 @@ export class AppLayoutComponent
             user?.role ?? null;
 
         this.changeDetector.detectChanges();
-
     }
 
 
@@ -139,6 +217,21 @@ export class AppLayoutComponent
     // =====================================================
 
     loadNotifications(): void {
+
+        this.loadNotificationPreference();
+
+
+        if (!this.notificationsEnabled) {
+
+            this.notifications = [];
+
+            this.unreadCount = 0;
+
+            this.changeDetector.detectChanges();
+
+            return;
+        }
+
 
         this.notificationService
             .getNotifications()
@@ -151,14 +244,18 @@ export class AppLayoutComponent
                         notifications
                     );
 
+
                     this.notifications =
                         notifications ?? [];
 
+
                     this.updateUnreadCount();
+
 
                     this.changeDetector.detectChanges();
 
                 },
+
 
                 error: error => {
 
@@ -167,9 +264,11 @@ export class AppLayoutComponent
                         error
                     );
 
+
                     this.notifications = [];
 
                     this.unreadCount = 0;
+
 
                     this.changeDetector.detectChanges();
 
@@ -177,6 +276,112 @@ export class AppLayoutComponent
 
             });
 
+    }
+
+
+    // =====================================================
+    // ACTUALIZACIÓN AUTOMÁTICA
+    // =====================================================
+
+    private startNotificationPolling(): void {
+
+        timer(15000, 15000)
+            .pipe(
+
+                switchMap(() =>
+                    this.notificationService
+                        .getUnreadNotifications()
+                ),
+
+                takeUntilDestroyed(
+                    this.destroyRef
+                )
+
+            )
+            .subscribe({
+
+                next: unreadNotifications => {
+
+                    this.mergeUnreadNotifications(
+                        unreadNotifications ?? []
+                    );
+
+                    this.changeDetector.detectChanges();
+                },
+
+                error: error => {
+
+                    console.error(
+                        'Error actualizando notificaciones:',
+                        error
+                    );
+                }
+
+            });
+    }
+
+
+    // =====================================================
+    // MEZCLAR NO LEÍDAS
+    // =====================================================
+
+    private mergeUnreadNotifications(
+        unreadNotifications: Notification[]
+    ): void {
+
+        const unreadIds =
+            new Set(
+                unreadNotifications.map(
+                    notification =>
+                        notification.id
+                )
+            );
+
+
+        const readNotifications =
+            this.notifications.filter(
+                notification =>
+                    notification.read &&
+                    !unreadIds.has(
+                        notification.id
+                    )
+            );
+
+
+        this.notifications = [
+            ...unreadNotifications,
+            ...readNotifications
+        ];
+
+
+        this.notifications =
+            this.sortNotifications(
+                this.notifications
+            );
+
+
+        this.updateUnreadCount();
+    }
+
+
+    // =====================================================
+    // ORDENAR
+    // =====================================================
+
+    private sortNotifications(
+        notifications: Notification[]
+    ): Notification[] {
+
+        return [...notifications].sort(
+            (a, b) =>
+                new Date(
+                    b.createdAt
+                ).getTime()
+                -
+                new Date(
+                    a.createdAt
+                ).getTime()
+        );
     }
 
 
@@ -207,7 +412,7 @@ export class AppLayoutComponent
 
 
     // =====================================================
-    // CONTADOR DE NO LEÍDAS
+    // CONTADOR
     // =====================================================
 
     updateUnreadCount(): void {
@@ -215,22 +420,68 @@ export class AppLayoutComponent
         this.unreadCount =
             this.notifications.filter(
                 notification =>
-                    notification.read === false
+                    !notification.read
             ).length;
+    }
+
+
+    // =====================================================
+    // ABRIR PANEL
+    // =====================================================
+
+    toggleNotifications(): void {
+
+        this.loadNotificationPreference();
+
+
+        if (!this.notificationsEnabled) {
+
+            this.notificationPanelOpen = false;
+
+            this.notifications = [];
+
+            this.unreadCount = 0;
+
+            this.changeDetector.detectChanges();
+
+            return;
+        }
+
+
+        this.notificationPanelOpen =
+            !this.notificationPanelOpen;
+
+
+        if (this.notificationPanelOpen) {
+
+            this.loadNotifications();
+
+        }
+
+    }
+
+    // =====================================================
+    // ALERTAS
+    // =====================================================
+
+    openAlerts(): void {
+
+        this.router.navigate([
+            '/alerts'
+        ]);
 
     }
 
 
     // =====================================================
-    // NOTIFICACIONES
+    // AYUDA
     // =====================================================
 
-    toggleNotifications(): void {
+    openHelp(): void {
 
-        this.notificationPanelOpen =
-            !this.notificationPanelOpen;
-
-        this.changeDetector.detectChanges();
+        this.router.navigate([
+            '/help'
+        ]);
 
     }
 
@@ -254,7 +505,6 @@ export class AppLayoutComponent
             );
 
             return;
-
         }
 
 
@@ -266,8 +516,25 @@ export class AppLayoutComponent
 
                 next: () => {
 
-                    notification.read =
-                        true;
+                    this.notifications =
+                        this.notifications.map(
+                            item => {
+
+                                if (
+                                    item.id ===
+                                    notification.id
+                                ) {
+
+                                    return {
+                                        ...item,
+                                        read: true
+                                    };
+                                }
+
+                                return item;
+                            }
+                        );
+
 
                     this.updateUnreadCount();
 
@@ -276,7 +543,6 @@ export class AppLayoutComponent
                     this.navigateFromNotification(
                         notification
                     );
-
                 },
 
                 error: error => {
@@ -289,16 +555,14 @@ export class AppLayoutComponent
                     this.navigateFromNotification(
                         notification
                     );
-
                 }
 
             });
-
     }
 
 
     // =====================================================
-    // MARCAR UNA COMO LEÍDA
+    // MARCAR UNA
     // =====================================================
 
     markAsRead(
@@ -308,8 +572,8 @@ export class AppLayoutComponent
         if (notification.read) {
 
             return;
-
         }
+
 
         this.notificationService
             .markAsRead(
@@ -319,43 +583,56 @@ export class AppLayoutComponent
 
                 next: () => {
 
-                    notification.read =
-                        true;
+                    this.notifications =
+                        this.notifications.map(
+                            item => {
+
+                                if (
+                                    item.id ===
+                                    notification.id
+                                ) {
+
+                                    return {
+                                        ...item,
+                                        read: true
+                                    };
+                                }
+
+                                return item;
+                            }
+                        );
+
 
                     this.updateUnreadCount();
 
                     this.changeDetector.detectChanges();
-
                 },
 
                 error: error => {
 
                     console.error(
-                        'Error marcando notificación como leída:',
+                        'Error marcando notificación:',
                         error
                     );
-
                 }
 
             });
-
     }
 
 
     // =====================================================
-    // MARCAR TODAS COMO LEÍDAS
+    // MARCAR TODAS
     // =====================================================
 
     markAllNotificationsAsRead(): void {
 
         if (
-            this.notifications.length === 0 ||
             this.unreadCount === 0
         ) {
 
             return;
-
         }
+
 
         this.notificationService
             .markAllAsRead()
@@ -371,23 +648,23 @@ export class AppLayoutComponent
                             })
                         );
 
-                    this.unreadCount = 0;
+
+                    this.unreadCount =
+                        0;
+
 
                     this.changeDetector.detectChanges();
-
                 },
 
                 error: error => {
 
                     console.error(
-                        'Error marcando todas las notificaciones como leídas:',
+                        'Error marcando todas las notificaciones:',
                         error
                     );
-
                 }
 
             });
-
     }
 
 
@@ -400,15 +677,95 @@ export class AppLayoutComponent
         this.notificationPanelOpen =
             false;
 
+
         this.router.navigate([
             '/notifications'
         ]);
-
     }
 
 
     // =====================================================
-    // NAVEGACIÓN DE NOTIFICACIONES
+    // ICONO
+    // =====================================================
+
+    getNotificationIcon(
+        type: Notification['type']
+    ): string {
+
+        switch (type) {
+
+            case 'USER_ROLE_CHANGED':
+                return 'manage_accounts';
+
+            case 'USER_STATUS_CHANGED':
+                return 'admin_panel_settings';
+
+            case 'SYSTEM':
+            default:
+                return 'notifications';
+        }
+    }
+
+
+    // =====================================================
+    // CLASE VISUAL
+    // =====================================================
+
+    getNotificationClass(
+        type: NotificationType
+    ): string {
+
+        switch (type) {
+
+            case 'USER_STATUS_CHANGED':
+                return 'rejected';
+
+            default:
+                return 'info';
+        }
+    }
+
+    getNotificationTypeClass(
+        type: Notification['type']
+    ): string {
+
+        switch (type) {
+
+            case 'USER_ROLE_CHANGED':
+                return 'role';
+
+            case 'USER_STATUS_CHANGED':
+                return 'status';
+
+            case 'SYSTEM':
+            default:
+                return 'info';
+        }
+    }
+
+
+    // =====================================================
+    // ETIQUETA
+    // =====================================================
+
+    getNotificationTypeLabel(
+        type: NotificationType
+    ): string {
+
+        switch (type) {
+
+            case 'USER_STATUS_CHANGED':
+                return 'Estado de cuenta';
+
+            case 'SYSTEM':
+            default:
+                return 'Sistema';
+        }
+    }
+
+
+    // =====================================================
+    // NAVEGACIÓN
     // =====================================================
 
     navigateFromNotification(
@@ -417,19 +774,23 @@ export class AppLayoutComponent
 
         switch (notification.type) {
 
-            case 'SITE_CREATED':
-            case 'SITE_UPDATED':
-            case 'SITE_STATUS_CHANGED':
-            case 'FLM_NOC_UPDATED':
-            case 'PLAN_DOCUMENT_UPLOADED':
-            case 'PLAN_DOCUMENT_UPDATED':
+            // =====================================================
+            // USUARIOS
+            // =====================================================
 
-                console.log(
-                    'Notificación operacional:',
-                    notification
-                );
+            case 'USER_ROLE_CHANGED':
+            case 'USER_STATUS_CHANGED':
+
+                this.router.navigate([
+                    '/admin/users'
+                ]);
 
                 break;
+
+
+            // =====================================================
+            // SISTEMA
+            // =====================================================
 
             case 'SYSTEM':
 
@@ -440,6 +801,11 @@ export class AppLayoutComponent
 
                 break;
 
+
+            // =====================================================
+            // DESCONOCIDO
+            // =====================================================
+
             default:
 
                 console.warn(
@@ -449,6 +815,7 @@ export class AppLayoutComponent
 
                 break;
         }
+
     }
 
 
@@ -462,7 +829,6 @@ export class AppLayoutComponent
             !this.sidebarOpen;
 
         this.changeDetector.detectChanges();
-
     }
 
 
@@ -480,7 +846,5 @@ export class AppLayoutComponent
         this.router.navigate([
             '/login'
         ]);
-
     }
-
 }

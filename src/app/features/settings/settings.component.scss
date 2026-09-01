@@ -1,121 +1,539 @@
+// =====================================================
+// VARIABLES
+// =====================================================
+
 $text: #1e293b;
 $text-secondary: #64748b;
+
 $border: #e2e8f0;
+
 $primary: #2563eb;
+$primary-dark: #1d4ed8;
+
+$success: #16a34a;
+
+
+// =====================================================
+// PÁGINA
+// =====================================================
 
 .settings-page {
+
+    width: 100%;
     max-width: 900px;
+
     margin: 0 auto;
+
+    box-sizing: border-box;
 }
 
+
+// =====================================================
+// ENCABEZADO
+// =====================================================
+
 .page-header {
+
     margin-bottom: 28px;
 }
 
+
 .page-label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
     color: #94a3b8;
+
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 800;
+
     letter-spacing: 0.08em;
 }
 
+
 .page-header h1 {
-    margin: 7px 0;
+
+    margin: 0 0 7px;
+
     color: $text;
+
     font-size: 30px;
+    font-weight: 750;
+
+    line-height: 1.2;
 }
+
 
 .page-header p {
+
     margin: 0;
+
     color: $text-secondary;
+
     font-size: 14px;
+
+    line-height: 1.5;
 }
+
+
+// =====================================================
+// TARJETA
+// =====================================================
 
 .settings-card {
-    background: white;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
     border: 1px solid $border;
-    border-radius: 14px;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.04);
 }
 
+
+// =====================================================
+// CABECERA DE TARJETA
+// =====================================================
+
+.settings-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 22px 26px;
+
+    background:
+        linear-gradient(180deg,
+            #ffffff 0%,
+            #fbfdff 100%);
+
+    border-bottom: 1px solid $border;
+}
+
+
+.settings-card-icon {
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #eff6ff;
+
+    color: $primary;
+}
+
+
+.settings-card-icon .material-symbols-outlined {
+
+    font-size: 22px;
+}
+
+
+.settings-card-header h2 {
+
+    margin: 0 0 3px;
+
+    color: $text;
+
+    font-size: 16px;
+    font-weight: 750;
+}
+
+
+.settings-card-header p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 12px;
+
+    line-height: 1.45;
+}
+
+
+// =====================================================
+// SECCIÓN
+// =====================================================
+
 .settings-section {
+
     padding: 26px;
 }
 
-.settings-section+.settings-section {
-    border-top: 1px solid $border;
-}
+
+// =====================================================
+// ENCABEZADO DE SECCIÓN
+// =====================================================
 
 .section-heading {
+
     display: flex;
+
+    align-items: flex-start;
+
     gap: 13px;
-    margin-bottom: 20px;
+
+    margin-bottom: 18px;
 }
 
-.section-heading>.material-symbols-outlined {
+
+.section-icon {
+
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #eff6ff;
+
     color: $primary;
-    font-size: 24px;
 }
+
+
+.section-icon .material-symbols-outlined {
+
+    font-size: 20px;
+}
+
 
 .section-heading h2 {
-    margin: 0 0 5px;
+
+    margin: 0 0 4px;
+
     color: $text;
+
+    font-size: 16px;
+    font-weight: 750;
+}
+
+
+.section-heading p {
+
+    margin: 0;
+
+    color: $text-secondary;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+// =====================================================
+// OPCIÓN
+// =====================================================
+
+.setting-item {
+
+    width: 100%;
+
+    min-height: 76px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 24px;
+
+    padding: 16px 8px;
+
+    box-sizing: border-box;
+
+    border: 0;
+
+    border-top: 1px solid #f1f5f9;
+
+    background: transparent;
+
+    color: inherit;
+
+    font-family: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        padding 0.18s ease;
+}
+
+
+.setting-item:hover {
+
+    background: #f8fafc;
+
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+
+// =====================================================
+// INFORMACIÓN
+// =====================================================
+
+.setting-info {
+
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+.setting-title-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 5px;
+}
+
+
+.setting-title-row strong {
+
+    color: $text;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+.setting-small-icon {
+
+    color: #64748b;
+
+    font-size: 18px;
+}
+
+
+.setting-description {
+
+    display: block;
+
+    color: $text-secondary;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+// =====================================================
+// ESTADO DESACTIVADO
+// =====================================================
+
+.setting-item.disabled .setting-title-row strong {
+
+    color: #64748b;
+}
+
+
+.setting-item.disabled .setting-small-icon {
+
+    color: #94a3b8;
+}
+
+
+// =====================================================
+// SWITCH
+// =====================================================
+
+.toggle {
+
+    width: 46px;
+    height: 26px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 3px;
+
+    box-sizing: border-box;
+
+    border-radius: 999px;
+
+    background: #cbd5e1;
+
+    transition:
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.toggle.enabled {
+
+    background: $primary;
+
+    box-shadow:
+        0 2px 8px rgba(37, 99, 235, 0.22);
+}
+
+
+.toggle-circle {
+
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 1px 3px rgba(15, 23, 42, 0.18);
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.toggle.enabled .toggle-circle {
+
+    transform: translateX(20px);
+}
+
+
+// =====================================================
+// CONFIRMACIÓN DE GUARDADO
+// =====================================================
+
+.settings-saved {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin: 0 26px 22px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #bbf7d0;
+
+    border-radius: 9px;
+
+    background: #f0fdf4;
+
+    color: $success;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    animation:
+        settingsSavedIn 0.2s ease-out;
+}
+
+
+.settings-saved .material-symbols-outlined {
+
     font-size: 17px;
 }
 
-.section-heading p {
-    margin: 0;
-    color: $text-secondary;
-    font-size: 13px;
+
+// =====================================================
+// ANIMACIÓN
+// =====================================================
+
+@keyframes settingsSavedIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(-4px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
 }
 
-.setting-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 17px 0;
-    border-top: 1px solid #f1f5f9;
-    cursor: pointer;
-}
 
-.setting-item strong,
-.setting-item span {
-    display: block;
-}
+// =====================================================
+// RESPONSIVE
+// =====================================================
 
-.setting-item strong {
-    margin-bottom: 4px;
-    color: $text;
-    font-size: 14px;
-}
+@media (max-width: 600px) {
 
-.setting-item>div:first-child span {
-    color: $text-secondary;
-    font-size: 12px;
-}
+    .settings-page {
 
-.toggle {
-    width: 44px;
-    height: 24px;
-    flex-shrink: 0;
-    padding: 3px;
-    border-radius: 20px;
-    background: #cbd5e1;
-    transition: background 0.2s ease;
-}
+        max-width: none;
+    }
 
-.toggle.enabled {
-    background: $primary;
-}
 
-.toggle-circle {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: white;
-    transition: transform 0.2s ease;
-}
+    .page-header h1 {
 
-.toggle.enabled .toggle-circle {
-    transform: translateX(20px);
+        font-size: 26px;
+    }
+
+
+    .settings-card-header {
+
+        padding: 20px;
+    }
+
+
+    .settings-section {
+
+        padding: 20px;
+    }
+
+
+    .setting-item {
+
+        gap: 15px;
+    }
+
+
+    .setting-description {
+
+        max-width: 95%;
+    }
+
+
+    .settings-saved {
+
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
 }

@@ -1,0 +1,225 @@
+<div class="alerts-page">
+
+    <!-- ================================================= -->
+    <!-- CABECERA -->
+    <!-- ================================================= -->
+
+    <div class="page-header">
+
+        <span class="page-label">
+            CENTRO DE ALERTAS
+        </span>
+
+        <h1>
+            Alertas
+        </h1>
+
+        <p>
+            Revisa información importante que requiere
+            tu atención dentro de AccesoYa.
+        </p>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- TARJETA PRINCIPAL -->
+    <!-- ================================================= -->
+
+    <div class="alerts-card">
+
+
+        <!-- ================================================= -->
+        <!-- ENCABEZADO -->
+        <!-- ================================================= -->
+
+        <div class="alerts-toolbar">
+
+            <div class="alerts-summary">
+
+                <div class="summary-icon">
+
+                    <span class="material-symbols-outlined">
+                        warning
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Alertas pendientes
+                    </strong>
+
+                    <span>
+                        {{ unreadCount }} sin revisar
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            @if (unreadCount > 0) {
+
+            <button type="button" class="mark-all-button" (click)="markAllAsRead()">
+
+                <span class="material-symbols-outlined">
+                    done_all
+                </span>
+
+                Marcar todas como revisadas
+
+            </button>
+
+            }
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FILTROS -->
+        <!-- ================================================= -->
+
+        <div class="alerts-filters">
+
+            <button type="button" [class.active]="selectedFilter === 'all'" (click)="setFilter('all')">
+
+                Todas
+
+            </button>
+
+
+            <button type="button" [class.active]="selectedFilter === 'unread'" (click)="setFilter('unread')">
+
+                Sin revisar
+
+                @if (unreadCount > 0) {
+
+                <span class="filter-count">
+                    {{ unreadCount }}
+                </span>
+
+                }
+
+            </button>
+
+
+            <button type="button" [class.active]="selectedFilter === 'read'" (click)="setFilter('read')">
+
+                Revisadas
+
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- LISTA -->
+        <!-- ================================================= -->
+
+        <div class="alerts-list">
+
+            @for (
+            alert of filteredAlerts;
+            track alert.id
+            ) {
+
+            <div class="alert-item" [class.unread]="!alert.read" [class.critical]="alert.type === 'critical'"
+                [class.warning]="alert.type === 'warning'">
+
+
+                <div class="alert-icon">
+
+                    <span class="material-symbols-outlined">
+                        {{ getAlertIcon(alert.type) }}
+                    </span>
+
+                </div>
+
+
+                <div class="alert-content">
+
+                    <div class="alert-title-row">
+
+                        <strong>
+                            {{ alert.title }}
+                        </strong>
+
+                        @if (!alert.read) {
+
+                        <span class="new-badge">
+                            Nueva
+                        </span>
+
+                        }
+
+                    </div>
+
+
+                    <p>
+                        {{ alert.description }}
+                    </p>
+
+
+                    <div class="alert-footer">
+
+                        <span class="alert-type">
+                            {{ getAlertLabel(alert.type) }}
+                        </span>
+
+                        <span>
+                            {{ alert.date }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                @if (!alert.read) {
+
+                <button type="button" class="read-button" title="Marcar como revisada" (click)="markAsRead(alert)">
+
+                    <span class="material-symbols-outlined">
+                        done
+                    </span>
+
+                </button>
+
+                }
+
+            </div>
+
+            }
+
+
+            @if (filteredAlerts.length === 0) {
+
+            <div class="empty-alerts">
+
+                <div class="empty-icon">
+
+                    <span class="material-symbols-outlined">
+                        check_circle
+                    </span>
+
+                </div>
+
+                <strong>
+                    No hay alertas pendientes
+                </strong>
+
+                <span>
+                    No tienes alertas que requieran tu atención.
+                </span>
+
+            </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>

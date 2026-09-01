@@ -1,5 +1,9 @@
 <div class="settings-page">
 
+    <!-- ================================================= -->
+    <!-- ENCABEZADO -->
+    <!-- ================================================= -->
+
     <div class="page-header">
 
         <span class="page-label">
@@ -11,21 +15,63 @@
         </h1>
 
         <p>
-            Personaliza tu experiencia en AccesoYa.
+            Personaliza tus preferencias de notificaciones en AccesoYa.
         </p>
 
     </div>
 
 
+    <!-- ================================================= -->
+    <!-- TARJETA PRINCIPAL -->
+    <!-- ================================================= -->
+
     <div class="settings-card">
+
+        <!-- ================================================= -->
+        <!-- CABECERA -->
+        <!-- ================================================= -->
+
+        <div class="settings-card-header">
+
+            <div class="settings-card-icon">
+
+                <span class="material-symbols-outlined">
+                    settings
+                </span>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Preferencias
+                </h2>
+
+                <p>
+                    Controla cómo quieres recibir las notificaciones
+                    de la plataforma.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- NOTIFICACIONES -->
+        <!-- ================================================= -->
 
         <div class="settings-section">
 
             <div class="section-heading">
 
-                <span class="material-symbols-outlined">
-                    notifications
-                </span>
+                <div class="section-icon">
+
+                    <span class="material-symbols-outlined">
+                        notifications
+                    </span>
+
+                </div>
 
                 <div>
 
@@ -34,8 +80,8 @@
                     </h2>
 
                     <p>
-                        Controla cómo quieres recibir
-                        información de AccesoYa.
+                        Administra las alertas relacionadas con tu cuenta
+                        y las actividades del sistema.
                     </p>
 
                 </div>
@@ -43,106 +89,103 @@
             </div>
 
 
-            <div class="setting-item" (click)="toggleNotifications()">
+            <!-- ================================================= -->
+            <!-- NOTIFICACIONES DE LA APLICACIÓN -->
+            <!-- ================================================= -->
 
-                <div>
+            <button type="button" class="setting-item" [class.disabled]="!notificationsEnabled"
+                (click)="toggleNotifications()" [attr.aria-pressed]="notificationsEnabled">
 
-                    <strong>
-                        Notificaciones de la aplicación
-                    </strong>
+                <div class="setting-info">
 
-                    <span>
-                        Recibe alertas sobre tus actividades.
+                    <div class="setting-title-row">
+
+                        <span class="setting-small-icon material-symbols-outlined">
+                            notifications_active
+                        </span>
+
+                        <strong>
+                            Notificaciones de la aplicación
+                        </strong>
+
+                    </div>
+
+                    <span class="setting-description">
+                        Recibe alertas y novedades directamente dentro
+                        de AccesoYa.
                     </span>
 
                 </div>
 
 
-                <div class="toggle" [class.enabled]="notificationsEnabled">
+                <div class="toggle" [class.enabled]="notificationsEnabled" aria-hidden="true">
 
                     <div class="toggle-circle"></div>
 
                 </div>
 
-            </div>
+            </button>
 
 
-            <div class="setting-item" (click)="toggleEmailNotifications()">
+            <!-- ================================================= -->
+            <!-- NOTIFICACIONES POR CORREO -->
+            <!-- ================================================= -->
 
-                <div>
+            <button type="button" class="setting-item" [class.disabled]="!emailNotifications"
+                (click)="toggleEmailNotifications()" [attr.aria-pressed]="emailNotifications">
 
-                    <strong>
-                        Notificaciones por correo
-                    </strong>
+                <div class="setting-info">
 
-                    <span>
-                        Recibe actualizaciones importantes
-                        en tu correo electrónico.
+                    <div class="setting-title-row">
+
+                        <span class="setting-small-icon material-symbols-outlined">
+                            mail
+                        </span>
+
+                        <strong>
+                            Notificaciones por correo
+                        </strong>
+
+                    </div>
+
+                    <span class="setting-description">
+                        Recibe por correo electrónico las actualizaciones
+                        importantes de tu cuenta.
                     </span>
 
                 </div>
 
 
-                <div class="toggle" [class.enabled]="emailNotifications">
+                <div class="toggle" [class.enabled]="emailNotifications" aria-hidden="true">
 
                     <div class="toggle-circle"></div>
 
                 </div>
 
-            </div>
+            </button>
 
         </div>
 
 
-        <div class="settings-section">
+        <!-- ================================================= -->
+        <!-- ESTADO -->
+        <!-- ================================================= -->
 
-            <div class="section-heading">
+        @if (showSavedMessage) {
 
-                <span class="material-symbols-outlined">
-                    accessibility
-                </span>
+        <div class="settings-saved">
 
-                <div>
+            <span class="material-symbols-outlined">
+                check_circle
+            </span>
 
-                    <h2>
-                        Accesibilidad
-                    </h2>
-
-                    <p>
-                        Personaliza las funciones de
-                        accesibilidad de la plataforma.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="setting-item" (click)="toggleMapAccessibility()">
-
-                <div>
-
-                    <strong>
-                        Mostrar información de accesibilidad
-                    </strong>
-
-                    <span>
-                        Destaca información relevante sobre
-                        accesibilidad en los lugares.
-                    </span>
-
-                </div>
-
-
-                <div class="toggle" [class.enabled]="mapAccessibility">
-
-                    <div class="toggle-circle"></div>
-
-                </div>
-
-            </div>
+            <span>
+                Configuración guardada correctamente
+            </span>
 
         </div>
+
+        }
 
     </div>
 

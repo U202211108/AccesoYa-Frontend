@@ -183,24 +183,6 @@ export const routes: Routes = [
                     )
             },
 
-
-            // =================================================
-            // FAVORITOS
-            // TODOS LOS ROLES
-            // =================================================
-
-            {
-                path: 'favorites',
-
-                loadComponent: () =>
-                    import(
-                        './features/favorites/favorites.component'
-                    ).then(
-                        m => m.FavoritesComponent
-                    )
-            },
-
-
             // =================================================
             // PERFIL
             // TODOS LOS ROLES
@@ -248,6 +230,65 @@ export const routes: Routes = [
                         './features/notifications/notifications.component'
                     ).then(
                         m => m.NotificationsComponent
+                    )
+            },
+
+            // =====================================================
+            // ALERTAS
+            // TODOS LOS ROLES
+            // =====================================================
+
+            {
+                path: 'alerts',
+
+                canActivate: [
+                    roleGuard
+                ],
+
+                data: {
+                    roles: [
+                        'CONSULTOR',
+                        'OPERADOR_FLNOC',
+                        'SUPERVISOR',
+                        'ADMIN'
+                    ] as UserRole[]
+                },
+
+                loadComponent: () =>
+                    import(
+                        './features/alerts/alerts.component'
+                    ).then(
+                        m => m.AlertsComponent
+                    )
+            },
+
+
+            // =====================================================
+            // AYUDA
+            // TODOS LOS ROLES
+            // =====================================================
+
+            {
+                path: 'help',
+
+                canActivate: [
+                    roleGuard
+                ],
+
+                data: {
+                    roles: [
+                        'CONSULTOR',
+                        'OPERADOR_FLNOC',
+                        'SUPERVISOR',
+                        'ADMIN'
+                    ] as UserRole[]
+                },
+
+                loadComponent: () =>
+                    import(
+                        './features/help/help.component'
+                    ).then(
+                        m => m.HelpComponent
                     )
             },
 
